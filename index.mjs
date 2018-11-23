@@ -42,6 +42,12 @@ function extractInViewportLinks(el) {
 export default function quicklink(options) {
     options = options || {};
     requestIdleCallback(() => {
+        if ('connection' in navigator) {
+            // Don't prefetch if the user is on 2G..
+            if (navigator.connection.effectiveType && /\slow-2g|2g/.test(navigator.connection.effectiveType)) {
+                return;
+            }
+        }
         // Prefetch an array of URLs if supplied (as an override)
         if (options.urls !== undefined && options.urls.length > 0) {
             fetchLinks(options.urls);
@@ -50,7 +56,9 @@ export default function quicklink(options) {
             let el = options.el || document;
             extractInViewportLinks(el).then((urls) => {
                 fetchLinks(urls);
-            }); 
-        }       
+            });
+        }
     });
 }
+
+// TODO: add preload / high prio?
