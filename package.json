@@ -2,7 +2,7 @@
   "name": "quicklink",
   "version": "0.0.1",
   "description": "Faster page-loads by prefetching links during idle time",
-  "main": "index.js",
+  "main": "src/index.mjs",
   "repository": "https://github.com/addyosmani/quicklink.git",
   "author": "addyosmani <addyosmani@gmail.com>",
   "license": "Apache-2.0",

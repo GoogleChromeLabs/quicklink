@@ -1,3 +1,6 @@
+import prefetch from './prefetch.mjs';
+import requestIdleCallback from './request-idle-callback.mjs';
+
 /**
  * 
  * @param urls Array of URLs to prefetch
@@ -64,5 +67,3 @@ export default function quicklink(options) {
         }
     });
 }
-
-// TODO: add preload / high prio?
