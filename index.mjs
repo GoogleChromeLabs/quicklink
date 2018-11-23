@@ -47,6 +47,10 @@ export default function quicklink(options) {
             if (navigator.connection.effectiveType && /\slow-2g|2g/.test(navigator.connection.effectiveType)) {
                 return;
             }
+            // Don't prefetch if Save-Data is enabled..
+            if (navigator.connection.saveData) {
+                return;
+            }
         }
         // Prefetch an array of URLs if supplied (as an override)
         if (options.urls !== undefined && options.urls.length > 0) {
