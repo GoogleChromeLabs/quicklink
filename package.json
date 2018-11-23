@@ -6,5 +6,18 @@
   "repository": "https://github.com/addyosmani/quicklink.git",
   "author": "addyosmani <addyosmani@gmail.com>",
   "license": "Apache-2.0",
-  "private": false
+  "private": false,
+  "main": "dist/quicklink.js",
+  "module": "dist/quicklink.mjs",
+  "jsnext:main": "dist/quicklink.mjs",
+  "umd:main": "dist/quicklink.umd.js",
+  "scripts": {
+    "test": "eslint src",
+    "build": "microbundle src/index.mjs --no-sourcemap",
+    "prepare": "npm run -s build"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "microbundle": "^0.7.0"
+  }
 }
