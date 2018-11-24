@@ -44,4 +44,15 @@ const prefetch = function (url) {
   supportedPrefetchStrategy(url);
 };
 
-export default prefetch;
+/**
+ * Prefetch an array of URLs using rel=prefetch
+ * if supported. Falls back to XHR otherwise.
+ * @param {Array} urls Array of URLs to prefetch
+ */
+const prefetchLinks = function (urls) {
+  urls.forEach(url => {
+    prefetch(url);
+  });
+}
+
+export default prefetchLinks;

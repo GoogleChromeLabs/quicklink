@@ -1,16 +1,5 @@
-import prefetch from './prefetch.mjs';
+import prefetchLinks from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
-
-/**
- * Prefetch an array of URLs using rel=prefetch
- * if supported. Falls back to XHR otherwise.
- * @param {Array} urls Array of URLs to prefetch
- */
-function fetchLinks(urls) {
-  urls.forEach(url => {
-    prefetch(url);
-  });
-}
 
 /**
  * Extract links from a provided DOM element that are
@@ -64,12 +53,12 @@ export default function (options) {
     }
     // Prefetch an array of URLs if supplied (as an override)
     if (options.urls !== undefined && options.urls.length > 0) {
-      fetchLinks(options.urls);
+      prefetchLinks(options.urls);
     } else {
       // Element to extract in-viewport links for
       const el = options.el || document;
       extractInViewportLinks(el).then(urls => {
-        fetchLinks(urls);
+        prefetchLinks(urls);
       });
     }
   });
