@@ -14,7 +14,7 @@
  * limitations under the License.
 **/
 
-import prefetchURLs from './prefetch.mjs';
+import prefetch from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
 /**
@@ -42,7 +42,19 @@ function extractInViewportLinks(el) {
       observer.observe(link);
     });
   });
-}
+};
+
+/**
+ * Prefetch an array of URLs using rel=prefetch
+ * if supported. Falls back to XHR otherwise.
+ * @param {Array} urls - Array of URLs to prefetch
+ * @param {string} priority - "priority" of the request
+ */
+const prefetchURLs = function (urls, priority) {
+  urls.forEach(url => {
+    prefetch(url, priority);
+  });
+};
 
 /**
  * Prefetch an array of URLs if the user's effective
@@ -56,16 +68,16 @@ function extractInViewportLinks(el) {
  * @param {string} options.priority - Attempt to fetch with higher priority (low or high)
  */
 export default function (options) {
-  options = options || { priority: 'low' };
+  options = options || {priority: 'low'};
   requestIdleCallback(() => {
     // Prefetch an array of URLs if supplied (as an override)
     if (options.urls !== undefined && options.urls.length > 0) {
-      prefetchLinks(options.urls, options.priority);
+      prefetchURLs(options.urls, options.priority);
     } else {
       // Element to extract in-viewport links for
       const el = options.el || document;
       extractInViewportLinks(el).then(urls => {
-        prefetchLinks(urls, options.priority);
+        prefetchURLs(urls, options.priority);
       });
     }
   });

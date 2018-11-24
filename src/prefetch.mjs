@@ -117,16 +117,4 @@ const prefetch = function (url, priority) {
   });
 };
 
-/**
- * Prefetch an array of URLs using rel=prefetch
- * if supported. Falls back to XHR otherwise.
- * @param {Array} urls - Array of URLs to prefetch
- * @param {string} priority - "priority" of the request
- */
-const prefetchURLs = function (urls, priority) {
-  urls.forEach(url => {
-    prefetch(url, priority);
-  });
-};
-
-export default prefetchURLs;
+export default prefetch;
