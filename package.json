@@ -2,22 +2,22 @@
   "name": "quicklink",
   "version": "0.0.1",
   "description": "Faster page-loads by prefetching links during idle time",
-  "main": "src/index.mjs",
+  "main": "dist/quicklink.js",
   "repository": "https://github.com/addyosmani/quicklink.git",
   "author": "addyosmani <addyosmani@gmail.com>",
   "license": "Apache-2.0",
   "private": false,
-  "main": "dist/quicklink.js",
   "module": "dist/quicklink.mjs",
   "jsnext:main": "dist/quicklink.mjs",
   "umd:main": "dist/quicklink.umd.js",
   "scripts": {
-    "test": "eslint src",
+    "lint": "eslint src/*.mjs",
     "build": "microbundle src/index.mjs --no-sourcemap",
     "prepare": "npm run -s build"
   },
   "devDependencies": {
     "eslint": "^5.9.0",
+    "eslint-config-google": "^0.11.0",
     "microbundle": "^0.7.0"
   }
 }
