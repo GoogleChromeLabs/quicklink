@@ -45,9 +45,9 @@ function extractInViewportLinks(el) {
  * it would be useful. By default, looks at in-viewport
  * links for `document`. Can also work off a supplied
  * DOM element or static array of URLs.
- * @param {Object} options supported options
- * options.urls: Array of URLs to prefetch (override)
- * options.el: DOM element to prefetch in-viewport links of
+ * @param {Object} options - Configuration options for quicklink
+ * @param {Array} options.urls - Array of URLs to prefetch (override)
+ * @param {Object} options.el - DOM element to prefetch in-viewport links of
  */
 export default function (options) {
   options = options || {};
