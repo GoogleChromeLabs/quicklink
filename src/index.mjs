@@ -58,16 +58,6 @@ function extractInViewportLinks(el) {
 export default function (options) {
   options = options || { priority: 'low' };
   requestIdleCallback(() => {
-    if ('connection' in navigator) {
-      // Don't prefetch if the user is on 2G..
-      if (navigator.connection.effectiveType && /\slow-2g|2g/.test(navigator.connection.effectiveType)) {
-        return;
-      }
-      // Don't prefetch if Save-Data is enabled..
-      if (navigator.connection.saveData) {
-        return;
-      }
-    }
     // Prefetch an array of URLs if supplied (as an override)
     if (options.urls !== undefined && options.urls.length > 0) {
       prefetchLinks(options.urls, options.priority);
