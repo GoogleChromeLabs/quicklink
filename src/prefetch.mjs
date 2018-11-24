@@ -53,6 +53,6 @@ const prefetchLinks = function (urls) {
   urls.forEach(url => {
     prefetch(url);
   });
-}
+};
 
 export default prefetchLinks;
