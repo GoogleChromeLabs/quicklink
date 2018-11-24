@@ -14,7 +14,7 @@
  * limitations under the License.
 **/
 
-import prefetchLinks from './prefetch.mjs';
+import prefetchURLs from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
 /**

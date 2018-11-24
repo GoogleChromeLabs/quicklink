@@ -123,10 +123,10 @@ const prefetch = function (url, priority) {
  * @param {Array} urls - Array of URLs to prefetch
  * @param {string} priority - "priority" of the request
  */
-const prefetchLinks = function (urls, priority) {
+const prefetchURLs = function (urls, priority) {
   urls.forEach(url => {
     prefetch(url, priority);
   });
 };
 
-export default prefetchLinks;
+export default prefetchURLs;
