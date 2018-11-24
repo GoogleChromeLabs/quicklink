@@ -53,9 +53,10 @@ function extractInViewportLinks(el) {
  * @param {Object} options - Configuration options for quicklink
  * @param {Array} options.urls - Array of URLs to prefetch (override)
  * @param {Object} options.el - DOM element to prefetch in-viewport links of
+ * @param {string} options.priority - Attempt to fetch with higher priority (low or high)
  */
 export default function (options) {
-  options = options || {};
+  options = options || { priority: 'low' };
   requestIdleCallback(() => {
     if ('connection' in navigator) {
       // Don't prefetch if the user is on 2G..
@@ -69,12 +70,12 @@ export default function (options) {
     }
     // Prefetch an array of URLs if supplied (as an override)
     if (options.urls !== undefined && options.urls.length > 0) {
-      prefetchLinks(options.urls);
+      prefetchLinks(options.urls, options.priority);
     } else {
       // Element to extract in-viewport links for
       const el = options.el || document;
       extractInViewportLinks(el).then(urls => {
-        prefetchLinks(urls);
+        prefetchLinks(urls, options.priority);
       });
     }
   });
