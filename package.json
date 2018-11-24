@@ -1,7 +1,7 @@
 {
   "name": "quicklink",
   "version": "0.0.1",
-  "description": "Faster page-loads by prefetching links during idle time",
+  "description": "Faster subsequent page-loads by prefetching in-viewport links in the background",
   "main": "dist/quicklink.js",
   "repository": "https://github.com/addyosmani/quicklink.git",
   "author": "addyosmani <addyosmani@gmail.com>",
@@ -19,5 +19,6 @@
     "eslint": "^5.9.0",
     "eslint-config-google": "^0.11.0",
     "microbundle": "^0.7.0"
-  }
+  },
+  "dependencies": {}
 }
