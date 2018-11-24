@@ -13,9 +13,19 @@
   "scripts": {
     "lint": "eslint src/*.mjs",
     "build": "microbundle src/index.mjs --no-sourcemap",
-    "prepare": "npm run -s build"
+    "prepare": "npm run -s build",
+    "release": "cross-var npm run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags && npm publish"
   },
+  "keywords": [
+    "prefetch",
+    "performance",
+    "fetch",
+    "intersectionobserver",
+    "background",
+    "speed"
+  ],
   "devDependencies": {
+    "cross-var": "^1.1.0",
     "eslint": "^5.9.0",
     "eslint-config-google": "^0.11.0",
     "microbundle": "^0.7.0"
