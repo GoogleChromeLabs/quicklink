@@ -1,4 +1,5 @@
 describe('quicklink tests', function () {
+  const server = `http://127.0.0.1:8080/test`;
   let page;
 
   before(async function () {
@@ -15,12 +16,12 @@ describe('quicklink tests', function () {
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
-    await page.goto('http://127.0.0.1:8080/demo/test-basic-usage.html');
+    await page.goto(`${server}/test-basic-usage.html`);
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/1.html');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/2.html');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/3.html');
+    expect(responseURLs).to.include(`${server}/1.html`);
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).to.include(`${server}/3.html`);
   });
 
   it('should prefetch in-viewport links correctly (ES Modules)', async function () {
@@ -28,12 +29,12 @@ describe('quicklink tests', function () {
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
-    await page.goto('http://127.0.0.1:8080/demo/test-es-modules.html');
+    await page.goto(`${server}/test-es-modules.html`);
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/1.html');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/2.html');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/3.html');
+    expect(responseURLs).to.include(`${server}/1.html`);
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).to.include(`${server}/3.html`);
   });
 
   it('should prefetch a static list of URLs correctly', async function () {
@@ -41,11 +42,11 @@ describe('quicklink tests', function () {
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
-    await page.goto('http://127.0.0.1:8080/demo/test-static-url-list.html');
+    await page.goto(`${server}/test-static-url-list.html`);
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/2.html');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/4.html');
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).to.include(`${server}/4.html`);
   });
 
   it('should prefetch in-viewport links from a custom DOM source', async function () {
@@ -53,9 +54,9 @@ describe('quicklink tests', function () {
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
-    await page.goto('http://127.0.0.1:8080/demo/test-custom-dom-source.html');
+    await page.goto(`${server}/test-custom-dom-source.html`);
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/main.css');
+    expect(responseURLs).to.include(`${server}/main.css`);
   });
 });
