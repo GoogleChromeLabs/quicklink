@@ -3,7 +3,7 @@
 
 ## How it works
 
-Quicklink makes subsequent navigations to pages load faster. It:
+Quicklink attempts to make navigations to subsequent pages load faster. It:
 
 * **Detects links within the viewport** (using `IntersectionObsever`)
 * **Waits until the browser is idle** (using `requestIdleCallback`)
