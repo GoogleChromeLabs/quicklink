@@ -44,7 +44,7 @@ The above options are best for multi-page sites. Single-page apps have a few opt
 
 * Call `quicklink()` once a navigation to a new route has completed
 * Call `quicklink()` against a specific DOM element / component
-* Call `quicklink{urls:[...]}` with a custom set of URLs to prefetch
+* Call `quicklink({urls:[...]})` with a custom set of URLs to prefetch
 
 ## Recipes
 
@@ -53,7 +53,7 @@ The above options are best for multi-page sites. Single-page apps have a few opt
 Defaults to `document` otherwise.
 
 ```js
-let elem = document.getElementById('carousel');
+const elem = document.getElementById('carousel');
 quicklink({
   el: elem
 });
@@ -65,7 +65,7 @@ If you would prefer to provide a static list of URLs to be prefetched, instead o
 
 ```js
 quicklink({
-   urls: ['2.html','4.html']
+   urls: ['2.html','3.html', '4.js']
 });
 ```
 
