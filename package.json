@@ -10,7 +10,10 @@
   "jsnext:main": "dist/quicklink.mjs",
   "umd:main": "dist/quicklink.umd.js",
   "scripts": {
-    "test": "eslint src/*.mjs && jest",
+    "lint": "eslint src/*.mjs test/*.js",
+    "lint-fix": "eslint src/*.mjs test/*.js --fix",
+    "server": "http-server demo",
+    "test": "mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap",
     "prepare": "npm run -s build",
     "release": "cross-var npm run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags && npm publish --access public"
@@ -23,26 +26,18 @@
     "background",
     "speed"
   ],
-  "jest": {
-    "testURL": "http://localhost/",
-    "testMatch": [
-      "<rootDir>/test/**/*.?(m)js?(x)"
-    ],
-    "moduleFileExtensions": [
-      "mjs",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.m?jsx?$": "babel-jest"
-    }
-  },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
+    "chai": "^4.2.0",
     "cross-var": "^1.1.0",
     "eslint": "^5.9.0",
     "eslint-config-google": "^0.11.0",
-    "jest": "^23.6.0",
-    "microbundle": "^0.7.0"
+    "http-server": "^0.11.1",
+    "lodash": "^4.17.11",
+    "microbundle": "^0.7.0",
+    "mocha": "^5.2.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "puppeteer": "^1.10.0"
+  }
 }
