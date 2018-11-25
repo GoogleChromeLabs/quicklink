@@ -10,8 +10,17 @@ Quicklink makes subsequent navigations to pages load faster. It:
 * **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)
 * **Prefetches URLs to the links** (using `<link rel=prefetch>` or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
 
+## Installation
+
+For use with [node](http://nodejs.org) and [npm](https://npmjs.com):
+
+```sh
+npm install --save quicklink
+```
 
 ## Usage
+
+Once initialized, `quicklink` will automatically prefetch URLs for links that are in-viewport during idle time. 
 
 Quickstart:
 
@@ -31,6 +40,12 @@ import quicklink from "dist/quicklink.mjs";
 quicklink();
 ```
 
+The above options are best for multi-page sites. Single-page apps have a few options available for using quicklink with a router:
+
+* Call `quicklink()` once a navigation to a new route has completed
+* Call `quicklink()` against a specific DOM element / component
+* Call `quicklink{urls:[...]}` with a custom set of URLs to prefetch
+
 ## Recipes
 
 **Set the DOM element to obseve for in-viewport links**
@@ -38,7 +53,7 @@ quicklink();
 Defaults to `document` otherwise.
 
 ```js
-let elem = document.getElementById('stuff');
+let elem = document.getElementById('carousel');
 quicklink({
   el: elem
 });
@@ -57,7 +72,7 @@ quicklink({
 **Set the request priority for prefetches**
 
 Defaults to low-priority (`rel=prefetch` or XHR). For high-priority,
-attempts to use fetch() or falls back to XHR.
+attempts to use `fetch()` or falls back to XHR.
 
 ```js
 quicklink({ priority: 'high' });
