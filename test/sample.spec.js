@@ -18,7 +18,7 @@ describe('quicklink tests', function () {
     await page.goto('http://127.0.0.1:8080/demo/test-basic-usage.html');
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/2.html');
+    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/1.html');
     expect(responseURLs).to.include('http://127.0.0.1:8080/demo/2.html');
     expect(responseURLs).to.include('http://127.0.0.1:8080/demo/3.html');
   });
@@ -31,7 +31,7 @@ describe('quicklink tests', function () {
     await page.goto('http://127.0.0.1:8080/demo/test-es-modules.html');
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/2.html');
+    expect(responseURLs).to.include('http://127.0.0.1:8080/demo/1.html');
     expect(responseURLs).to.include('http://127.0.0.1:8080/demo/2.html');
     expect(responseURLs).to.include('http://127.0.0.1:8080/demo/3.html');
   });
