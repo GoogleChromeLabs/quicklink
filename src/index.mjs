@@ -66,19 +66,24 @@ const prefetchURLs = function (urls, priority) {
  * @param {Array} options.urls - Array of URLs to prefetch (override)
  * @param {Object} options.el - DOM element to prefetch in-viewport links of
  * @param {string} options.priority - Attempt to fetch with higher priority (low or high)
+ * @return {Object} Promise
  */
 export default function (options) {
-  options = options || {priority: 'low'};
-  requestIdleCallback(() => {
-    // Prefetch an array of URLs if supplied (as an override)
-    if (options.urls !== undefined && options.urls.length > 0) {
-      prefetchURLs(options.urls, options.priority);
-    } else {
-      // Element to extract in-viewport links for
-      const el = options.el || document;
-      extractInViewportLinks(el).then(urls => {
-        prefetchURLs(urls, options.priority);
-      });
-    }
+  return new Promise((resolve, reject) => {
+    options = options || {priority: 'low'};
+    requestIdleCallback(() => {
+      // Prefetch an array of URLs if supplied (as an override)
+      if (options.urls !== undefined && options.urls.length > 0) {
+        prefetchURLs(options.urls, options.priority);
+        resolve(options.urls);
+      } else {
+        // Element to extract in-viewport links for
+        const el = options.el || document;
+        extractInViewportLinks(el).then(urls => {
+          prefetchURLs(urls, options.priority);
+          resolve(urls);
+        });
+      }
+    });
   });
 }

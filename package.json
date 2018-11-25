@@ -10,10 +10,10 @@
   "jsnext:main": "dist/quicklink.mjs",
   "umd:main": "dist/quicklink.umd.js",
   "scripts": {
-    "lint": "eslint src/*.mjs",
+    "test": "eslint src/*.mjs && jest",
     "build": "microbundle src/index.mjs --no-sourcemap",
     "prepare": "npm run -s build",
-    "release": "cross-var npm run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags && npm publish"
+    "release": "cross-var npm run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags && npm publish --access public"
   },
   "keywords": [
     "prefetch",
@@ -23,10 +23,25 @@
     "background",
     "speed"
   ],
+  "jest": {
+    "testURL": "http://localhost/",
+    "testMatch": [
+      "<rootDir>/test/**/*.?(m)js?(x)"
+    ],
+    "moduleFileExtensions": [
+      "mjs",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.m?jsx?$": "babel-jest"
+    }
+  },
   "devDependencies": {
+    "babel-preset-env": "^1.7.0",
     "cross-var": "^1.1.0",
     "eslint": "^5.9.0",
     "eslint-config-google": "^0.11.0",
+    "jest": "^23.6.0",
     "microbundle": "^0.7.0"
   },
   "dependencies": {}
