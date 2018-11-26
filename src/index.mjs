@@ -70,7 +70,7 @@ const prefetchURLs = function (urls, priority) {
  */
 export default function (options) {
   return new Promise((resolve, reject) => {
-    options = options || {priority: 'low'};
+    options = options || {priority: 'low', timeout: 2000};
     requestIdleCallback(() => {
       // Prefetch an array of URLs if supplied (as an override)
       if (options.urls !== undefined && options.urls.length > 0) {
@@ -84,6 +84,6 @@ export default function (options) {
           resolve(urls);
         });
       }
-    });
+    }, {timeout: options.timeout});
   });
 }
