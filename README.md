@@ -46,7 +46,41 @@ The above options are best for multi-page sites. Single-page apps have a few opt
 * Call `quicklink()` against a specific DOM element / component
 * Call `quicklink({urls:[...]})` with a custom set of URLs to prefetch
 
+## API
+
+`quicklink` accepts an optional options object with the following parameters:
+
+* `el`: DOM element to observe for in-viewport links to prefetch
+* `urls`: Static array of URLs to prefetch (instead of observing `document` or a DOM element links in the viewport)
+* `timeout`: Integer for the `requestIdleCallback` timeout. A time in milliseconds by which the browser must execute prefetching. Defaults to 2 seconds.
+* `priority`: String specifying preferred priority for fetches. Defaults to `low`. `high` will attempt to use the `fetch()` API where supported (rather than rel=prefetch)
+
+TODO:
+* Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for `high` priority fetches
+* Explore using [Priority Hints](https://github.com/WICG/priority-hints) for importance hinting
+
+## Polyfills
+
+`quicklink`:
+
+* Includes a very small fallback for [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
+* Requires `IntersectionObserver` to be supported (see [CanIUse](https://caniuse.com/#feat=intersectionobserver)). We recommend conditionally polyfillng this feature with a service like Polyfill.io:
+
+```html
+<script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+```
+
 ## Recipes
+
+**Set a custom timeout for prefetching resources**
+
+Defaults to 2 seconds (via `requestIdleCallback`). Here we override it to 4 seconds:
+
+```js
+quicklink({
+  timeout: 4000
+});
+```
 
 **Set the DOM element to obseve for in-viewport links**
 
