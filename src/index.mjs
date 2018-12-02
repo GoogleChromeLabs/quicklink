@@ -66,12 +66,18 @@ const prefetchURLs = function (urls, priority) {
  * @param {Array} options.urls - Array of URLs to prefetch (override)
  * @param {Object} options.el - DOM element to prefetch in-viewport links of
  * @param {string} options.priority - Attempt to fetch with higher priority (low or high)
+ * @param {Number} options.timeout - Timeout after which prefetching will occur
+ * @param {function} options.timeoutFn - Custom timeout function
  * @return {Object} Promise
  */
 export default function (options) {
   return new Promise((resolve, reject) => {
-    options = options || {priority: 'low', timeout: 2000};
-    requestIdleCallback(() => {
+    options = options || {
+      priority: 'low',
+      timeout: 2000,
+      timeoutFn: requestIdleCallback,
+    };
+    options.timeoutFn(() => {
       // Prefetch an array of URLs if supplied (as an override)
       if (options.urls !== undefined && options.urls.length > 0) {
         prefetchURLs(options.urls, options.priority);
