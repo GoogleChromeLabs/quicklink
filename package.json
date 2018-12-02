@@ -16,6 +16,7 @@
     "test": "npm run build && mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap",
     "prepare": "npm run -s build",
+    "bundlesize": "bundlesize",
     "release": "cross-var npm run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
   },
   "keywords": [
@@ -28,6 +29,7 @@
   ],
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
+    "bundlesize": "^0.17.0",
     "chai": "^4.2.0",
     "cross-var": "^1.1.0",
     "eslint": "^5.9.0",
@@ -37,6 +39,12 @@
     "microbundle": "^0.7.0",
     "mocha": "^5.2.0"
   },
+  "bundlesize": [
+    {
+      "path": "./dist/*.js",
+      "maxSize": "2 kB"
+    }
+  ],
   "dependencies": {
     "puppeteer": "^1.10.0"
   }
