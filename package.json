@@ -10,9 +10,9 @@
   "jsnext:main": "dist/quicklink.mjs",
   "umd:main": "dist/quicklink.umd.js",
   "scripts": {
-    "lint": "eslint src/*.mjs test/*.js",
-    "lint-fix": "eslint src/*.mjs test/*.js --fix",
-    "server": "http-server .",
+    "lint": "eslint src/*.mjs test/*.js demos/*.js",
+    "lint-fix": "eslint src/*.mjs test/*.js --fix demos/*.js",
+    "start": "http-server .",
     "test": "npm run build && mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap",
     "prepare": "npm run -s build",
