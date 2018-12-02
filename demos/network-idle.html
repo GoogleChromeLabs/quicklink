@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>network-idle-callback demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../test/main.css" />
+    <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('./sw.js').then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <p>This demo uses [network-idle-callback](https://github.com/pastelsky/network-idle-callback) to only prefetch when network activity goes idle in the current tab.</p>
+    <a href="../test/1.html">Link 1</a>
+    <a href="../test/2.html">Link 2</a>
+    <a href="../test/3.html">Link 3</a>
+    <section id="stuff">
+        <a href="../test/main.css">CSS</a>
+    </section>
+    <a href="../test/4.html" style="position:absolute;margin-top:900px;">Link 4</a>
+    <script src="https://unpkg.com/network-idle-callback@1.0.1/lib/index.js"></script>
+    <script type="module">
+        import quicklink from "../dist/quicklink.mjs";
+        quicklink({timeoutFn: networkIdleCallback});
+    </script>
+</body>
+
+</html>
