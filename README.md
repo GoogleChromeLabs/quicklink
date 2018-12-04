@@ -8,7 +8,7 @@ Quicklink attempts to make navigations to subsequent pages load faster. It:
 * **Detects links within the viewport** (using [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API))
 * **Waits until the browser is idle** (using [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)) or **waits until network activity is idle** (using [networkIdleCallback](https://github.com/pastelsky/network-idle-callback))
 * **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)
-* **Prefetches URLs to the links** (using [<link rel=prefetch>](https://www.w3.org/TR/resource-hints/#prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
+* **Prefetches URLs to the links** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
 
 ## Installation
 
@@ -124,6 +124,13 @@ attempts to use `fetch()` or falls back to XHR.
 ```js
 quicklink({ priority: 'high' });
 ```
+
+## Browser support
+
+* Without polyfills: Chrome, Firefox, Edge, Opera, Android Browser, Samsung Internet.
+* With [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill) ~6KB gzipped/minified: Safari, IE9+
+
+Certain features have layered support. If opting for `{priority:'high'}` and `fetch()` isn't available, XHR will be used instead.
 
 ## License
 
