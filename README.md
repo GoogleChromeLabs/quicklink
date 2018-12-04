@@ -18,6 +18,8 @@ For use with [node](http://nodejs.org) and [npm](https://npmjs.com):
 npm install --save quicklink
 ```
 
+You can also grab `quicklink` from [unpkg.com/quicklink](https://unpkg.com/quicklink).
+
 ## Usage
 
 Once initialized, `quicklink` will automatically prefetch URLs for links that are in-viewport during idle time. 
@@ -27,9 +29,19 @@ Quickstart:
 ```html
 <!-- Include quicklink from dist -->
 <script src="dist/quicklink.js"></script>
-<!-- Initialize (you can do this to whenever you want) -->
+<!-- Initialize (you can do this whenever you want) -->
 <script>
 quicklink();
+</script>
+```
+
+For example, you can initialize after the `load` event fires:
+
+```html
+<script>
+window.addEventListener('load', () =>{
+   quicklink();
+});
 </script>
 ```
 
