@@ -75,9 +75,9 @@ export default function (options) {
     options = options || {
       priority: 'low',
       timeout: 2000,
-      timeoutFn: requestIdleCallback,
     };
-    options.timeoutFn(() => {
+    const timeoutFn = options.timeoutFn || requestIdleCallback;
+    timeoutFn(() => {
       // Prefetch an array of URLs if supplied (as an override)
       if (options.urls !== undefined && options.urls.length > 0) {
         prefetchURLs(options.urls, options.priority);
