@@ -83,6 +83,8 @@ TODO:
 <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
 ```
 
+Alternatively, see the [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
+
 ## Recipes
 
 **Set a custom timeout for prefetching resources**
@@ -126,6 +128,8 @@ quicklink({ priority: 'high' });
 ```
 
 ## Browser support
+
+The prefetching provided by `quicklink` can be viewed as a progressive enhancement. Cross-browser support is as follows:
 
 * Without polyfills: Chrome, Firefox, Edge, Opera, Android Browser, Samsung Internet.
 * With [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill) ~6KB gzipped/minified: Safari, IE9+
