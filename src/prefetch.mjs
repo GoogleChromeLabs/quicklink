@@ -1,6 +1,30 @@
-// Inspired by the prefetching logic in Gatsby.js
+/**
+ * Portions copyright 2018 Google Inc.
+ * Inspired by Gatsby's prefetching logic, with those portions
+ * remaining MIT. Additions include support for Fetch API,
+ * XHR switching, SaveData and Effective Connection Type checking.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+**/
+const preFetched = {};
 
-const support = function (feature) {
+/**
+ * Checks if a feature on `link` is natively supported.
+ * Examples of features include `prefetch` and `preload`.
+ * @param {string} feature - name of the feature to test
+ * @return {Boolean} whether the feature is supported
+ */
+function support(feature) {
   if (typeof document === `undefined`) {
     return false;
   }
@@ -14,7 +38,12 @@ const support = function (feature) {
   }
 };
 
-const linkPrefetchStrategy = function (url) {
+/**
+ * Fetches a given URL using `<link rel=prefetch>`
+ * @param {string} url - the URL to fetch
+ * @return {Object} a Promise
+ */
+function linkPrefetchStrategy(url) {
   return new Promise((resolve, reject) => {
     if (typeof document === `undefined`) {
       reject();
@@ -35,7 +64,12 @@ const linkPrefetchStrategy = function (url) {
   });
 };
 
-const xhrPrefetchStrategy = function (url) {
+/**
+ * Fetches a given URL using XMLHttpRequest
+ * @param {string} url - the URL to fetch
+ * @return {Object} a Promise
+ */
+function xhrPrefetchStrategy(url) {
   return new Promise((resolve, reject) => {
     const req = new XMLHttpRequest();
     req.open(`GET`, url, true);
@@ -53,7 +87,13 @@ const xhrPrefetchStrategy = function (url) {
   });
 };
 
-const highPriFetchStrategy = function (url) {
+/**
+ * Fetches a given URL using the Fetch API. Falls back
+ * to XMLHttpRequest if the API is not supported.
+ * @param {string} url - the URL to fetch
+ * @return {Object} a Promise
+ */
+function highPriFetchStrategy(url) {
   return new Promise((resolve, reject) => {
     // TODO: Investigate using preload for high-priority
     // fetches. May have to sniff file-extension to provide
@@ -79,9 +119,13 @@ const supportedPrefetchStrategy = support(`prefetch`)
   ? linkPrefetchStrategy
   : xhrPrefetchStrategy;
 
-const preFetched = {};
-
-const prefetch = function (url, priority) {
+/**
+ * Prefetch a given URL with an optional preferred fetch priority
+ * @param {string} url - the URL to fetch
+ * @param {string} priority - preferred fetch priority (`low` or `high`)
+ * @return {Object} a Promise
+ */
+function prefetcher(url, priority) {
   return new Promise(resolve => {
     if ('connection' in navigator) {
       // Don't prefetch if the user is on 2G..
@@ -117,4 +161,4 @@ const prefetch = function (url, priority) {
   });
 };
 
-export default prefetch;
+export default prefetcher;
