@@ -18,12 +18,13 @@ import prefetch from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
 /**
- * Extract links from a provided DOM element that are
- * in the user's viewport.
+ * Prefetch in-viewport links from a target DOM element. The
+ * element will be observed using Intersection Observer.
  * @param {Object} el DOM element to check for in-viewport links
+ * @param {Object} options Quicklink options object
  * @return {Promise} resolving with list of URLs found
  */
-function extractInViewportLinks(el) {
+function fetchInViewportLinks(el, options) {
   return new Promise((resolve, reject) => {
     const urls = [];
     const links = el.querySelectorAll('a');
@@ -36,6 +37,9 @@ function extractInViewportLinks(el) {
           // Link is out of the view
         }
       });
+      // prefetch() maintains a list of in-memory URLs
+      // previously fetched so we don't attempt a refetch
+      prefetchURLs(urls, options.priority);
       resolve(urls);
     });
     links.forEach(link => {
@@ -85,8 +89,7 @@ export default function (options) {
       } else {
         // Element to extract in-viewport links for
         const el = options.el || document;
-        extractInViewportLinks(el).then(urls => {
-          prefetchURLs(urls, options.priority);
+        fetchInViewportLinks(el, options).then(urls => {
           resolve(urls);
         });
       }
