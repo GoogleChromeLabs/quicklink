@@ -10,6 +10,10 @@ Quicklink attempts to make navigations to subsequent pages load faster. It:
 * **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)
 * **Prefetches URLs to the links** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
 
+## Why
+
+This project aims to be a drop-in solution for sites to prefetch links based on what is in the user's viewport. 
+
 ## Installation
 
 For use with [node](http://nodejs.org) and [npm](https://npmjs.com):
@@ -135,6 +139,11 @@ The prefetching provided by `quicklink` can be viewed as a progressive enhanceme
 * With [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill) ~6KB gzipped/minified: Safari, IE9+
 
 Certain features have layered support. If opting for `{priority:'high'}` and `fetch()` isn't available, XHR will be used instead.
+
+## Related projects
+
+* Using [Gatsby](https://gatsbyjs.org)? You already get most of this for free baked in. It uses `Intersection Observer` to prefetch all of the links that are in view. 
+* Want a more data-driven approach? See [Guess.js](https://guessjs.com). It uses analytics and machine-learning to prefetch resources based on how users navigate your site. It also has plugins for Webpack and Gatsby.
 
 ## License
 
