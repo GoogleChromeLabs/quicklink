@@ -12,7 +12,7 @@ Quicklink attempts to make navigations to subsequent pages load faster. It:
 
 ## Why
 
-This project aims to be a drop-in solution for sites to prefetch links based on what is in the user's viewport. 
+This project aims to be a drop-in solution for sites to prefetch links based on what is in the user's viewport. It also aims to be small (**< 1KB minified/gzipped**).
 
 ## Installation
 
@@ -133,7 +133,7 @@ quicklink({ priority: 'high' });
 
 ## Browser support
 
-The prefetching provided by `quicklink` can be viewed as a progressive enhancement. Cross-browser support is as follows:
+The prefetching provided by `quicklink` can be viewed as a [progressive enhancement](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/). Cross-browser support is as follows:
 
 * Without polyfills: Chrome, Firefox, Edge, Opera, Android Browser, Samsung Internet.
 * With [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill) ~6KB gzipped/minified: Safari, IE9+
@@ -142,7 +142,7 @@ Certain features have layered support. If opting for `{priority:'high'}` and `fe
 
 ## Related projects
 
-* Using [Gatsby](https://gatsbyjs.org)? You already get most of this for free baked in. It uses `Intersection Observer` to prefetch all of the links that are in view. 
+* Using [Gatsby](https://gatsbyjs.org)? You already get most of this for free baked in. It uses `Intersection Observer` to prefetch all of the links that are in view and provided heavy inspiration for this project. 
 * Want a more data-driven approach? See [Guess.js](https://guessjs.com). It uses analytics and machine-learning to prefetch resources based on how users navigate your site. It also has plugins for Webpack and Gatsby.
 
 ## License
