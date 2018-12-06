@@ -25,14 +25,14 @@ import requestIdleCallback from './request-idle-callback.mjs';
  * @return {Promise} resolving with list of URLs found
  */
 function fetchInViewportLinks(el, options) {
-	const links = Array.from(el.querySelectorAll('a'));
+  const links = Array.from(el.querySelectorAll('a'));
   const observer = new IntersectionObserver(entries => {
     const urls = entries
-      .filter(entry => entry.isIntersecting)
-      .map(entry => {
-        observer.unobserve(entry.target);
-        return entry.target.href;
-      });
+        .filter(entry => entry.isIntersecting)
+        .map(entry => {
+          observer.unobserve(entry.target);
+          return entry.target.href;
+        });
     // prefetch() maintains a list of in-memory URLs
     // previously fetched so we don't attempt a refetch
     prefetchURLs(urls, options.priority);
@@ -68,17 +68,16 @@ function prefetchURLs(urls, priority) {
  * @param {string} options.priority - Attempt to fetch with higher priority (low or high)
  * @param {Number} options.timeout - Timeout after which prefetching will occur
  * @param {function} options.timeoutFn - Custom timeout function
- * @return {Object} Promise
  */
 export default function (options) {
   options = {
-    ... {
+    ...{
       priority: 'low',
       timeout: 2000,
       timeoutFn: requestIdleCallback,
-      el: document
+      el: document,
     },
-    ...options
+    ...options,
   };
 
   options.timeoutFn(() => {

@@ -124,7 +124,7 @@ async function prefetcher(url, priority) {
 
   if ('connection' in navigator) {
     // Don't prefetch if the user is on 2G..
-    if ((navigator.connection.effectiveType || "").includes("2g")) {
+    if ((navigator.connection.effectiveType || '').includes('2g')) {
       return;
     }
     // Don't prefetch if Save-Data is enabled..
@@ -140,7 +140,7 @@ async function prefetcher(url, priority) {
       await supportedPrefetchStrategy(url);
     };
     preFetched[url] = true;
-  } catch(e) {
+  } catch (e) {
     // Wanna do something?
   }
 };
