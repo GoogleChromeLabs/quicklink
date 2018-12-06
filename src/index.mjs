@@ -25,27 +25,23 @@ import requestIdleCallback from './request-idle-callback.mjs';
  * @return {Promise} resolving with list of URLs found
  */
 function fetchInViewportLinks(el, options) {
-  return new Promise((resolve, reject) => {
-    const urls = [];
-    const links = el.querySelectorAll('a');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        // Link is in the view
-        if (entry.intersectionRatio > 0) {
-          urls.push(entry.target.href);
-        } else {
-          // Link is out of the view
-        }
+	const links = Array.from(el.querySelectorAll('a'));
+  const observer = new IntersectionObserver(entries => {
+    const urls = entries
+      .filter(entry => entry.isIntersecting)
+      .map(entry => {
+        observer.unobserve(entry.target);
+        return entry.target.href;
       });
-      // prefetch() maintains a list of in-memory URLs
-      // previously fetched so we don't attempt a refetch
-      prefetchURLs(urls, options.priority);
-      resolve(urls);
-    });
-    links.forEach(link => {
-      observer.observe(link);
-    });
+    // prefetch() maintains a list of in-memory URLs
+    // previously fetched so we don't attempt a refetch
+    prefetchURLs(urls, options.priority);
   });
+  links.forEach(link => {
+    observer.observe(link);
+  });
+  // Return a list of found URLs
+  return links.map(link => link.href);
 };
 
 /**
@@ -54,7 +50,7 @@ function fetchInViewportLinks(el, options) {
  * @param {Array} urls - Array of URLs to prefetch
  * @param {string} priority - "priority" of the request
  */
-const prefetchURLs = function (urls, priority) {
+function prefetchURLs(urls, priority) {
   urls.forEach(url => {
     prefetch(url, priority);
   });
@@ -75,24 +71,24 @@ const prefetchURLs = function (urls, priority) {
  * @return {Object} Promise
  */
 export default function (options) {
-  return new Promise((resolve, reject) => {
-    options = options || {
+  options = {
+    ... {
       priority: 'low',
       timeout: 2000,
-    };
-    const timeoutFn = options.timeoutFn || requestIdleCallback;
-    timeoutFn(() => {
-      // Prefetch an array of URLs if supplied (as an override)
-      if (options.urls !== undefined && options.urls.length > 0) {
-        prefetchURLs(options.urls, options.priority);
-        resolve(options.urls);
-      } else {
-        // Element to extract in-viewport links for
-        const el = options.el || document;
-        fetchInViewportLinks(el, options).then(urls => {
-          resolve(urls);
-        });
-      }
-    }, {timeout: options.timeout});
-  });
+      timeoutFn: requestIdleCallback,
+      el: document
+    },
+    ...options
+  };
+
+  options.timeoutFn(() => {
+    // Prefetch an array of URLs if supplied (as an override)
+    if (options.urls !== undefined && options.urls.length > 0) {
+      prefetchURLs(options.urls, options.priority);
+      return options.urls;
+    } else {
+      // Element to extract in-viewport links for
+      return fetchInViewportLinks(options.el, options);
+    }
+  }, {timeout: options.timeout});
 }

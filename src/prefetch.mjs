@@ -94,25 +94,17 @@ function xhrPrefetchStrategy(url) {
  * @return {Object} a Promise
  */
 function highPriFetchStrategy(url) {
-  return new Promise((resolve, reject) => {
-    // TODO: Investigate using preload for high-priority
-    // fetches. May have to sniff file-extension to provide
-    // valid 'as' values. In the future, we may be able to
-    // use Priority Hints here.
-    if (self.fetch === undefined) {
-      xhrPrefetchStrategy(url)
-          .then(() => {
-            resolve();
-          });
-    } else {
-      // As of 2018, fetch() is high-priority in Chrome
-      // and medium-priority in Safari.
-      fetch(url, {credentials: `include`})
-          .then(() => {
-            resolve();
-          });
-    }
-  });
+  // TODO: Investigate using preload for high-priority
+  // fetches. May have to sniff file-extension to provide
+  // valid 'as' values. In the future, we may be able to
+  // use Priority Hints here.
+  if (self.fetch === undefined) {
+    return xhrPrefetchStrategy(url);
+  } else {
+    // As of 2018, fetch() is high-priority in Chrome
+    // and medium-priority in Safari.
+    return fetch(url, {credentials: `include`});
+  }
 };
 
 const supportedPrefetchStrategy = support(`prefetch`)
@@ -125,40 +117,32 @@ const supportedPrefetchStrategy = support(`prefetch`)
  * @param {string} priority - preferred fetch priority (`low` or `high`)
  * @return {Object} a Promise
  */
-function prefetcher(url, priority) {
-  return new Promise(resolve => {
-    if ('connection' in navigator) {
-      // Don't prefetch if the user is on 2G..
-      if (navigator.connection.effectiveType && /\slow-2g|2g/.test(navigator.connection.effectiveType)) {
-        resolve();
-        return;
-      }
-      // Don't prefetch if Save-Data is enabled..
-      if (navigator.connection.saveData) {
-        resolve();
-        return;
-      }
-    }
-    if (preFetched[url]) {
-      resolve();
+async function prefetcher(url, priority) {
+  if (preFetched[url]) {
+    return;
+  }
+
+  if ('connection' in navigator) {
+    // Don't prefetch if the user is on 2G..
+    if ((navigator.connection.effectiveType || "").includes("2g")) {
       return;
     }
+    // Don't prefetch if Save-Data is enabled..
+    if (navigator.connection.saveData) {
+      return;
+    }
+  }
+
+  try {
     if (priority && priority === `high`) {
-      highPriFetchStrategy(url)
-          .then(() => {
-            resolve();
-            preFetched[url] = true;
-          })
-          .catch(() => { });
+      await highPriFetchStrategy(url);
     } else {
-      supportedPrefetchStrategy(url)
-          .then(() => {
-            resolve();
-            preFetched[url] = true;
-          })
-          .catch(() => { });
+      await supportedPrefetchStrategy(url);
     };
-  });
+    preFetched[url] = true;
+  } catch(e) {
+    // Wanna do something?
+  }
 };
 
 export default prefetcher;
