@@ -6,7 +6,7 @@ module.exports = {
     },
     parserOptions: {
         sourceType: 'module',
-        ecmaVersion: 8
+        ecmaVersion: 9
     },
     extends: 'google',
     rules: {
