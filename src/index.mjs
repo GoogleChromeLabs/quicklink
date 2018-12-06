@@ -17,6 +17,18 @@
 import prefetch from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
+const loaderFunctions = new Map();
+const observer = new IntersectionObserver(entries => {
+  entries
+      .filter(entry => entry.isIntersecting)
+      .forEach(entry => {
+        const url = entry.target.href;
+        if (!loaderFunctions.has(url)) {
+          return;
+        }
+        loaderFunctions.get(url).call(null);
+      });
+});
 /**
  * Prefetch in-viewport links from a target DOM element. The
  * element will be observed using Intersection Observer.
@@ -26,34 +38,11 @@ import requestIdleCallback from './request-idle-callback.mjs';
  */
 function fetchInViewportLinks(el, options) {
   const links = Array.from(el.querySelectorAll('a'));
-  const observer = new IntersectionObserver(entries => {
-    const urls = entries
-        .filter(entry => entry.isIntersecting)
-        .map(entry => {
-          observer.unobserve(entry.target);
-          return entry.target.href;
-        });
-    // prefetch() maintains a list of in-memory URLs
-    // previously fetched so we don't attempt a refetch
-    prefetchURLs(urls, options.priority);
-  });
   links.forEach(link => {
     observer.observe(link);
   });
   // Return a list of found URLs
   return links.map(link => link.href);
-};
-
-/**
- * Prefetch an array of URLs using rel=prefetch
- * if supported. Falls back to XHR otherwise.
- * @param {Array} urls - Array of URLs to prefetch
- * @param {string} priority - "priority" of the request
- */
-function prefetchURLs(urls, priority) {
-  urls.forEach(url => {
-    prefetch(url, priority);
-  });
 };
 
 /**
@@ -80,14 +69,18 @@ export default function (options) {
     ...options,
   };
 
+  if (!options.urls) {
+    options.urls = fetchInViewportLinks(options.el, options);
+  }
+
+  options.urls.forEach(url => {
+    loaderFunctions.set(url, () => {
+      loaderFunctions.delete(url);
+      prefetch(url, options.priority);
+    });
+  });
   options.timeoutFn(() => {
-    // Prefetch an array of URLs if supplied (as an override)
-    if (options.urls !== undefined && options.urls.length > 0) {
-      prefetchURLs(options.urls, options.priority);
-      return options.urls;
-    } else {
-      // Element to extract in-viewport links for
-      return fetchInViewportLinks(options.el, options);
-    }
+    // This is a bit weird, but somehow map access gets transpiled the wrong way.
+    Array.from(loaderFunctions.values()).forEach(f => f());
   }, {timeout: options.timeout});
 }
