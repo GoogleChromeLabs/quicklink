@@ -29,21 +29,6 @@ const observer = new IntersectionObserver(entries => {
         loaderFunctions.get(url).call(null);
       });
 });
-/**
- * Prefetch in-viewport links from a target DOM element. The
- * element will be observed using Intersection Observer.
- * @param {Object} el DOM element to check for in-viewport links
- * @param {Object} options Quicklink options object
- * @return {Promise} resolving with list of URLs found
- */
-function fetchInViewportLinks(el, options) {
-  const links = Array.from(el.querySelectorAll('a'));
-  links.forEach(link => {
-    observer.observe(link);
-  });
-  // Return a list of found URLs
-  return links.map(link => link.href);
-};
 
 /**
  * Prefetch an array of URLs if the user's effective
@@ -69,18 +54,24 @@ export default function (options) {
     ...options,
   };
 
-  if (!options.urls) {
-    options.urls = fetchInViewportLinks(options.el, options);
-  }
-
-  options.urls.forEach(url => {
-    loaderFunctions.set(url, () => {
-      loaderFunctions.delete(url);
-      prefetch(url, options.priority);
-    });
-  });
   options.timeoutFn(() => {
-    // This is a bit weird, but somehow map access gets transpiled the wrong way.
-    Array.from(loaderFunctions.values()).forEach(f => f());
+    // If URLs are given, prefetch them.
+    if (options.urls) {
+      options.urls.forEach(url => prefetch(url, options.priority));
+      return;
+    }
+
+    // If not, find all links and use IntersectionObserver.
+    const linkTags = Array.from(options.el.querySelectorAll('a'));
+    linkTags.forEach(link => observer.observe(link));
+    const urls = linkTags.map(link => link.href);
+
+    // Generate loader functions for each link
+    urls.forEach(url => {
+      loaderFunctions.set(url, () => {
+        loaderFunctions.delete(url);
+        prefetch(url, options.priority);
+      });
+    });
   }, {timeout: options.timeout});
 }
