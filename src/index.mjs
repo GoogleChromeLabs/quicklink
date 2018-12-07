@@ -17,44 +17,18 @@
 import prefetch from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
-/**
- * Prefetch in-viewport links from a target DOM element. The
- * element will be observed using Intersection Observer.
- * @param {Object} el DOM element to check for in-viewport links
- * @param {Object} options Quicklink options object
- * @return {Promise} resolving with list of URLs found
- */
-function fetchInViewportLinks(el, options) {
-  const links = Array.from(el.querySelectorAll('a'));
-  const observer = new IntersectionObserver(entries => {
-    const urls = entries
-        .filter(entry => entry.isIntersecting)
-        .map(entry => {
-          observer.unobserve(entry.target);
-          return entry.target.href;
-        });
-    // prefetch() maintains a list of in-memory URLs
-    // previously fetched so we don't attempt a refetch
-    prefetchURLs(urls, options.priority);
-  });
-  links.forEach(link => {
-    observer.observe(link);
-  });
-  // Return a list of found URLs
-  return links.map(link => link.href);
-};
-
-/**
- * Prefetch an array of URLs using rel=prefetch
- * if supported. Falls back to XHR otherwise.
- * @param {Array} urls - Array of URLs to prefetch
- * @param {string} priority - "priority" of the request
- */
-function prefetchURLs(urls, priority) {
-  urls.forEach(url => {
-    prefetch(url, priority);
-  });
-};
+const loaderFunctions = new Map();
+const observer = new IntersectionObserver(entries => {
+  entries
+      .filter(entry => entry.isIntersecting)
+      .forEach(entry => {
+        const url = entry.target.href;
+        if (!loaderFunctions.has(url)) {
+          return;
+        }
+        loaderFunctions.get(url).call(null);
+      });
+});
 
 /**
  * Prefetch an array of URLs if the user's effective
@@ -81,13 +55,23 @@ export default function (options) {
   };
 
   options.timeoutFn(() => {
-    // Prefetch an array of URLs if supplied (as an override)
-    if (options.urls !== undefined && options.urls.length > 0) {
-      prefetchURLs(options.urls, options.priority);
-      return options.urls;
-    } else {
-      // Element to extract in-viewport links for
-      return fetchInViewportLinks(options.el, options);
+    // If URLs are given, prefetch them.
+    if (options.urls) {
+      options.urls.forEach(url => prefetch(url, options.priority));
+      return;
     }
+
+    // If not, find all links and use IntersectionObserver.
+    const linkTags = Array.from(options.el.querySelectorAll('a'));
+    linkTags.forEach(link => observer.observe(link));
+    const urls = linkTags.map(link => link.href);
+
+    // Generate loader functions for each link
+    urls.forEach(url => {
+      loaderFunctions.set(url, () => {
+        loaderFunctions.delete(url);
+        prefetch(url, options.priority);
+      });
+    });
   }, {timeout: options.timeout});
 }
