@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/NVRZLHv.png" width="640" height="240" alt="quicklink">
+  <img src="https://i.imgur.com/NVRZLHv.png" width="640" alt="quicklink">
   <br>
   <a href="https://www.npmjs.org/package/quicklink"><img src="https://img.shields.io/npm/v/quicklink.svg?style=flat" alt="npm"></a>
   <a href="https://unpkg.com/quicklink"><img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size"></a>
@@ -15,7 +15,7 @@
 Quicklink attempts to make navigations to subsequent pages load faster. It:
 
 * **Detects links within the viewport** (using [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API))
-* **Waits until the browser is idle** (using [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)) or **waits until network activity is idle** (using [networkIdleCallback](https://github.com/pastelsky/network-idle-callback))
+* **Waits until the browser is idle** (using [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback))
 * **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)
 * **Prefetches URLs to the links** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
 
