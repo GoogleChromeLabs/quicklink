@@ -149,10 +149,24 @@ The prefetching provided by `quicklink` can be viewed as a [progressive enhancem
 
 Certain features have layered support. If opting for `{priority:'high'}` and `fetch()` isn't available, XHR will be used instead.
 
+## Using the prefetcher directly
+
+`quicklink` includes a prefetcher that can be individually imported for use in other projects. After installing `quicklink` as a dependency, you can use it as follows:
+
+```html
+<script type="module">
+import prefetch from '../src/prefetch.mjs';
+
+const urls = ['1.html', '2.html'];
+const promises = urls.map(url => prefetch(url));
+Promise.all(promises);
+</script>
+```
+
 ## Related projects
 
 * Using [Gatsby](https://gatsbyjs.org)? You already get most of this for free baked in. It uses `Intersection Observer` to prefetch all of the links that are in view and provided heavy inspiration for this project. 
-* Want a more data-driven approach? See [Guess.js](https://guessjs.com). It uses analytics and machine-learning to prefetch resources based on how users navigate your site. It also has plugins for Webpack and Gatsby.
+* Want a more data-driven approach? See [Guess.js](https://guessjs.com). It uses analytics and machine-learning to prefetch resources based on how users navigate your site. It also has plugins for [Webpack](https://www.npmjs.com/package/guess-webpack) and [Gatsby](https://www.gatsbyjs.org/docs/optimize-prefetching-with-guessjs/).
 
 ## License
 
