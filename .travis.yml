@@ -1,6 +1,21 @@
 language: node_js
+sudo: required
 node_js:
   - node
+
 cache:
+  yarn: true
   directories:
-    - "node_modules"
+    - node_modules
+
+before_script:
+  - npm install -g yarn
+  - yarn install
+  - './start-server.sh'
+
+script:
+  - yarn test
+
+notifications:
+  email:
+    on_failure: change
