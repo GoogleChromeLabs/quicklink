@@ -1,5 +1,5 @@
 describe('quicklink tests', function () {
-  const server = `http://127.0.0.1:8081/test`;
+  const server = `http://127.0.0.1:8080/test`;
   let page;
 
   before(async function () {
