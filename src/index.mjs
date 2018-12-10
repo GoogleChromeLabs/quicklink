@@ -23,10 +23,8 @@ const observer = new IntersectionObserver(entries => {
       .filter(entry => entry.isIntersecting)
       .forEach(entry => {
         const url = entry.target.href;
-        if (!loaderFunctions.has(url)) {
-          return;
-        }
-        loaderFunctions.get(url).call(null);
+        const fn = loaderFunctions.get(url);
+        if (fn) fn.call(null);
       });
 });
 
