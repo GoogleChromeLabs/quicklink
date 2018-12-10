@@ -23,13 +23,15 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
   	if (entry.isIntersecting) {
       const url = entry.target.href;
-      if (toPrefetch.has(url)) {
-      	toPrefetch.delete(url);
-      	prefetch(url, observer.priority);
-      }
+      if (toPrefetch.has(url)) prefetcher(url);
   	}
   });
 });
+
+function prefetcher(url) {
+	toPrefetch.delete(url);
+	return prefetch(url, observer.priority);
+}
 
 /**
  * Prefetch an array of URLs if the user's effective
@@ -52,19 +54,18 @@ export default function (options) {
     el: document,
   }, options);
 
+  observer.priority = options.priority;
+
   options.timeoutFn(() => {
     // If URLs are given, prefetch them.
     if (options.urls) {
-      options.urls.forEach(url => prefetch(url, options.priority));
-      return;
+      options.urls.forEach(prefetcher);
+    } else {
+	    // If not, find all links and use IntersectionObserver.
+	    Array.from(options.el.querySelectorAll('a'), link => {
+	    	observer.observe(link);
+		    toPrefetch.add(link.href);
+	    });
     }
-
-    observer.priority = options.priority;
-
-    // If not, find all links and use IntersectionObserver.
-    Array.from(options.el.querySelectorAll('a'), link => {
-    	observer.observe(link);
-	    toPrefetch.add(link.href);
-    });
   }, {timeout: options.timeout});
 }
