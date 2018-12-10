@@ -44,15 +44,12 @@ const observer = new IntersectionObserver(entries => {
  * @param {function} options.timeoutFn - Custom timeout function
  */
 export default function (options) {
-  options = {
-    ...{
-      priority: 'low',
-      timeout: 2000,
-      timeoutFn: requestIdleCallback,
-      el: document,
-    },
-    ...options,
-  };
+  options = Object.assign({
+    priority: 'low',
+    timeout: 2e3,
+    timeoutFn: requestIdleCallback,
+    el: document,
+  }, options);
 
   options.timeoutFn(() => {
     // If URLs are given, prefetch them.
