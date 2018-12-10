@@ -37,6 +37,27 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.include(`${server}/3.html`);
   });
 
+  it('should prefetch in-viewport links that scroll into view correctly (UMD)', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-basic-usage.html`);
+    await page.setViewport({
+      width: 1200,
+      height: 800,
+    });
+    await page.evaluate(_ => {
+      window.scrollBy(0, window.innerHeight);
+    });
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    expect(responseURLs).to.include(`${server}/1.html`);
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).to.include(`${server}/3.html`);
+    expect(responseURLs).to.include(`${server}/4.html`);
+  });
+
   it('should prefetch a static list of URLs correctly', async function () {
     const responseURLs = [];
     page.on('response', resp => {
