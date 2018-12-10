@@ -17,13 +17,16 @@
 import prefetch from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
-const loaderFunctions = new Map();
+const toPrefetch = new Set();
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
   	if (entry.isIntersecting) {
       const url = entry.target.href;
-      const fn = loaderFunctions.get(url);
-      if (fn) fn.call(null);
+      if (toPrefetch.has(url)) {
+      	toPrefetch.delete(url);
+      	prefetch(url, observer.priority);
+      }
   	}
   });
 });
@@ -56,16 +59,12 @@ export default function (options) {
       return;
     }
 
+    observer.priority = options.priority;
+
     // If not, find all links and use IntersectionObserver.
     Array.from(options.el.querySelectorAll('a'), link => {
     	observer.observe(link);
-
-	    // Generate loader functions for each link
-	    const uri = link.href;
-    	loaderFunctions.set(uri, () => {
-    		loaderFunctions.delete(uri);
-    		prefetch(uri, options.priority);
-    	});
+	    toPrefetch.add(link.href);
     });
   }, {timeout: options.timeout});
 }
