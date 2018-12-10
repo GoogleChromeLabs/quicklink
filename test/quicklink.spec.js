@@ -4,7 +4,6 @@ describe('quicklink tests', function () {
 
   before(async function () {
     page = await browser.newPage();
-    // await page.goto('http://127.0.0.1:8080/demo/index.html');
   });
 
   after(async function () {
