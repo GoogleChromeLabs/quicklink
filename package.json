@@ -37,15 +37,13 @@
     "http-server": "^0.11.1",
     "lodash": "^4.17.11",
     "microbundle": "^0.7.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "puppeteer": "^1.10.0"
   },
   "bundlesize": [
     {
       "path": "./dist/*.js",
       "maxSize": "2 kB"
     }
-  ],
-  "dependencies": {
-    "puppeteer": "^1.10.0"
-  }
+  ]
 }
