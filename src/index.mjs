@@ -62,9 +62,10 @@ export default function (options) {
     }
 
     // If not, find all links and use IntersectionObserver.
-    const linkTags = Array.from(options.el.querySelectorAll('a'));
-    linkTags.forEach(link => observer.observe(link));
-    const urls = linkTags.map(link => link.href);
+    const urls = Array.from(options.el.querySelectorAll('a'), link => {
+    	observer.observe(link);
+    	return link.href;
+    });
 
     // Generate loader functions for each link
     urls.forEach(url => {
