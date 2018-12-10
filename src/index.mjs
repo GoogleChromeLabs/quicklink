@@ -19,13 +19,13 @@ import requestIdleCallback from './request-idle-callback.mjs';
 
 const loaderFunctions = new Map();
 const observer = new IntersectionObserver(entries => {
-  entries
-      .filter(entry => entry.isIntersecting)
-      .forEach(entry => {
-        const url = entry.target.href;
-        const fn = loaderFunctions.get(url);
-        if (fn) fn.call(null);
-      });
+  entries.forEach(entry => {
+  	if (entry.isIntersecting) {
+      const url = entry.target.href;
+      const fn = loaderFunctions.get(url);
+      if (fn) fn.call(null);
+  	}
+  });
 });
 
 /**
