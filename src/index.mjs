@@ -59,17 +59,15 @@ export default function (options) {
     }
 
     // If not, find all links and use IntersectionObserver.
-    const urls = Array.from(options.el.querySelectorAll('a'), link => {
+    Array.from(options.el.querySelectorAll('a'), link => {
     	observer.observe(link);
-    	return link.href;
-    });
 
-    // Generate loader functions for each link
-    urls.forEach(url => {
-      loaderFunctions.set(url, () => {
-        loaderFunctions.delete(url);
-        prefetch(url, options.priority);
-      });
+	    // Generate loader functions for each link
+	    const uri = link.href;
+    	loaderFunctions.set(uri, () => {
+    		loaderFunctions.delete(uri);
+    		prefetch(uri, options.priority);
+    	});
     });
   }, {timeout: options.timeout});
 }
