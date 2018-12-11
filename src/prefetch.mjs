@@ -110,7 +110,7 @@ const supportedPrefetchStrategy = support(`prefetch`)
  * @param {Boolean} isPriority - if is "high" priority
  * @return {Object} a Promise
  */
-async function prefetcher(url, isPriority) {
+function prefetcher(url, isPriority) {
   if (preFetched[url]) {
     return;
   }
@@ -126,12 +126,10 @@ async function prefetcher(url, isPriority) {
     }
   }
 
-  try {
-    await (isPriority ? highPriFetchStrategy : supportedPrefetchStrategy)(url);
+  // Wanna do something on catch()?
+  return (isPriority ? highPriFetchStrategy : supportedPrefetchStrategy)(url).then(() => {
     preFetched[url] = true;
-  } catch (e) {
-    // Wanna do something?
-  }
+  });
 };
 
 export default prefetcher;
