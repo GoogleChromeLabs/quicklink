@@ -28,8 +28,8 @@ function support(feature) {
   if (typeof document === `undefined`) {
     return false;
   }
-  const fakeLink = document.createElement(`link`);
   try {
+    const fakeLink = document.createElement(`link`);
     if (fakeLink.relList && typeof fakeLink.relList.supports === `function`) {
       return fakeLink.relList.supports(feature);
     }
@@ -45,22 +45,14 @@ function support(feature) {
  */
 function linkPrefetchStrategy(url) {
   return new Promise((resolve, reject) => {
-    if (typeof document === `undefined`) {
-      reject();
-      return;
-    }
-
     const link = document.createElement(`link`);
-    link.setAttribute(`rel`, `prefetch`);
-    link.setAttribute(`href`, url);
+    link.rel = `prefetch`;
+    link.href = url;
 
     link.onload = resolve;
     link.onerror = reject;
 
-    const parentElement =
-      document.getElementsByTagName(`head`)[0] ||
-      document.getElementsByName(`script`)[0].parentNode;
-    parentElement.appendChild(link);
+    (document.head || document.querySelector(`script`.parentNode)).appendChild(link);
   });
 };
 
@@ -76,14 +68,10 @@ function xhrPrefetchStrategy(url) {
     req.withCredentials = true;
 
     req.onload = () => {
-      if (req.status === 200) {
-        resolve();
-      } else {
-        reject();
-      }
+      (req.status === 200) ? resolve() : reject();
     };
 
-    req.send(null);
+    req.send();
   });
 };
 
@@ -98,14 +86,13 @@ function highPriFetchStrategy(url) {
   // fetches. May have to sniff file-extension to provide
   // valid 'as' values. In the future, we may be able to
   // use Priority Hints here.
-  if (self.fetch === undefined) {
-    return xhrPrefetchStrategy(url);
-  } else {
-    // As of 2018, fetch() is high-priority in Chrome
-    // and medium-priority in Safari.
-    return fetch(url, {credentials: `include`});
-  }
-};
+  //
+  // As of 2018, fetch() is high-priority in Chrome
+  // and medium-priority in Safari.
+  return self.fetch == null
+    ? xhrPrefetchStrategy(url)
+    : fetch(url, {credentials: `include`});
+}
 
 const supportedPrefetchStrategy = support(`prefetch`)
   ? linkPrefetchStrategy
@@ -113,36 +100,30 @@ const supportedPrefetchStrategy = support(`prefetch`)
 
 /**
  * Prefetch a given URL with an optional preferred fetch priority
- * @param {string} url - the URL to fetch
- * @param {string} priority - preferred fetch priority (`low` or `high`)
+ * @param {String} url - the URL to fetch
+ * @param {Boolean} isPriority - if is "high" priority
  * @return {Object} a Promise
  */
-async function prefetcher(url, priority) {
+function prefetcher(url, isPriority) {
   if (preFetched[url]) {
     return;
   }
 
   if ('connection' in navigator) {
-    // Don't prefetch if the user is on 2G..
+    // Don't prefetch if the user is on 2G...
     if ((navigator.connection.effectiveType || '').includes('2g')) {
       return;
     }
-    // Don't prefetch if Save-Data is enabled..
+    // Don't prefetch if Save-Data is enabled...
     if (navigator.connection.saveData) {
       return;
     }
   }
 
-  try {
-    if (priority && priority === `high`) {
-      await highPriFetchStrategy(url);
-    } else {
-      await supportedPrefetchStrategy(url);
-    };
+  // Wanna do something on catch()?
+  return (isPriority ? highPriFetchStrategy : supportedPrefetchStrategy)(url).then(() => {
     preFetched[url] = true;
-  } catch (e) {
-    // Wanna do something?
-  }
+  });
 };
 
 export default prefetcher;

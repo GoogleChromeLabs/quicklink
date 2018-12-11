@@ -17,18 +17,21 @@
 import prefetch from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
-const loaderFunctions = new Map();
+const toPrefetch = new Set();
+
 const observer = new IntersectionObserver(entries => {
-  entries
-      .filter(entry => entry.isIntersecting)
-      .forEach(entry => {
-        const url = entry.target.href;
-        if (!loaderFunctions.has(url)) {
-          return;
-        }
-        loaderFunctions.get(url).call(null);
-      });
+  entries.forEach(entry => {
+  	if (entry.isIntersecting) {
+      const url = entry.target.href;
+      if (toPrefetch.has(url)) prefetcher(url);
+  	}
+  });
 });
+
+function prefetcher(url) {
+	toPrefetch.delete(url);
+	prefetch(url, observer.priority);
+}
 
 /**
  * Prefetch an array of URLs if the user's effective
@@ -39,39 +42,30 @@ const observer = new IntersectionObserver(entries => {
  * @param {Object} options - Configuration options for quicklink
  * @param {Array} options.urls - Array of URLs to prefetch (override)
  * @param {Object} options.el - DOM element to prefetch in-viewport links of
- * @param {string} options.priority - Attempt to fetch with higher priority (low or high)
+ * @param {Boolean} options.priority - Attempt higher priority fetch (low or high)
  * @param {Number} options.timeout - Timeout after which prefetching will occur
  * @param {function} options.timeoutFn - Custom timeout function
  */
 export default function (options) {
-  options = {
-    ...{
-      priority: 'low',
-      timeout: 2000,
-      timeoutFn: requestIdleCallback,
-      el: document,
-    },
-    ...options,
-  };
+  options = Object.assign({
+    timeout: 2e3,
+    priority: false,
+    timeoutFn: requestIdleCallback,
+    el: document,
+  }, options);
+
+  observer.priority = options.priority;
 
   options.timeoutFn(() => {
     // If URLs are given, prefetch them.
     if (options.urls) {
-      options.urls.forEach(url => prefetch(url, options.priority));
-      return;
+      options.urls.forEach(prefetcher);
+    } else {
+	    // If not, find all links and use IntersectionObserver.
+	    Array.from(options.el.querySelectorAll('a'), link => {
+	    	observer.observe(link);
+		    toPrefetch.add(link.href);
+	    });
     }
-
-    // If not, find all links and use IntersectionObserver.
-    const linkTags = Array.from(options.el.querySelectorAll('a'));
-    linkTags.forEach(link => observer.observe(link));
-    const urls = linkTags.map(link => link.href);
-
-    // Generate loader functions for each link
-    urls.forEach(url => {
-      loaderFunctions.set(url, () => {
-        loaderFunctions.delete(url);
-        prefetch(url, options.priority);
-      });
-    });
   }, {timeout: options.timeout});
 }
