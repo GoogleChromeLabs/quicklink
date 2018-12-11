@@ -42,14 +42,14 @@ function prefetcher(url) {
  * @param {Object} options - Configuration options for quicklink
  * @param {Array} options.urls - Array of URLs to prefetch (override)
  * @param {Object} options.el - DOM element to prefetch in-viewport links of
- * @param {string} options.priority - Attempt to fetch with higher priority (low or high)
+ * @param {Boolean} options.priority - Attempt higher priority fetch (low or high)
  * @param {Number} options.timeout - Timeout after which prefetching will occur
  * @param {function} options.timeoutFn - Custom timeout function
  */
 export default function (options) {
   options = Object.assign({
-    priority: 'low',
     timeout: 2e3,
+    priority: false,
     timeoutFn: requestIdleCallback,
     el: document,
   }, options);
