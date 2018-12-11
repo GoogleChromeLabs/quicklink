@@ -28,8 +28,8 @@ function support(feature) {
   if (typeof document === `undefined`) {
     return false;
   }
-  const fakeLink = document.createElement(`link`);
   try {
+    const fakeLink = document.createElement(`link`);
     if (fakeLink.relList && typeof fakeLink.relList.supports === `function`) {
       return fakeLink.relList.supports(feature);
     }
@@ -76,14 +76,10 @@ function xhrPrefetchStrategy(url) {
     req.withCredentials = true;
 
     req.onload = () => {
-      if (req.status === 200) {
-        resolve();
-      } else {
-        reject();
-      }
+      (req.status === 200) ? resolve() : reject();
     };
 
-    req.send(null);
+    req.send();
   });
 };
 
@@ -98,14 +94,11 @@ function highPriFetchStrategy(url) {
   // fetches. May have to sniff file-extension to provide
   // valid 'as' values. In the future, we may be able to
   // use Priority Hints here.
-  if (self.fetch === undefined) {
-    return xhrPrefetchStrategy(url);
-  } else {
-    // As of 2018, fetch() is high-priority in Chrome
-    // and medium-priority in Safari.
-    return fetch(url, {credentials: `include`});
-  }
-};
+  //
+  // As of 2018, fetch() is high-priority in Chrome
+  // and medium-priority in Safari.
+  return self.fetch == null ? xhrPrefetchStrategy(url) : fetch(url, {credentials: `include`});
+}
 
 const supportedPrefetchStrategy = support(`prefetch`)
   ? linkPrefetchStrategy
