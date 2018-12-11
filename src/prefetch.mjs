@@ -114,7 +114,7 @@ function prefetcher(url, isPriority) {
     if ((navigator.connection.effectiveType || '').includes('2g')) {
       return;
     }
-    // Don't prefetch ifSave-Data is enabled...
+    // Don't prefetch if Save-Data is enabled...
     if (navigator.connection.saveData) {
       return;
     }
