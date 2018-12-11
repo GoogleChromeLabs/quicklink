@@ -45,11 +45,6 @@ function support(feature) {
  */
 function linkPrefetchStrategy(url) {
   return new Promise((resolve, reject) => {
-    if (typeof document === `undefined`) {
-      reject();
-      return;
-    }
-
     const link = document.createElement(`link`);
     link.rel = `prefetch`;
     link.href = url;
