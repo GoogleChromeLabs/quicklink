@@ -21,16 +21,21 @@ const toPrefetch = new Set();
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-  	if (entry.isIntersecting) {
+    if (entry.isIntersecting) {
       const url = entry.target.href;
       if (toPrefetch.has(url)) prefetcher(url);
-  	}
+    }
   });
 });
 
+/**
+ * Prefetch a supplied URL. This will also remove
+ * the URL from the toPrefetch Set.
+ * @param {String} url - URL to prefetch
+ */
 function prefetcher(url) {
-	toPrefetch.delete(url);
-	prefetch(url, observer.priority);
+  toPrefetch.delete(url);
+  prefetch(url, observer.priority);
 }
 
 /**
@@ -61,11 +66,11 @@ export default function (options) {
     if (options.urls) {
       options.urls.forEach(prefetcher);
     } else {
-	    // If not, find all links and use IntersectionObserver.
-	    Array.from(options.el.querySelectorAll('a'), link => {
-	    	observer.observe(link);
-		    toPrefetch.add(link.href);
-	    });
+      // If not, find all links and use IntersectionObserver.
+      Array.from(options.el.querySelectorAll('a'), link => {
+        observer.observe(link);
+        toPrefetch.add(link.href);
+      });
     }
   }, {timeout: options.timeout});
 }
