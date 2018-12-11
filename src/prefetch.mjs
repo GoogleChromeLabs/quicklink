@@ -89,7 +89,9 @@ function highPriFetchStrategy(url) {
   //
   // As of 2018, fetch() is high-priority in Chrome
   // and medium-priority in Safari.
-  return self.fetch == null ? xhrPrefetchStrategy(url) : fetch(url, {credentials: `include`});
+  return self.fetch == null
+    ? xhrPrefetchStrategy(url)
+    : fetch(url, {credentials: `include`});
 }
 
 const supportedPrefetchStrategy = support(`prefetch`)
