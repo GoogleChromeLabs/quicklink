@@ -57,10 +57,7 @@ function linkPrefetchStrategy(url) {
     link.onload = resolve;
     link.onerror = reject;
 
-    const parentElement =
-      document.getElementsByTagName(`head`)[0] ||
-      document.getElementsByName(`script`)[0].parentNode;
-    parentElement.appendChild(link);
+    (document.head || document.querySelector(`script`.parentNode)).appendChild(link);
   });
 };
 
