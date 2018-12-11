@@ -51,8 +51,8 @@ function linkPrefetchStrategy(url) {
     }
 
     const link = document.createElement(`link`);
-    link.setAttribute(`rel`, `prefetch`);
-    link.setAttribute(`href`, url);
+    link.rel = `prefetch`;
+    link.href = url;
 
     link.onload = resolve;
     link.onerror = reject;
