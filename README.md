@@ -79,10 +79,10 @@ The above options are best for multi-page sites. Single-page apps have a few opt
 * `urls`: Static array of URLs to prefetch (instead of observing `document` or a DOM element links in the viewport)
 * `timeout`: Integer for the `requestIdleCallback` timeout. A time in milliseconds by which the browser must execute prefetching. Defaults to 2 seconds.
 * `timeoutFn`: Function for specifying a timeout. Defaults to `requestIdleCallback`. Can also be swapped out for a custom function like [networkIdleCallback](https://github.com/pastelsky/network-idle-callback) (see demos)
-* `priority`: String specifying preferred priority for fetches. Defaults to `low`. `high` will attempt to use the `fetch()` API where supported (rather than rel=prefetch)
+* `priority`: Boolean specifying preferred priority for fetches. Defaults to `false`. `true` will attempt to use the `fetch()` API where supported (rather than rel=prefetch)
 
 TODO:
-* Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for `high` priority fetches
+* Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for high priority fetches
 * Explore using [Priority Hints](https://github.com/WICG/priority-hints) for importance hinting
 
 ## Polyfills
@@ -133,11 +133,10 @@ quicklink({
 
 **Set the request priority for prefetches**
 
-Defaults to low-priority (`rel=prefetch` or XHR). For high-priority,
-attempts to use `fetch()` or falls back to XHR.
+Defaults to low-priority (`rel=prefetch` or XHR). For high-priority (`priority: true`), attempts to use `fetch()` or falls back to XHR.
 
 ```js
-quicklink({ priority: 'high' });
+quicklink({ priority: true });
 ```
 
 ## Browser support
@@ -147,7 +146,7 @@ The prefetching provided by `quicklink` can be viewed as a [progressive enhancem
 * Without polyfills: Chrome, Firefox, Edge, Opera, Android Browser, Samsung Internet.
 * With [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill) ~6KB gzipped/minified: Safari, IE9+
 
-Certain features have layered support. If opting for `{priority:'high'}` and `fetch()` isn't available, XHR will be used instead.
+Certain features have layered support. If opting for `{priority: true}` and `fetch()` isn't available, XHR will be used instead.
 
 ## Using the prefetcher directly
 
