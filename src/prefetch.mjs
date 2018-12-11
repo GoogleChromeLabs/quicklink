@@ -110,8 +110,14 @@ function prefetcher(url, isPriority) {
   }
 
   if ('connection' in navigator) {
-    // Don't prefetch if the user is on 2G or if Save-Data is enabled...
-    if ((navigator.connection.effectiveType || '').includes('2g') || navigator.connection.saveData) return;
+    // Don't prefetch if the user is on 2G...
+    if ((navigator.connection.effectiveType || '').includes('2g')) {
+      return;
+    }
+    // Don't prefetch ifSave-Data is enabled...
+    if (navigator.connection.saveData) {
+      return;
+    }
   }
 
   // Wanna do something on catch()?
