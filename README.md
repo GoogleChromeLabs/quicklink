@@ -110,7 +110,7 @@ quicklink({
 });
 ```
 
-**Set the DOM element to obseve for in-viewport links**
+**Set the DOM element to observe for in-viewport links**
 
 Defaults to `document` otherwise.
 
