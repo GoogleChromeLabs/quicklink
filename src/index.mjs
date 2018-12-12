@@ -20,6 +20,7 @@ import requestIdleCallback from './request-idle-callback.mjs';
 const toPrefetch = new Set();
 
 const observer = new IntersectionObserver(entries => {
+  entries = entries.slice(0, observer.limit);
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const url = entry.target.href;
@@ -60,6 +61,7 @@ export default function (options) {
   }, options);
 
   observer.priority = options.priority;
+  observer.limit = options.limit;
 
   options.timeoutFn(() => {
     // If URLs are given, prefetch them.
