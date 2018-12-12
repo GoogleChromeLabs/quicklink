@@ -90,7 +90,7 @@ TODO:
 `quicklink`:
 
 * Includes a very small fallback for [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
-* Requires `IntersectionObserver` to be supported (see [CanIUse](https://caniuse.com/#feat=intersectionobserver)). We recommend conditionally polyfillng this feature with a service like Polyfill.io:
+* Requires `IntersectionObserver` to be supported (see [CanIUse](https://caniuse.com/#feat=intersectionobserver)). We recommend conditionally polyfilling this feature with a service like Polyfill.io:
 
 ```html
 <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
