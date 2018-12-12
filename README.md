@@ -164,7 +164,7 @@ Promise.all(promises);
 
 ## Demo
 
-tl;dr: Here's a [WebPageTest trace](https://www.webpagetest.org/video/view.php?id=181212_4c294265117680f2636676721cc886613fe2eede&data=1) for our [demo](https://keyword-2-ecd7b.firebaseapp.com/) of quicklink's in-viewport link prefetching improving page-load performance of a content site by up to 4 seconds. A [video](https://youtu.be/rQ75YEbJicw) comparison is on YouTube.
+Here's a [WebPageTest run](https://www.webpagetest.org/video/view.php?id=181212_4c294265117680f2636676721cc886613fe2eede&data=1) for our [demo](https://keyword-2-ecd7b.firebaseapp.com/) improving page-load performance by up to 4 seconds via quicklink's prefetching. A [video](https://youtu.be/rQ75YEbJicw) comparison of the before/after prefetching is on YouTube.
 
 For demo purposes, we deployed a version of the [Google Blog](https://blog.google) on
 Firebase hosting. We then deployed another version of it, adding quicklink to the homepage and benchmarked navigating from the homepage to an article that was 
