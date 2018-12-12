@@ -162,6 +162,16 @@ Promise.all(promises);
 </script>
 ```
 
+## Demo
+
+tl;dr: Here's a [WebPageTest trace](https://www.webpagetest.org/video/view.php?id=181212_4c294265117680f2636676721cc886613fe2eede&data=1) for our [demo](https://keyword-2-ecd7b.firebaseapp.com/) of quicklink's in-viewport link prefetching improving page-load performance of a content site by up to 4 seconds. A [video](https://youtu.be/rQ75YEbJicw) comparison is on YouTube.
+
+For demo purposes, we deployed a version of the [Google Blog](https://blog.google) on
+Firebase hosting. We then deployed another version of it, adding quicklink to the homepage and benchmarked navigating from the homepage to an article that was 
+automatically prefetched. The prefetched version loaded faster.
+
+Please note: this is by no means an exhaustive benchmark of the pros and cons of in-viewport link prefetching. Just a demo of the potential improvements the approach can offer. Your own mileage may heavily vary.
+
 ## Related projects
 
 * Using [Gatsby](https://gatsbyjs.org)? You already get most of this for free baked in. It uses `Intersection Observer` to prefetch all of the links that are in view and provided heavy inspiration for this project. 
