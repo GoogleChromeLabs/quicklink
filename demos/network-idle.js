@@ -25,8 +25,8 @@ navigator.serviceWorker.getRegistration()
 function networkIdleCallback(fn, options = {timeout: 0}) {
   // Call the function immediately if required features are absent
   if (
-    !'MessageChannel' in window ||
-    !'serviceWorker' in navigator ||
+    !('MessageChannel' in window) ||
+    !('serviceWorker' in navigator) ||
     !navigator.serviceWorker.controller
   ) {
     DOMContentLoad.then(() => fn({didTimeout: false}));
