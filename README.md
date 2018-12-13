@@ -146,7 +146,10 @@ The prefetching provided by `quicklink` can be viewed as a [progressive enhancem
 * Without polyfills: Chrome, Firefox, Edge, Opera, Android Browser, Samsung Internet.
 * With [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill) ~6KB gzipped/minified: Safari, IE9+
 
-Certain features have layered support. If opting for `{priority: true}` and `fetch()` isn't available, XHR will be used instead. Checking if the user is on a slow connection is only available on [Chrome 61+ and certain Android versions](https://caniuse.com/#feat=netinfo).
+Certain features have layered support:
+
+* The [Network Information API](https://wicg.github.io/netinfo/), which is used to check if the user has a slow effective connection type (via `navigator.connection.effectiveType`) is only available in [Chrome 61+ and Opera 57+](https://caniuse.com/#feat=netinfo)
+* If opting for `{priority: true}` and the [Fetch API](https://fetch.spec.whatwg.org/) isn't available, XHR will be used instead. 
 
 ## Using the prefetcher directly
 
