@@ -19,6 +19,10 @@ import requestIdleCallback from './request-idle-callback.mjs';
 
 const toPrefetch = new Set();
 
+const observerConfig = {
+  rootMargin: "0px"
+}
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -26,7 +30,7 @@ const observer = new IntersectionObserver(entries => {
       if (toPrefetch.has(url)) prefetcher(url);
     }
   });
-});
+}, observerConfig);
 
 /**
  * Prefetch a supplied URL. This will also remove
