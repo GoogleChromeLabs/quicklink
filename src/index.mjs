@@ -48,10 +48,10 @@ function prefetcher(url) {
  * @param {Array} options.urls - Array of URLs to prefetch (override)
  * @param {Object} options.el - DOM element to prefetch in-viewport links of
  * @param {Boolean} options.priority - Attempt higher priority fetch (low or high)
- * @param {Boolean} options.sameOrigin - Restrict prefetching to assets with same origin.
+ * @param {Boolean} options.sameOrigin - If truthy, restricts prefetching to assets with same origin.
  * @param {Array} options.origins - Allowed origins to prefetch (empty allows all)
  * @param {Number} options.timeout - Timeout after which prefetching will occur
- * @param {function} options.timeoutFn - Custom timeout function
+ * @param {Function} options.timeoutFn - Custom timeout function
  */
 export default function (options) {
   options = Object.assign({

@@ -35,7 +35,7 @@ You can also grab `quicklink` from [unpkg.com/quicklink](https://unpkg.com/quick
 
 ## Usage
 
-Once initialized, `quicklink` will automatically prefetch URLs for links that are in-viewport during idle time. 
+Once initialized, `quicklink` will automatically prefetch URLs for links that are in-viewport during idle time.
 
 Quickstart:
 
@@ -80,6 +80,8 @@ The above options are best for multi-page sites. Single-page apps have a few opt
 * `timeout`: Integer for the `requestIdleCallback` timeout. A time in milliseconds by which the browser must execute prefetching. Defaults to 2 seconds.
 * `timeoutFn`: Function for specifying a timeout. Defaults to `requestIdleCallback`. Can also be swapped out for a custom function like [networkIdleCallback](https://github.com/pastelsky/network-idle-callback) (see demos)
 * `priority`: Boolean specifying preferred priority for fetches. Defaults to `false`. `true` will attempt to use the `fetch()` API where supported (rather than rel=prefetch)
+* `sameOrigin`: Restricts prefetching to URLs of the same origin. Defaults to `false`. Any truthy value will ensure no cross-domain requests are sent & will override/ignore any `options.origins` value.
+* `origins`: Static array of URL hostname strings that are allowed to be prefetched. Defaults to an empty array, which _allows all_ URLs to be prefetched.
 
 TODO:
 * Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for high priority fetches
@@ -139,6 +141,34 @@ Defaults to low-priority (`rel=prefetch` or XHR). For high-priority (`priority: 
 quicklink({ priority: true });
 ```
 
+**Allow same-origin requests only**
+
+Forcibly disables all cross-domain requests. All domains are allowed by default.
+
+```js
+quicklink({ sameOrigin: true });
+```
+
+**Specify a custom list of allowed origins**
+
+Provide a list of hostnames that should be prefetch-able. All domains are allowed by default.
+
+> **Important:** You must also include your own hostname!
+
+```js
+quicklink({
+  origins: [
+    // add mine
+    'my-website.com',
+    'api.my-website.com',
+    // add third-parties
+    'other-website.com',
+    'example.com',
+    // ...
+  ]
+});
+```
+
 ## Browser support
 
 The prefetching provided by `quicklink` can be viewed as a [progressive enhancement](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/). Cross-browser support is as follows:
@@ -149,7 +179,7 @@ The prefetching provided by `quicklink` can be viewed as a [progressive enhancem
 Certain features have layered support:
 
 * The [Network Information API](https://wicg.github.io/netinfo/), which is used to check if the user has a slow effective connection type (via `navigator.connection.effectiveType`) is only available in [Chrome 61+ and Opera 57+](https://caniuse.com/#feat=netinfo)
-* If opting for `{priority: true}` and the [Fetch API](https://fetch.spec.whatwg.org/) isn't available, XHR will be used instead. 
+* If opting for `{priority: true}` and the [Fetch API](https://fetch.spec.whatwg.org/) isn't available, XHR will be used instead.
 
 ## Using the prefetcher directly
 
@@ -170,14 +200,14 @@ Promise.all(promises);
 Here's a [WebPageTest run](https://www.webpagetest.org/video/view.php?id=181212_4c294265117680f2636676721cc886613fe2eede&data=1) for our [demo](https://keyword-2-ecd7b.firebaseapp.com/) improving page-load performance by up to 4 seconds via quicklink's prefetching. A [video](https://youtu.be/rQ75YEbJicw) comparison of the before/after prefetching is on YouTube.
 
 For demo purposes, we deployed a version of the [Google Blog](https://blog.google) on
-Firebase hosting. We then deployed another version of it, adding quicklink to the homepage and benchmarked navigating from the homepage to an article that was 
+Firebase hosting. We then deployed another version of it, adding quicklink to the homepage and benchmarked navigating from the homepage to an article that was
 automatically prefetched. The prefetched version loaded faster.
 
 Please note: this is by no means an exhaustive benchmark of the pros and cons of in-viewport link prefetching. Just a demo of the potential improvements the approach can offer. Your own mileage may heavily vary.
 
 ## Related projects
 
-* Using [Gatsby](https://gatsbyjs.org)? You already get most of this for free baked in. It uses `Intersection Observer` to prefetch all of the links that are in view and provided heavy inspiration for this project. 
+* Using [Gatsby](https://gatsbyjs.org)? You already get most of this for free baked in. It uses `Intersection Observer` to prefetch all of the links that are in view and provided heavy inspiration for this project.
 * Want a more data-driven approach? See [Guess.js](https://guess-js.github.io). It uses analytics and machine-learning to prefetch resources based on how users navigate your site. It also has plugins for [Webpack](https://www.npmjs.com/package/guess-webpack) and [Gatsby](https://www.gatsbyjs.org/docs/optimize-prefetching-with-guessjs/).
 
 ## License
