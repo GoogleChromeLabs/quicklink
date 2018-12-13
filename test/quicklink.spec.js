@@ -79,4 +79,35 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.be.an('array');
     expect(responseURLs).to.include(`${server}/main.css`);
   });
+
+  it('should only prefetch links if allowed in origins list', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-allow-origin.html`);
+
+    await page.waitFor(1000);
+
+    expect(responseURLs).to.be.an('array');
+    //=> origins: ['github.githubassets.com']
+    expect(responseURLs).to.not.include(`${server}/2.html`);
+    expect(responseURLs).to.include('https://example.com/1.html');
+    expect(responseURLs).to.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
+  });
+
+  it('should only prefetch links of same origin', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-same-origin.html`);
+
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    //=> sameOrigin: true
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).to.not.include('https://example.com/1.html');
+    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
+  });
 });
