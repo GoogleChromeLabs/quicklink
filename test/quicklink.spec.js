@@ -90,7 +90,7 @@ describe('quicklink tests', function () {
     await page.waitFor(1000);
 
     expect(responseURLs).to.be.an('array');
-    //=> origins: ['github.githubassets.com']
+    // => origins: ['github.githubassets.com']
     expect(responseURLs).to.not.include(`${server}/2.html`);
     expect(responseURLs).to.include('https://example.com/1.html');
     expect(responseURLs).to.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
@@ -106,7 +106,7 @@ describe('quicklink tests', function () {
     await page.waitFor(1000);
 
     expect(responseURLs).to.be.an('array');
-    //=> origins: true
+    // => origins: true
     expect(responseURLs).to.include(`${server}/2.html`);
     expect(responseURLs).to.include('https://foobar.com/3.html');
     expect(responseURLs).to.include('https://example.com/1.html');
@@ -122,7 +122,7 @@ describe('quicklink tests', function () {
 
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    //=> origins: [location.hostname] (default)
+    // => origins: [location.hostname] (default)
     expect(responseURLs).to.include(`${server}/2.html`);
     expect(responseURLs).to.not.include('https://example.com/1.html');
     expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
@@ -137,11 +137,14 @@ describe('quicklink tests', function () {
 
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    //=> origins: [location.hostname] (default)
-    //=> ignores: /2.html/
-    expect(responseURLs).to.not.include(`${server}/2.html`); // via ignores
-    expect(responseURLs).to.not.include('https://example.com/1.html'); // via same origin
-    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'); // via same origin
+    // => origins: [location.hostname] (default)
+    // => ignores: /2.html/
+    // via ignores
+    expect(responseURLs).to.not.include(`${server}/2.html`);
+    // via same origin
+    expect(responseURLs).to.not.include('https://example.com/1.html');
+    // via same origin
+    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
   });
 
   it('should only prefetch links after ignore patterns allowed it (multiple)', async function () {
@@ -153,11 +156,14 @@ describe('quicklink tests', function () {
 
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    //=> origins: true (all)
-    //=> ignores: [...]
+    // => origins: true (all)
+    // => ignores: [...]
     expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.not.include('https://example.com/1.html'); // /example/
-    expect(responseURLs).to.not.include('https://foobar.com/3.html'); // (uri) => uri.includes('foobar')
-    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'); // (uri, elem) => elem.textContent.includes('Spinner')
+    // /example/
+    expect(responseURLs).to.not.include('https://example.com/1.html');
+    // (uri) => uri.includes('foobar')
+    expect(responseURLs).to.not.include('https://foobar.com/3.html');
+    // (uri, elem) => elem.textContent.includes('Spinner')
+    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
   });
 });
