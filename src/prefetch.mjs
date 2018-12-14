@@ -25,18 +25,9 @@ const preFetched = {};
  * @return {Boolean} whether the feature is supported
  */
 function support(feature) {
-  if (typeof document === `undefined`) {
-    return false;
-  }
-  try {
-    const fakeLink = document.createElement(`link`);
-    if (fakeLink.relList && typeof fakeLink.relList.supports === `function`) {
-      return fakeLink.relList.supports(feature);
-    }
-  } catch (err) {
-    return false;
-  }
-};
+  const link = document.createElement('link');
+  return (link.relList || {}).supports && link.relList.supports(feature);
+}
 
 /**
  * Fetches a given URL using `<link rel=prefetch>`
@@ -94,7 +85,7 @@ function highPriFetchStrategy(url) {
     : fetch(url, {credentials: `include`});
 }
 
-const supportedPrefetchStrategy = support(`prefetch`)
+const supportedPrefetchStrategy = typeof document !== 'undefined' && support('prefetch')
   ? linkPrefetchStrategy
   : xhrPrefetchStrategy;
 
