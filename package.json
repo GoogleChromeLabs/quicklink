@@ -9,6 +9,7 @@
   "module": "dist/quicklink.mjs",
   "jsnext:main": "dist/quicklink.mjs",
   "umd:main": "dist/quicklink.umd.js",
+  "unpkg": "dist/quicklink.umd.js",
   "scripts": {
     "lint": "eslint src/*.mjs test/*.js demos/*.js",
     "lint-fix": "eslint src/*.mjs test/*.js --fix demos/*.js",
