@@ -96,6 +96,22 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
   });
 
+  it('should prefetch all links when allowing all origins', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-allow-origin-all.html`);
+
+    await page.waitFor(1000);
+
+    expect(responseURLs).to.be.an('array');
+    //=> origins: true
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).to.include('https://foobar.com/3.html');
+    expect(responseURLs).to.include('https://example.com/1.html');
+    expect(responseURLs).to.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
+  });
 
   it('should only prefetch links of same origin (default)', async function () {
     const responseURLs = [];

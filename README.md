@@ -160,6 +160,20 @@ quicklink({
 });
 ```
 
+**Allow all origins**
+
+Enables all cross-origin requests to be made.
+
+> **Note:** You may run into [CORB](https://chromium.googlesource.com/chromium/src/+/master/services/network/cross_origin_read_blocking_explainer.md) and [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issues!
+
+```js
+quicklink({
+  origins: true,
+  // or
+  origins: []
+});
+```
+
 ## Browser support
 
 The prefetching provided by `quicklink` can be viewed as a [progressive enhancement](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/). Cross-browser support is as follows:
