@@ -93,6 +93,7 @@ const supportedPrefetchStrategy = support('prefetch')
  * Prefetch a given URL with an optional preferred fetch priority
  * @param {String} url - the URL to fetch
  * @param {Boolean} isPriority - if is "high" priority
+ * @param {Object} conn - navigator.connection (internal)
  * @return {Object} a Promise
  */
 function prefetcher(url, isPriority, conn) {
