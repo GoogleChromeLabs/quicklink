@@ -95,20 +95,14 @@ const supportedPrefetchStrategy = typeof document !== 'undefined' && support('pr
  * @param {Boolean} isPriority - if is "high" priority
  * @return {Object} a Promise
  */
-function prefetcher(url, isPriority) {
+function prefetcher(url, isPriority, conn) {
   if (preFetched[url]) {
     return;
   }
 
-  if ('connection' in navigator) {
-    // Don't prefetch if the user is on 2G...
-    if ((navigator.connection.effectiveType || '').includes('2g')) {
-      return;
-    }
-    // Don't prefetch if Save-Data is enabled...
-    if (navigator.connection.saveData) {
-      return;
-    }
+  if (conn = navigator.connection) {
+    // Don't prefetch if the user is on 2G. or if Save-Data is enabled..
+    if ((conn.effectiveType || '').includes('2g') || conn.saveData) return;
   }
 
   // Wanna do something on catch()?
