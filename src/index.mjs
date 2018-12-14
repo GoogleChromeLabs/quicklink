@@ -54,12 +54,11 @@ function prefetcher(url) {
 export default function (options) {
   options = Object.assign({
     timeout: 2e3,
-    priority: false,
     timeoutFn: requestIdleCallback,
     el: document,
   }, options);
 
-  observer.priority = options.priority;
+  observer.priority = !!options.priority;
 
   options.timeoutFn(() => {
     // If URLs are given, prefetch them.
