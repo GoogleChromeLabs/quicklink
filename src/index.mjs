@@ -50,7 +50,7 @@ function prefetcher(url) {
 function isIgnored(node, filter) {
   return Array.isArray(filter)
     ? filter.some(x => isIgnored(node, x))
-    : (filter.test || filter)(node.href, node);
+    : (filter.test || filter).call(filter, node.href, node);
 }
 
 /**
