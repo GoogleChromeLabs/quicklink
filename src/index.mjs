@@ -35,7 +35,7 @@ const observer = new IntersectionObserver(entries => {
  */
 function prefetcher(url) {
   toPrefetch.delete(url);
-  prefetch(new URL(url).toString(), observer.priority);
+  prefetch(new URL(url, location.href).toString(), observer.priority);
 }
 
 /**
