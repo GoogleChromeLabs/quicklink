@@ -79,4 +79,16 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.be.an('array');
     expect(responseURLs).to.include(`${server}/main.css`);
   });
+
+  it('should filter URLs correctly', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-custom-filter.html`);
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).not.to.include(`${server}/3.html`);
+  });
 });

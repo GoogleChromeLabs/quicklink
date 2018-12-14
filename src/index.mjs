@@ -50,6 +50,7 @@ function prefetcher(url) {
  * @param {Boolean} options.priority - Attempt higher priority fetch (low or high)
  * @param {Number} options.timeout - Timeout after which prefetching will occur
  * @param {function} options.timeoutFn - Custom timeout function
+ * @param {function} options.filter - Custom filter function
  */
 export default function (options) {
   options = Object.assign({
@@ -68,8 +69,10 @@ export default function (options) {
     } else {
       // If not, find all links and use IntersectionObserver.
       Array.from(options.el.querySelectorAll('a'), link => {
-        observer.observe(link);
-        toPrefetch.add(link.href);
+        if (!options.filter || options.filter(link.href)) {
+          observer.observe(link);
+          toPrefetch.add(link.href);
+        }
       });
     }
   }, {timeout: options.timeout});
