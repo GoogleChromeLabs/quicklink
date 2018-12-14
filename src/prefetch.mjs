@@ -43,7 +43,7 @@ function linkPrefetchStrategy(url) {
     link.onload = resolve;
     link.onerror = reject;
 
-    (document.head || document.querySelector(`script`).parentNode).appendChild(link);
+    document.head.appendChild(link);
   });
 };
 
