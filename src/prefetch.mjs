@@ -85,7 +85,7 @@ function highPriFetchStrategy(url) {
     : fetch(url, {credentials: `include`});
 }
 
-const supportedPrefetchStrategy = typeof document !== 'undefined' && support('prefetch')
+const supportedPrefetchStrategy = support('prefetch')
   ? linkPrefetchStrategy
   : xhrPrefetchStrategy;
 
