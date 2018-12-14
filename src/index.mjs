@@ -39,17 +39,17 @@ function prefetcher(url) {
 }
 
 /**
- * Determine if the anchor tag can be prefetched.
+ * Determine if the anchor tag should be prefetched.
  * A filter can be a RegExp, Function, or Array of both.
  *   - Function receives `node.href, node` arguments
  *   - RegExp receives `node.href` only (the full URL)
  * @param  {Element}  node    The anchor (<a>) tag.
  * @param  {Mixed}    filter  The custom filter(s)
- * @return {Boolean}          If true, then it was allowed.
+ * @return {Boolean}          If true, then it should be ignored
  */
-function isAllowed(node, filter) {
+function isIgnored(node, filter) {
   return Array.isArray(filter)
-    ? filter.every(x => isAllowed(node, x))
+    ? filter.some(x => isIgnored(node, x))
     : (filter.test || filter)(node.href, node);
 }
 
@@ -64,7 +64,7 @@ function isAllowed(node, filter) {
  * @param {Object} options.el - DOM element to prefetch in-viewport links of
  * @param {Boolean} options.priority - Attempt higher priority fetch (low or high)
  * @param {Array} options.origins - Allowed origins to prefetch (empty allows all)
- * @param {Array|RegExp|Function} options.filter - Custom filter(s) that run after origin checks
+ * @param {Array|RegExp|Function} options.ignores - Custom filter(s) that run after origin checks
  * @param {Number} options.timeout - Timeout after which prefetching will occur
  * @param {Function} options.timeoutFn - Custom timeout function
  */
@@ -79,7 +79,7 @@ export default function (options) {
   observer.priority = options.priority;
 
   const allowed = options.origins || [location.hostname];
-  const filter = options.filter;
+  const ignores = options.ignores || [];
 
   options.timeoutFn(() => {
     // If URLs are given, prefetch them.
@@ -92,8 +92,8 @@ export default function (options) {
         // If the anchor matches a permitted origin
         // ~> A `[]` or `true` means everything is allowed
         if (!allowed.length || allowed.includes(link.hostname)) {
-          // If there are any filters, they must also return true
-          if (!filter || isAllowed(link, filter)) toPrefetch.add(link.href);
+          // If there are any filters, the link must not match any of them
+          isIgnored(link, ignores) || toPrefetch.add(link.href);
         }
       });
     }
