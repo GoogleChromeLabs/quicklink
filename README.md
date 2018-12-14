@@ -31,7 +31,7 @@ For use with [node](http://nodejs.org) and [npm](https://npmjs.com):
 npm install --save quicklink
 ```
 
-You can also grab `quicklink` from [unpkg.com/quicklink](https://unpkg.com/quicklink).
+You can also grab `quicklink` from [unpkg.com/quicklink](https://unpkg.com/quicklink/dist/quicklink.umd.js).
 
 ## Usage
 
