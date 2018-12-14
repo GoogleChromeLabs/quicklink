@@ -127,4 +127,37 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.not.include('https://example.com/1.html');
     expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
   });
+
+  it('should only prefetch links after ignore patterns allowed it', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-ignore-basic.html`);
+
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    //=> origins: [location.hostname] (default)
+    //=> ignores: /2.html/
+    expect(responseURLs).to.not.include(`${server}/2.html`); // via ignores
+    expect(responseURLs).to.not.include('https://example.com/1.html'); // via same origin
+    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'); // via same origin
+  });
+
+  it('should only prefetch links after ignore patterns allowed it (multiple)', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-ignore-multiple.html`);
+
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    //=> origins: true (all)
+    //=> ignores: [...]
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).to.not.include('https://example.com/1.html'); // /example/
+    expect(responseURLs).to.not.include('https://foobar.com/3.html'); // (uri) => uri.includes('foobar')
+    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'); // (uri, elem) => elem.textContent.includes('Spinner')
+  });
 });
