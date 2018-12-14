@@ -19,18 +19,31 @@ import requestIdleCallback from './request-idle-callback.mjs';
 
 const toPrefetch = new Set();
 
-const observerConfig = {
-  rootMargin: "0px"
-}
-
-const observer = new IntersectionObserver(entries => {
+/**
+ * Handle intersection event for each observed entry
+ * @param {Object[]} entries - Array of DOM elements to observe
+ */
+function observerFunction(entries) {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const url = entry.target.href;
       if (toPrefetch.has(url)) prefetcher(url);
     }
   });
-}, observerConfig);
+}
+
+const observerConfig = {
+  rootMargin: "0px"
+}
+
+// const observer = new IntersectionObserver(entries => {
+//  entries.forEach(entry => {
+//    if (entry.isIntersecting) {
+//      const url = entry.target.href;
+//      if (toPrefetch.has(url)) prefetcher(url);
+//    }
+//  });
+// }, observerConfig);
 
 /**
  * Prefetch a supplied URL. This will also remove
@@ -62,6 +75,8 @@ export default function (options) {
     timeoutFn: requestIdleCallback,
     el: document,
   }, options);
+  
+  const observer = new IntersectionObserver(observerFunction, observerConfig);
 
   observer.priority = options.priority;
 
