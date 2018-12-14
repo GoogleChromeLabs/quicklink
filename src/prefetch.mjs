@@ -55,8 +55,8 @@ function linkPrefetchStrategy(url) {
 function xhrPrefetchStrategy(url) {
   return new Promise((resolve, reject) => {
     const req = new XMLHttpRequest();
-    req.open(`GET`, url, true);
-    req.withCredentials = true;
+
+    req.open(`GET`, url, req.withCredentials=true);
 
     req.onload = () => {
       (req.status === 200) ? resolve() : reject();
@@ -64,7 +64,7 @@ function xhrPrefetchStrategy(url) {
 
     req.send();
   });
-};
+}
 
 /**
  * Fetches a given URL using the Fetch API. Falls back
