@@ -39,6 +39,21 @@ function prefetcher(url) {
 }
 
 /**
+ * Determine if the anchor tag should be prefetched.
+ * A filter can be a RegExp, Function, or Array of both.
+ *   - Function receives `node.href, node` arguments
+ *   - RegExp receives `node.href` only (the full URL)
+ * @param  {Element}  node    The anchor (<a>) tag.
+ * @param  {Mixed}    filter  The custom filter(s)
+ * @return {Boolean}          If true, then it should be ignored
+ */
+function isIgnored(node, filter) {
+  return Array.isArray(filter)
+    ? filter.some(x => isIgnored(node, x))
+    : (filter.test || filter).call(filter, node.href, node);
+}
+
+/**
  * Prefetch an array of URLs if the user's effective
  * connection type and data-saver preferences suggests
  * it would be useful. By default, looks at in-viewport
@@ -48,8 +63,10 @@ function prefetcher(url) {
  * @param {Array} options.urls - Array of URLs to prefetch (override)
  * @param {Object} options.el - DOM element to prefetch in-viewport links of
  * @param {Boolean} options.priority - Attempt higher priority fetch (low or high)
+ * @param {Array} options.origins - Allowed origins to prefetch (empty allows all)
+ * @param {Array|RegExp|Function} options.ignores - Custom filter(s) that run after origin checks
  * @param {Number} options.timeout - Timeout after which prefetching will occur
- * @param {function} options.timeoutFn - Custom timeout function
+ * @param {Function} options.timeoutFn - Custom timeout function
  */
 export default function (options) {
   options = Object.assign({
@@ -61,6 +78,9 @@ export default function (options) {
 
   observer.priority = options.priority;
 
+  const allowed = options.origins || [location.hostname];
+  const ignores = options.ignores || [];
+
   options.timeoutFn(() => {
     // If URLs are given, prefetch them.
     if (options.urls) {
@@ -69,7 +89,12 @@ export default function (options) {
       // If not, find all links and use IntersectionObserver.
       Array.from(options.el.querySelectorAll('a'), link => {
         observer.observe(link);
-        toPrefetch.add(link.href);
+        // If the anchor matches a permitted origin
+        // ~> A `[]` or `true` means everything is allowed
+        if (!allowed.length || allowed.includes(link.hostname)) {
+          // If there are any filters, the link must not match any of them
+          isIgnored(link, ignores) || toPrefetch.add(link.href);
+        }
       });
     }
   }, {timeout: options.timeout});
