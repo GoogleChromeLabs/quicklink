@@ -52,24 +52,20 @@ function prefetcher(url) {
  * @param {function} options.timeoutFn - Custom timeout function
  */
 export default function (options) {
-  options = Object.assign({
-    timeout: 2e3,
-    timeoutFn: requestIdleCallback,
-    el: document,
-  }, options);
+  options = options || {};
 
   observer.priority = !!options.priority;
 
-  options.timeoutFn(() => {
+  (options.timeoutFn || requestIdleCallback)(() => {
     // If URLs are given, prefetch them.
     if (options.urls) {
       options.urls.forEach(prefetcher);
     } else {
       // If not, find all links and use IntersectionObserver.
-      Array.from(options.el.querySelectorAll('a'), link => {
+      Array.from((options.el || document).querySelectorAll('a'), link => {
         observer.observe(link);
         toPrefetch.add(link.href);
       });
     }
-  }, {timeout: options.timeout});
+  }, {timeout: options.timeout || 2e3});
 }
