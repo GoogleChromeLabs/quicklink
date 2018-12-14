@@ -25,18 +25,9 @@ const preFetched = {};
  * @return {Boolean} whether the feature is supported
  */
 function support(feature) {
-  if (typeof document === `undefined`) {
-    return false;
-  }
-  try {
-    const fakeLink = document.createElement(`link`);
-    if (fakeLink.relList && typeof fakeLink.relList.supports === `function`) {
-      return fakeLink.relList.supports(feature);
-    }
-  } catch (err) {
-    return false;
-  }
-};
+  const link = document.createElement('link');
+  return (link.relList || {}).supports && link.relList.supports(feature);
+}
 
 /**
  * Fetches a given URL using `<link rel=prefetch>`
@@ -52,7 +43,7 @@ function linkPrefetchStrategy(url) {
     link.onload = resolve;
     link.onerror = reject;
 
-    (document.head || document.querySelector(`script`).parentNode).appendChild(link);
+    document.head.appendChild(link);
   });
 };
 
@@ -64,8 +55,8 @@ function linkPrefetchStrategy(url) {
 function xhrPrefetchStrategy(url) {
   return new Promise((resolve, reject) => {
     const req = new XMLHttpRequest();
-    req.open(`GET`, url, true);
-    req.withCredentials = true;
+
+    req.open(`GET`, url, req.withCredentials=true);
 
     req.onload = () => {
       (req.status === 200) ? resolve() : reject();
@@ -73,7 +64,7 @@ function xhrPrefetchStrategy(url) {
 
     req.send();
   });
-};
+}
 
 /**
  * Fetches a given URL using the Fetch API. Falls back
@@ -94,7 +85,7 @@ function highPriFetchStrategy(url) {
     : fetch(url, {credentials: `include`});
 }
 
-const supportedPrefetchStrategy = support(`prefetch`)
+const supportedPrefetchStrategy = support('prefetch')
   ? linkPrefetchStrategy
   : xhrPrefetchStrategy;
 
@@ -104,20 +95,14 @@ const supportedPrefetchStrategy = support(`prefetch`)
  * @param {Boolean} isPriority - if is "high" priority
  * @return {Object} a Promise
  */
-function prefetcher(url, isPriority) {
+function prefetcher(url, isPriority, conn) {
   if (preFetched[url]) {
     return;
   }
 
-  if ('connection' in navigator) {
-    // Don't prefetch if the user is on 2G...
-    if ((navigator.connection.effectiveType || '').includes('2g')) {
-      return;
-    }
-    // Don't prefetch if Save-Data is enabled...
-    if (navigator.connection.saveData) {
-      return;
-    }
+  if (conn = navigator.connection) {
+    // Don't prefetch if the user is on 2G. or if Save-Data is enabled..
+    if ((conn.effectiveType || '').includes('2g') || conn.saveData) return;
   }
 
   // Wanna do something on catch()?
