@@ -80,8 +80,7 @@ The above options are best for multi-page sites. Single-page apps have a few opt
 * `timeout`: Integer for the `requestIdleCallback` timeout. A time in milliseconds by which the browser must execute prefetching. Defaults to 2 seconds.
 * `timeoutFn`: Function for specifying a timeout. Defaults to `requestIdleCallback`. Can also be swapped out for a custom function like [networkIdleCallback](https://github.com/pastelsky/network-idle-callback) (see demos)
 * `priority`: Boolean specifying preferred priority for fetches. Defaults to `false`. `true` will attempt to use the `fetch()` API where supported (rather than rel=prefetch)
-* `sameOrigin`: Restricts prefetching to URLs of the same origin. Defaults to `false`. Any truthy value will ensure no cross-domain requests are sent & will override/ignore any `options.origins` value.
-* `origins`: Static array of URL hostname strings that are allowed to be prefetched. Defaults to an empty array, which _allows all_ URLs to be prefetched.
+* `origins`: Static array of URL hostname strings that are allowed to be prefetched. Defaults to the same domain origin, which prevents _any_ cross-origin requests.
 
 TODO:
 * Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for high priority fetches
@@ -141,17 +140,9 @@ Defaults to low-priority (`rel=prefetch` or XHR). For high-priority (`priority: 
 quicklink({ priority: true });
 ```
 
-**Allow same-origin requests only**
-
-Forcibly disables all cross-domain requests. All domains are allowed by default.
-
-```js
-quicklink({ sameOrigin: true });
-```
-
 **Specify a custom list of allowed origins**
 
-Provide a list of hostnames that should be prefetch-able. All domains are allowed by default.
+Provide a list of hostnames that should be prefetch-able. Only the same origin is allowed by default.
 
 > **Important:** You must also include your own hostname!
 
