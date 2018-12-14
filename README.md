@@ -81,6 +81,7 @@ The above options are best for multi-page sites. Single-page apps have a few opt
 * `timeoutFn`: Function for specifying a timeout. Defaults to `requestIdleCallback`. Can also be swapped out for a custom function like [networkIdleCallback](https://github.com/pastelsky/network-idle-callback) (see demos)
 * `priority`: Boolean specifying preferred priority for fetches. Defaults to `false`. `true` will attempt to use the `fetch()` API where supported (rather than rel=prefetch)
 * `origins`: Static array of URL hostname strings that are allowed to be prefetched. Defaults to the same domain origin, which prevents _any_ cross-origin requests.
+* `ignores`: A RegExp, Function, or Array that further determines if a URL should be prefetched. These execute _after_ origin matching.
 
 TODO:
 * Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for high priority fetches
@@ -171,6 +172,27 @@ quicklink({
   origins: true,
   // or
   origins: []
+});
+```
+
+**Custom Ignore Patterns**
+
+These filters run _after_ the `origins` matching has run. Ignores can be useful for avoiding large file downloads or for responding to DOM attributes dynamically.
+
+```js
+// Same-origin restraint is enabled by default.
+//
+// This example will ignore all requests to:
+//  - all "/api/*" pathnames
+//  - all ".zip" extensions
+//  - all <a> tags with "noprefetch" attribute
+//
+quicklink({
+  ignores: [
+    /\/api\/?/,
+    uri => uri.includes('.zip'),
+    (uri, elem) => elem.hasAttribute('noprefetch')
+  ]
 });
 ```
 
