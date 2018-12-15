@@ -89,6 +89,12 @@ export default function (options) {
       // If not, find all links and use IntersectionObserver.
       Array.from(options.el.querySelectorAll('a'), link => {
         observer.observe(link);
+
+        // Do not need when link is just URL fragment of same page.
+        if (link.hostname === location.hostname && link.pathname === location.pathname) {
+          return;
+        }
+
         // If the anchor matches a permitted origin
         // ~> A `[]` or `true` means everything is allowed
         if (!allowed.length || allowed.includes(link.hostname)) {
