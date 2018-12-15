@@ -18,18 +18,8 @@ import prefetch from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
 const toPrefetch = new Set();
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const link = entry.target;
-      if (toPrefetch.has(link.href)) {
-        observer.unobserve(link);
-        prefetcher(link.href);
-      }
-    }
-  });
-});
+// Add observer to namespace for prefetcher
+let observer;
 
 /**
  * Prefetch a supplied URL. This will also remove
@@ -70,6 +60,10 @@ function isIgnored(node, filter) {
  * @param {Array|RegExp|Function} options.ignores - Custom filter(s) that run after origin checks
  * @param {Number} options.timeout - Timeout after which prefetching will occur
  * @param {Function} options.timeoutFn - Custom timeout function
+ * @param {Object} options.config - IntersectionObserver configuration options
+ * @param {Element} options.config.root - The root container in which elements are observed
+ * @param {string} options.config.rootMargin - Margin added to root before intersection observation testing
+ * @param {number} options.config.threshold - Percentage of observed element in root before IO callback is called
  */
 export default function (options) {
   options = Object.assign({
@@ -77,7 +71,18 @@ export default function (options) {
     priority: false,
     timeoutFn: requestIdleCallback,
     el: document,
+    config: {},
   }, options);
+  
+  // actually initialize intersection observer here
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const url = entry.target.href;
+        if (toPrefetch.has(url)) prefetcher(url);
+      }
+    });
+  }, options.config);
 
   observer.priority = options.priority;
 
