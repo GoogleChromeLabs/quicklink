@@ -22,8 +22,11 @@ const toPrefetch = new Set();
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      const url = entry.target.href;
-      if (toPrefetch.has(url)) prefetcher(url);
+      const link = entry.target;
+      if (toPrefetch.has(link.href)) {
+        observer.unobserve(link);
+        prefetcher(link.href);
+      }
     }
   });
 });
