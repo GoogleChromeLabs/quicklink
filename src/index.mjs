@@ -63,7 +63,11 @@ function isIgnored(node, filter) {
  * @param {Object} options.config - IntersectionObserver configuration options
  * @param {Element} options.config.root - The root container in which elements are observed
  * @param {string} options.config.rootMargin - Margin added to root before intersection observation testing
+<<<<<<< HEAD
  * @param {number} options.config.threshold - Percentage of observed element in root before IO callback is called
+=======
+ * @param {number} options.config.threshold - percentage of observed element in root before IO callback is called
+>>>>>>> Added JSDoc for options.config for IO
  */
 export default function (options) {
   options = Object.assign({
@@ -82,7 +86,7 @@ export default function (options) {
         if (toPrefetch.has(url)) prefetcher(url);
       }
     });
-  }, options.config);
+  }, options.config || {});
 
   observer.priority = options.priority;
 
