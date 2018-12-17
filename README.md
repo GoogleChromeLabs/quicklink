@@ -204,7 +204,8 @@ Using `ignores` this can be achieved as follows:
 quicklink({
     ignores: [
         uri => uri.includes('#')
-        // or /#(.+)/ if you prefer RegExp
+        // or RegExp: /#(.+)/
+        // or element matching: (uri, elem) => !!elem.hash
     ]
 });
 ```
