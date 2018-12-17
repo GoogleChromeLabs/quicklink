@@ -64,8 +64,6 @@ function isIgnored(node, filter) {
  * @param {Element} options.config.root - The root container in which elements are observed
  * @param {string} options.config.rootMargin - Margin added to root before intersection observation testing
  * @param {number} options.config.threshold - Percentage of observed element in root before IO callback is called
- * @param {number} options.config.threshold - percentage of observed element in root before IO callback is called
- * @param {number} options.config.threshold - Percentage of observed element in root before IO callback is called
  */
 export default function (options) {
   options = Object.assign({
