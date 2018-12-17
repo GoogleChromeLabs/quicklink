@@ -102,7 +102,7 @@ Alternatively, see the [Intersection Observer polyfill](https://github.com/w3c/I
 
 ## Recipes
 
-**Set a custom timeout for prefetching resources**
+### Set a custom timeout for prefetching resources
 
 Defaults to 2 seconds (via `requestIdleCallback`). Here we override it to 4 seconds:
 
@@ -112,7 +112,7 @@ quicklink({
 });
 ```
 
-**Set the DOM element to observe for in-viewport links**
+### Set the DOM element to observe for in-viewport links
 
 Defaults to `document` otherwise.
 
@@ -123,7 +123,7 @@ quicklink({
 });
 ```
 
-**Set a custom array of URLs to be prefetched**
+### Set a custom array of URLs to be prefetched
 
 If you would prefer to provide a static list of URLs to be prefetched, instead of detecting those in-viewport, customizing URLs is supported.
 
@@ -133,7 +133,7 @@ quicklink({
 });
 ```
 
-**Set the request priority for prefetches**
+### Set the request priority for prefetches
 
 Defaults to low-priority (`rel=prefetch` or XHR). For high-priority (`priority: true`), attempts to use `fetch()` or falls back to XHR.
 
@@ -141,7 +141,7 @@ Defaults to low-priority (`rel=prefetch` or XHR). For high-priority (`priority: 
 quicklink({ priority: true });
 ```
 
-**Specify a custom list of allowed origins**
+### Specify a custom list of allowed origins
 
 Provide a list of hostnames that should be prefetch-able. Only the same origin is allowed by default.
 
@@ -161,7 +161,7 @@ quicklink({
 });
 ```
 
-**Allow all origins**
+### Allow all origins
 
 Enables all cross-origin requests to be made.
 
@@ -175,7 +175,7 @@ quicklink({
 });
 ```
 
-**Custom Ignore Patterns**
+### Custom Ignore Patterns
 
 These filters run _after_ the `origins` matching has run. Ignores can be useful for avoiding large file downloads or for responding to DOM attributes dynamically.
 
