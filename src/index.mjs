@@ -73,7 +73,7 @@ export default function (options) {
     priority: false,
     timeoutFn: requestIdleCallback,
     el: document,
-    config: {},
+    config: {}
   }, options);
   
   // actually initialize intersection observer here
@@ -84,7 +84,7 @@ export default function (options) {
         if (toPrefetch.has(url)) prefetcher(url);
       }
     });
-  }, options.config || {});
+  }, options.config);
 
   observer.priority = options.priority;
 
