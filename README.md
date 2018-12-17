@@ -196,6 +196,20 @@ quicklink({
 });
 ```
 
+You may also wish to ignore prefetches to URLs which contain a URL fragment (e.g. `index.html#top`). This can be useful if you (1) are using anchors to headings in a page or (2) have URL fragments setup for a single-page application, and which to avoid firing prefetches for similar URLs.
+
+Using `ignores` this can be achieved as follows:
+
+```js
+quicklink({
+    ignores: [
+        uri => uri.includes('#')
+        // or RegExp: /#(.+)/
+        // or element matching: (uri, elem) => !!elem.hash
+    ]
+});
+```
+
 ## Browser support
 
 The prefetching provided by `quicklink` can be viewed as a [progressive enhancement](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/). Cross-browser support is as follows:
