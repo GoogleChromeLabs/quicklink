@@ -96,7 +96,7 @@ export default function (options) {
         // ~> A `[]` or `true` means everything is allowed
         if (!allowed.length || allowed.includes(link.hostname)) {
           // If there are any filters, the link must not match any of them
-          isIgnored(link, ignores) || toPrefetch.add(link.href);
+          (isIgnored(link, ignores) || toPrefetch.size() >= options.limit) || toPrefetch.add(link.href);
         }
       });
     }
