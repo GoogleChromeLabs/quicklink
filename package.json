@@ -1,14 +1,15 @@
 {
   "name": "quicklink",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time",
   "main": "dist/quicklink.js",
-  "repository": "https://github.com/addyosmani/quicklink.git",
+  "repository": "https://github.com/GoogleChromeLabs/quicklink.git",
   "author": "addyosmani <addyosmani@gmail.com>",
   "license": "Apache-2.0",
   "module": "dist/quicklink.mjs",
   "jsnext:main": "dist/quicklink.mjs",
   "umd:main": "dist/quicklink.umd.js",
+  "unpkg": "dist/quicklink.umd.js",
   "scripts": {
     "lint": "eslint src/*.mjs test/*.js demos/*.js",
     "lint-fix": "eslint src/*.mjs test/*.js --fix demos/*.js",
@@ -17,6 +18,7 @@
     "build": "microbundle src/index.mjs --no-sourcemap",
     "prepare": "npm run -s build",
     "bundlesize": "bundlesize",
+    "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
     "release": "cross-var npm run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
   },
   "keywords": [
@@ -31,6 +33,7 @@
     "babel-preset-env": "^1.7.0",
     "bundlesize": "^0.17.0",
     "chai": "^4.2.0",
+    "conventional-changelog-cli": "^2.0.11",
     "cross-var": "^1.1.0",
     "eslint": "^5.9.0",
     "eslint-config-google": "^0.11.0",
