@@ -20,7 +20,6 @@ import requestIdleCallback from './request-idle-callback.mjs';
 const toPrefetch = new Set();
 
 const observer = new IntersectionObserver(entries => {
-  entries = entries.slice(0, observer.limit);
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const link = entry.target;
@@ -71,6 +70,7 @@ function isIgnored(node, filter) {
  * @param {Array|RegExp|Function} options.ignores - Custom filter(s) that run after origin checks
  * @param {Number} options.timeout - Timeout after which prefetching will occur
  * @param {Function} options.timeoutFn - Custom timeout function
+ * @param {Number} options.limit - Limit the number of links to be observed
  */
 export default function (options) {
   options = Object.assign({
@@ -78,10 +78,10 @@ export default function (options) {
     priority: false,
     timeoutFn: requestIdleCallback,
     el: document,
+    limit: Infinity
   }, options);
 
   observer.priority = options.priority;
-  observer.limit = options.limit;
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
@@ -92,7 +92,8 @@ export default function (options) {
       options.urls.forEach(prefetcher);
     } else {
       // If not, find all links and use IntersectionObserver.
-      Array.from(options.el.querySelectorAll('a'), link => {
+      const links = Array.from(options.el.querySelectorAll('a')).slice(0, options.limit);
+      links.map(link => {
         observer.observe(link);
         // If the anchor matches a permitted origin
         // ~> A `[]` or `true` means everything is allowed
