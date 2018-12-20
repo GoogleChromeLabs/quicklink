@@ -14,12 +14,12 @@
     "lint": "eslint src/*.mjs test/*.js demos/*.js",
     "lint-fix": "eslint src/*.mjs test/*.js --fix demos/*.js",
     "start": "http-server .",
-    "test": "npm run build && mocha test/bootstrap.js --recursive test",
+    "test": "yarn run build && mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap",
-    "prepare": "npm run -s build",
+    "prepare": "yarn run -s build",
     "bundlesize": "bundlesize",
     "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
-    "release": "cross-var npm run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
+    "release": "cross-var yarn run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
   },
   "keywords": [
     "prefetch",
