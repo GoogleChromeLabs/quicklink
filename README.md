@@ -41,7 +41,7 @@ Quickstart:
 
 ```html
 <!-- Include quicklink from dist -->
-<script src="dist/quicklink.js"></script>
+<script src="dist/quicklink.umd.js"></script>
 <!-- Initialize (you can do this whenever you want) -->
 <script>
 quicklink();
