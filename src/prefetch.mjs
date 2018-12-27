@@ -109,6 +109,8 @@ function prefetcher(url, isPriority, conn) {
   // Wanna do something on catch()?
   return (isPriority ? highPriFetchStrategy : supportedPrefetchStrategy)(url).then(() => {
     preFetched[url] = true;
+  }, (err) => {
+    // Wanna do something?
   });
 };
 
