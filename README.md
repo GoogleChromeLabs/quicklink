@@ -61,7 +61,7 @@ window.addEventListener('load', () =>{
 ES Module import:
 
 ```js
-import quicklink from "dist/quicklink.mjs";
+import quicklink from "quicklink/dist/quicklink.mjs";
 quicklink();
 ```
 
