@@ -26,7 +26,7 @@ const preFetched = {};
  */
 function support(feature) {
   const link = document.createElement('link');
-  return (link.relList || {}).supports && link.relList.supports(feature);
+  return link.relList && link.relList.supports && link.relList.supports(feature);
 }
 
 /**
