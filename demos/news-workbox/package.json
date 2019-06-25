@@ -1,0 +1,21 @@
+{
+  "name": "workbox-lab",
+  "version": "1.0.0",
+  "description": "A demo of using Quicklink and Workbox together",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp serve",
+    "build": "gulp"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "del": "^4.1.1",
+    "gulp": "^4.0.2",
+    "gulp-nunjucks-render": "^2.2.3",
+    "quicklink": "^1.0.0",
+    "workbox-build": "^4.3.1"
+  }
+}
