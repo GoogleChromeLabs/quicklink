@@ -1,12 +1,9 @@
 ## Lab: Fetch
 
-In this lab you learn to create and use Fetch
+In this lab you learn to use Quicklink and Workbox
 
-## Getting started
-
-To get started, check out the instructions in the [workshop](http://chrome-enterprise-workshops.firebaseapp.com/labs/workbox).
-
-Original [sourcecode](https://github.com/google-developer-training/pwa-training-labs) and [instructions](https://developers.google.com/web/ilt/pwa/lab-workbox).
+## Demo
+[Available here.](https://anton-karlovskiy-quicklink-news-workbox.glitch.me)
 
 ## Note
 
