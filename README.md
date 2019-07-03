@@ -239,6 +239,13 @@ Promise.all(promises);
 
 ## Demo
 
+### Glitch demos
+
+* [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news)
+* [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news-workbox)
+
+### Research
+
 Here's a [WebPageTest run](https://www.webpagetest.org/video/view.php?id=181212_4c294265117680f2636676721cc886613fe2eede&data=1) for our [demo](https://keyword-2-ecd7b.firebaseapp.com/) improving page-load performance by up to 4 seconds via quicklink's prefetching. A [video](https://youtu.be/rQ75YEbJicw) comparison of the before/after prefetching is on YouTube.
 
 For demo purposes, we deployed a version of the [Google Blog](https://blog.google) on
