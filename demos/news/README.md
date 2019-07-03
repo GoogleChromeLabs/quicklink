@@ -1,13 +1,15 @@
-## Lab: Fetch
 
-In this lab you learn to use Quicklink
+# Demo: Quicklink basic usage
+A demo showing how to use Quicklink on a simple multi-page website.
 
-## Demo
-[Available here.](https://anton-karlovskiy-quicklink-news.glitch.me)
-[Source](https://glitch.com/~anton-karlovskiy-quicklink-news)
+## Glitch Source
+* [Link to Glitch App](https://anton-karlovskiy-quicklink-news.glitch.me)
+* [Link to Project on Glitch](https://glitch.com/~anton-karlovskiy-quicklink-news)
 
-## Note
-
-This is not an official Google product.
-
-All images are are licensed CC0 - no attribution required.
+## Installation
+```
+git clone https://api.glitch.com/git/anton-karlovskiy-quicklink-news
+npm install
+npm start
+npm run build
+```

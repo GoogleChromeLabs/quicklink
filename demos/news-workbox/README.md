@@ -1,13 +1,15 @@
-## Lab: Fetch
 
-In this lab you learn to use Quicklink and Workbox
+# Demo: Quicklink usage with workbox
+A demo showing how to use Quicklink with Workbox for offline caching and links in the visible viewport.
 
-## Demo
-[Available here.](https://anton-karlovskiy-quicklink-news-workbox.glitch.me)
-[Source](https://glitch.com/~anton-karlovskiy-quicklink-news-workbox)
+## Glitch Source
+* [Link to Glitch App](https://anton-karlovskiy-quicklink-news-workbox.glitch.me)
+* [Link to Project on Glitch](https://glitch.com/~anton-karlovskiy-quicklink-news-workbox)
 
-## Note
-
-This is not an official Google product.
-
-All images are are licensed CC0 - no attribution required.
+## Installation
+```
+git clone https://api.glitch.com/git/anton-karlovskiy-quicklink-news-workbox
+npm install
+npm start
+npm run build
+```
