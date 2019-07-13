@@ -102,7 +102,7 @@ function prefetcher(url, isPriority, conn) {
   }
 
   if (conn = navigator.connection) {
-    // Don't prefetch if the user is on 2G. or if Save-Data is enabled..
+    // Don't prefetch if the user is on 2G or if Save-Data is enabled.
     if ((conn.effectiveType || '').includes('2g') || conn.saveData) return;
   }
 
