@@ -25,7 +25,7 @@ This project aims to be a drop-in solution for sites to prefetch links based on 
 
 ## Installation
 
-For use with [node](http://nodejs.org) and [npm](https://npmjs.com):
+For use with [node](https://nodejs.org) and [npm](https://npmjs.com):
 
 ```sh
 npm install --save quicklink
