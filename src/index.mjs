@@ -19,7 +19,7 @@ import requestIdleCallback from './request-idle-callback.mjs';
 
 const toPrefetch = new Set();
 
-const observer = new IntersectionObserver(entries => {
+const observer = window.IntersectionObserver && new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const link = entry.target;
@@ -74,7 +74,7 @@ function isIgnored(node, filter) {
 export default function (options) {
   if (!options) options = {};
 
-  observer.priority = options.priority || false;
+  observer && (observer.priority = options.priority || false);
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
@@ -86,7 +86,7 @@ export default function (options) {
     // If URLs are given, prefetch them.
     if (options.urls) {
       options.urls.forEach(prefetcher);
-    } else {
+    } else if (observer) {
       // If not, find all links and use IntersectionObserver.
       Array.from((options.el || document).querySelectorAll('a'), link => {
         observer.observe(link);
