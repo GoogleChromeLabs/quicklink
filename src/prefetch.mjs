@@ -26,7 +26,7 @@ const preFetched = {};
  */
 function support(feature) {
   const link = document.createElement('link');
-  return (link.relList || {}).supports && link.relList.supports(feature);
+  return link.relList && link.relList.supports && link.relList.supports(feature);
 }
 
 /**
@@ -102,7 +102,7 @@ function prefetcher(url, isPriority, conn) {
   }
 
   if (conn = navigator.connection) {
-    // Don't prefetch if the user is on 2G. or if Save-Data is enabled..
+    // Don't prefetch if the user is on 2G or if Save-Data is enabled.
     if ((conn.effectiveType || '').includes('2g') || conn.saveData) return;
   }
 

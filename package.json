@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time",
   "main": "dist/quicklink.js",
-  "repository": "https://github.com/addyosmani/quicklink.git",
+  "repository": "https://github.com/GoogleChromeLabs/quicklink.git",
   "author": "addyosmani <addyosmani@gmail.com>",
   "license": "Apache-2.0",
   "module": "dist/quicklink.mjs",
@@ -14,12 +14,12 @@
     "lint": "eslint src/*.mjs test/*.js demos/*.js",
     "lint-fix": "eslint src/*.mjs test/*.js --fix demos/*.js",
     "start": "http-server .",
-    "test": "npm run build && mocha test/bootstrap.js --recursive test",
+    "test": "yarn run build && mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap",
-    "prepare": "npm run -s build",
+    "prepare": "yarn run -s build",
     "bundlesize": "bundlesize",
     "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
-    "release": "cross-var npm run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
+    "release": "cross-var yarn run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
   },
   "keywords": [
     "prefetch",
@@ -39,7 +39,7 @@
     "eslint-config-google": "^0.11.0",
     "http-server": "^0.11.1",
     "lodash": "^4.17.11",
-    "microbundle": "^0.7.0",
+    "microbundle": "^0.9.0",
     "mocha": "^5.2.0",
     "puppeteer": "^1.10.0"
   },

@@ -25,7 +25,7 @@ This project aims to be a drop-in solution for sites to prefetch links based on 
 
 ## Installation
 
-For use with [node](http://nodejs.org) and [npm](https://npmjs.com):
+For use with [node](https://nodejs.org) and [npm](https://npmjs.com):
 
 ```sh
 npm install --save quicklink
@@ -41,7 +41,7 @@ Quickstart:
 
 ```html
 <!-- Include quicklink from dist -->
-<script src="dist/quicklink.js"></script>
+<script src="dist/quicklink.umd.js"></script>
 <!-- Initialize (you can do this whenever you want) -->
 <script>
 quicklink();
@@ -61,7 +61,7 @@ window.addEventListener('load', () =>{
 ES Module import:
 
 ```js
-import quicklink from "dist/quicklink.mjs";
+import quicklink from "quicklink/dist/quicklink.mjs";
 quicklink();
 ```
 
@@ -95,7 +95,7 @@ TODO:
 * Requires `IntersectionObserver` to be supported (see [CanIUse](https://caniuse.com/#feat=intersectionobserver)). We recommend conditionally polyfilling this feature with a service like Polyfill.io:
 
 ```html
-<script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
 ```
 
 Alternatively, see the [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
@@ -215,7 +215,8 @@ quicklink({
 The prefetching provided by `quicklink` can be viewed as a [progressive enhancement](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/). Cross-browser support is as follows:
 
 * Without polyfills: Chrome, Firefox, Edge, Opera, Android Browser, Samsung Internet.
-* With [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill) ~6KB gzipped/minified: Safari, IE9+
+* With [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill) ~6KB gzipped/minified: Safari, IE11
+* With the above and a [Set()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) and [Array.from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from) polyfill: IE9 and IE10. [Core.js](https://github.com/zloirock/core-js) provides both `Set()` and `Array.from()` shims. Projects like [es6-shim](https://github.com/paulmillr/es6-shim/blob/master/README.md) are an alternative you can consider.
 
 Certain features have layered support:
 
@@ -238,6 +239,13 @@ Promise.all(promises);
 
 ## Demo
 
+### Glitch demos
+
+* [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news)
+* [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news-workbox)
+
+### Research
+
 Here's a [WebPageTest run](https://www.webpagetest.org/video/view.php?id=181212_4c294265117680f2636676721cc886613fe2eede&data=1) for our [demo](https://keyword-2-ecd7b.firebaseapp.com/) improving page-load performance by up to 4 seconds via quicklink's prefetching. A [video](https://youtu.be/rQ75YEbJicw) comparison of the before/after prefetching is on YouTube.
 
 For demo purposes, we deployed a version of the [Google Blog](https://blog.google) on
@@ -246,12 +254,22 @@ automatically prefetched. The prefetched version loaded faster.
 
 Please note: this is by no means an exhaustive benchmark of the pros and cons of in-viewport link prefetching. Just a demo of the potential improvements the approach can offer. Your own mileage may heavily vary.
 
+## Additional notes
+
+### Session Stitching
+
+Cross-origin prefetching (e.g a.com/foo.html prefetches b.com/bar.html) has a number of limitations. One such limitation is with session-stitching. b.com may expect a.com's navigation requests to include session information (e.g a temporary ID - e.g b.com/bar.html?hash=<>&timestamp=<>), where this information is used to customize the experience or log information to analytics.  If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches. 
+
+To workaround this problem, you can consider passing along session information via the [ping attribute](https://caniuse.com/#feat=ping) (separately) so the origin can stitch a session together asynchronously.
+
 ## Related projects
 
 * Using [Gatsby](https://gatsbyjs.org)? You already get most of this for free baked in. It uses `Intersection Observer` to prefetch all of the links that are in view and provided heavy inspiration for this project.
-* Want a more data-driven approach? See [Guess.js](https://guess-js.github.io). It uses analytics and machine-learning to prefetch resources based on how users navigate your site. It also has plugins for [Webpack](https://www.npmjs.com/package/guess-webpack) and [Gatsby](https://www.gatsbyjs.org/docs/optimize-prefetching-with-guessjs/).
+* Want a more data-driven approach? See [Guess.js](https://guess-js.github.io). It uses analytics and machine-learning to prefetch resources based on how users navigate your site. It also has plugins for [Webpack](https://www.npmjs.com/package/guess-webpack) and [Gatsby](https://www.gatsbyjs.org/docs/optimizing-site-performance-with-guessjs/).
+* WordPress users can now get quicklink as a [WordPress Plugin from the plugin repository](https://wordpress.org/plugins/quicklink/).
+* Drupal users can install the [Quicklink Drupal module](https://www.drupal.org/project/quicklink).
+* Want less aggressive prefetching? [instant.page](https://instant.page/) prefetches on mouseover and touchstart, right before a click.
 
 ## License
 
 Licensed under the Apache-2.0 license.
-
