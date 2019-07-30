@@ -15,7 +15,7 @@
 **/
 
 // RIC and shim for browsers setTimeout() without it
-const requestIdleCallback = requestIdleCallback ||
+const requestIdleCallback = window.requestIdleCallback ||
   function (cb) {
     const start = Date.now();
     return setTimeout(function () {
