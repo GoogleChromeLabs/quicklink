@@ -4,6 +4,10 @@
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time",
   "main": "dist/quicklink.js",
   "repository": "https://github.com/GoogleChromeLabs/quicklink.git",
+  "homepage": "https://github.com/GoogleChromeLabs/quicklink",
+  "bugs": {
+    "url": "https://github.com/GoogleChromeLabs/quicklink/issues"
+  },
   "author": "addyosmani <addyosmani@gmail.com>",
   "license": "Apache-2.0",
   "module": "dist/quicklink.mjs",
