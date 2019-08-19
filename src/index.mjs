@@ -53,7 +53,7 @@ function prefetcher(url) {
 function isIgnored(node, filter) {
   return Array.isArray(filter)
     ? filter.some(x => isIgnored(node, x))
-    : (filter.test || filter).call(filter, node.href, node);
+    : filter && (filter.test || filter).call(filter, node.href, node);
 }
 
 /**
@@ -77,9 +77,6 @@ export default function (options) {
   if (observer) observer.priority = !!options.priority;
 
   const allowed = options.origins || [location.hostname];
-  const ignores = options.ignores || [];
-
-  const timeout = options.timeout || 2e3;
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
   timeoutFn(() => {
@@ -94,9 +91,11 @@ export default function (options) {
         // ~> A `[]` or `true` means everything is allowed
         if (!allowed.length || allowed.includes(link.hostname)) {
           // If there are any filters, the link must not match any of them
-          isIgnored(link, ignores) || toPrefetch.add(link.href);
+          isIgnored(link, options.ignores) || toPrefetch.add(link.href);
         }
       });
     }
-  }, {timeout});
+  }, {
+    timeout: options.timeout || 2e3
+  });
 }
