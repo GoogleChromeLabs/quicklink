@@ -74,7 +74,7 @@ function isIgnored(node, filter) {
 export default function (options) {
   if (!options) options = {};
 
-  observer && (observer.priority = options.priority || false);
+  if (observer) observer.priority = !!options.priority;
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
@@ -88,7 +88,7 @@ export default function (options) {
       options.urls.forEach(prefetcher);
     } else if (observer) {
       // If not, find all links and use IntersectionObserver.
-      Array.from((options.el || document).querySelectorAll('a'), link => {
+      (options.el || document).querySelectorAll('a').forEach(link => {
         observer.observe(link);
         // If the anchor matches a permitted origin
         // ~> A `[]` or `true` means everything is allowed
