@@ -19,7 +19,7 @@
     "lint-fix": "eslint src/*.mjs test/*.js --fix demos/*.js",
     "start": "http-server .",
     "test": "yarn run build && mocha test/bootstrap.js --recursive test",
-    "build": "microbundle src/index.mjs --no-sourcemap",
+    "build": "microbundle src/index.mjs --no-sourcemap --external none",
     "prepare": "yarn run -s build",
     "bundlesize": "bundlesize",
     "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
@@ -33,6 +33,9 @@
     "background",
     "speed"
   ],
+  "dependencies": {
+    "throttles": "^1.0.0"
+  },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
     "bundlesize": "^0.17.0",

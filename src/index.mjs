@@ -13,33 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 **/
-
-import prefetch from './prefetch.mjs';
+import throttle from 'throttles';
+import { priority, supported } from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
+// Cache of URLs we've prefetched
+// Its `size` is compared against `opts.limit` value.
 const toPrefetch = new Set();
-
-const observer = window.IntersectionObserver && new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const link = entry.target;
-      if (toPrefetch.has(link.href)) {
-        observer.unobserve(link);
-        prefetcher(link.href);
-      }
-    }
-  });
-});
-
-/**
- * Prefetch a supplied URL. This will also remove
- * the URL from the toPrefetch Set.
- * @param {String} url - URL to prefetch
- */
-function prefetcher(url) {
-  toPrefetch.delete(url);
-  prefetch(new URL(url, location.href).toString(), observer.priority);
-}
 
 /**
  * Determine if the anchor tag should be prefetched.
@@ -63,40 +43,87 @@ function isIgnored(node, filter) {
  * links for `document`. Can also work off a supplied
  * DOM element or static array of URLs.
  * @param {Object} options - Configuration options for quicklink
- * @param {Array} options.urls - Array of URLs to prefetch (override)
- * @param {Object} options.el - DOM element to prefetch in-viewport links of
- * @param {Boolean} options.priority - Attempt higher priority fetch (low or high)
- * @param {Array} options.origins - Allowed origins to prefetch (empty allows all)
- * @param {Array|RegExp|Function} options.ignores - Custom filter(s) that run after origin checks
- * @param {Number} options.timeout - Timeout after which prefetching will occur
- * @param {Function} options.timeoutFn - Custom timeout function
+ * @param {Object} [options.el] - DOM element to prefetch in-viewport links of
+ * @param {Boolean} [options.priority] - Attempt higher priority fetch (low or high)
+ * @param {Array} [options.origins] - Allowed origins to prefetch (empty allows all)
+ * @param {Array|RegExp|Function} [options.ignores] - Custom filter(s) that run after origin checks
+ * @param {Number} [options.timeout] - Timeout after which prefetching will occur
+ * @param {Number} [options.throttle] - The concurrency limit for prefetching
+ * @param {Number} [options.limit] - The total number of prefetches to allow
+ * @param {Function} [options.timeoutFn] - Custom timeout function
  */
-export default function (options) {
+export function listen(options) {
   if (!options) options = {};
+  if (!window.IntersectionObserver) return;
 
-  observer && (observer.priority = options.priority || false);
+  const [toAdd, isDone] = throttle(options.throttle || 1/0);
+  const limit = options.limit || 1/0;
+
+  // TODO: I think this isn't needed?
+  const isPriority = !!options.priority;
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
 
-  const timeout = options.timeout || 2e3;
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        observer.unobserve(entry = entry.target);
+        // Do not prefetch if will match/exceed limit
+        (++toPrefetch.size >= limit) || toAdd(() => {
+          // TODO: Don't need isPriority?
+          prefetch(entry.href, isPriority).then(isDone);
+        });
+      }
+    });
+  });
+
   timeoutFn(() => {
-    // If URLs are given, prefetch them.
-    if (options.urls) {
-      options.urls.forEach(prefetcher);
-    } else if (observer) {
-      // If not, find all links and use IntersectionObserver.
-      Array.from((options.el || document).querySelectorAll('a'), link => {
-        observer.observe(link);
-        // If the anchor matches a permitted origin
-        // ~> A `[]` or `true` means everything is allowed
-        if (!allowed.length || allowed.includes(link.hostname)) {
-          // If there are any filters, the link must not match any of them
-          isIgnored(link, ignores) || toPrefetch.add(link.href);
-        }
-      });
-    }
-  }, {timeout});
+    // Find all links & Connect them to IO if allowed
+    (options.el || document).querySelectorAll('a').forEach(link => {
+      // If the anchor matches a permitted origin
+      // ~> A `[]` or `true` means everything is allowed
+      if (!allowed.length || allowed.includes(link.hostname)) {
+        // If there are any filters, the link must not match any of them
+        isIgnored(link, ignores) || observer.observe(link);
+      }
+    });
+  }, {
+    timeout: options.timeout || 2e3
+  });
+
+  return function () {
+    // wipe url list
+    toPrefetch.clear();
+    // detach IO entries
+    observer.disconnect();
+  };
+}
+
+
+/**
+* Prefetch a given URL with an optional preferred fetch priority
+* @param {String} url - the URL to fetch
+* @param {Boolean} [isPriority] - if is "high" priority
+* @param {Object} [conn] - navigator.connection (internal)
+* @return {Object} a Promise
+*/
+export function prefetch(url, isPriority, conn) {
+  if (toPrefetch.has(url)) return;
+
+  if (conn = navigator.connection) {
+    // Don't prefetch if using 2G or if Save-Data is enabled.
+    if (conn.saveData || /2g/.test(conn.effectiveType)) return;
+  }
+
+  // Add it now, regardless of its success
+  // ~> so that we don't repeat broken links
+  toPrefetch.add(url);
+
+  // Wanna do something on catch()?
+  return (isPriority ? priority : supported)(
+    new URL(url, location.href).toString()
+  );
 }
