@@ -72,10 +72,12 @@ export function listen(options) {
       if (entry.isIntersecting) {
         observer.unobserve(entry = entry.target);
         // Do not prefetch if will match/exceed limit
-        (++toPrefetch.size >= limit) || toAdd(() => {
-          // TODO: Don't need isPriority?
-          prefetch(entry.href, isPriority).then(isDone);
-        });
+        if (toPrefetch.size < limit) {
+          toAdd(() => {
+            // TODO: Don't need isPriority?
+            prefetch(entry.href, isPriority).then(isDone);
+          });
+        }
       }
     });
   });
