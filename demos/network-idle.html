@@ -34,7 +34,7 @@
   <script src="network-idle.js"></script>
   <script type="module">
     import quicklink from "../dist/quicklink.mjs";
-    quicklink({ timeoutFn: networkIdleCallback });
+    quicklink.listen({ timeoutFn: networkIdleCallback });
   </script>
 </body>
 
