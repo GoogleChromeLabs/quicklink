@@ -57,18 +57,6 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.include(`${server}/4.html`);
   });
 
-  it('should prefetch a static list of URLs correctly', async function () {
-    const responseURLs = [];
-    page.on('response', resp => {
-      responseURLs.push(resp.url());
-    });
-    await page.goto(`${server}/test-static-url-list.html`);
-    await page.waitFor(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include(`${server}/4.html`);
-  });
-
   it('should prefetch in-viewport links from a custom DOM source', async function () {
     const responseURLs = [];
     page.on('response', resp => {
