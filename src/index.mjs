@@ -96,7 +96,7 @@ export function listen(options) {
       }
     });
   }, {
-    timeout: options.timeout || 2e3
+    timeout: options.timeout || 2000
   });
 
   return function () {
