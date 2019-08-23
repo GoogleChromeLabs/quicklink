@@ -51,6 +51,7 @@ function isIgnored(node, filter) {
  * @param {Number} [options.throttle] - The concurrency limit for prefetching
  * @param {Number} [options.limit] - The total number of prefetches to allow
  * @param {Function} [options.timeoutFn] - Custom timeout function
+ * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  */
 export function listen(options) {
   if (!options) options = {};
@@ -75,7 +76,9 @@ export function listen(options) {
         if (toPrefetch.size < limit) {
           toAdd(() => {
             // TODO: Don't need isPriority?
-            prefetch(entry.href, isPriority).then(isDone);
+            prefetch(entry.href, isPriority).then(isDone).catch(err => {
+              isDone(); if (options.onError) options.onError(err);
+            });
           });
         }
       }
