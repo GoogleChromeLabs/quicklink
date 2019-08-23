@@ -116,7 +116,13 @@ export function listen(options) {
 * @return {Object} a Promise
 */
 export function prefetch(url, isPriority, conn) {
-  if (toPrefetch.has(url)) return;
+  if (Array.isArray(url)) {
+    return Promise.all(url.map(x => prefetch(x, isPriority)));
+  }
+
+  if (toPrefetch.has(url)) {
+    return;
+  }
 
   if (conn = navigator.connection) {
     // Don't prefetch if using 2G or if Save-Data is enabled.
