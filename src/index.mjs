@@ -60,9 +60,6 @@ export function listen(options) {
   const [toAdd, isDone] = throttle(options.throttle || 1/0);
   const limit = options.limit || 1/0;
 
-  // TODO: I think this isn't needed?
-  const isPriority = !!options.priority;
-
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
 
@@ -75,8 +72,7 @@ export function listen(options) {
         // Do not prefetch if will match/exceed limit
         if (toPrefetch.size < limit) {
           toAdd(() => {
-            // TODO: Don't need isPriority?
-            prefetch(entry.href, isPriority).then(isDone).catch(err => {
+            prefetch(entry.href, options.priority).then(isDone).catch(err => {
               isDone(); if (options.onError) options.onError(err);
             });
           });
