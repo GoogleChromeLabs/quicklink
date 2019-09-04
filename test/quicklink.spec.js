@@ -154,4 +154,77 @@ describe('quicklink tests', function () {
     // (uri, elem) => elem.textContent.includes('Spinner')
     expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
   });
+
+  it('should accept a single URL to prefetch()', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-prefetch-single.html`);
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    expect(responseURLs).to.include(`${server}/2.html`);
+  });
+
+  it('should accept multiple URLs to prefetch()', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-prefetch-multiple.html`);
+    await page.waitFor(1000);
+
+    // don't care about first 4 URLs (markup)
+    const ours = responseURLs.slice(4);
+
+    expect(ours.length).to.equal(3);
+    expect(ours).to.include(`${server}/2.html`);
+    expect(ours).to.include(`${server}/3.html`);
+    expect(ours).to.include(`${server}/4.html`);
+  });
+
+  it('should not prefetch() the same URL repeatedly', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-prefetch-duplicate.html`);
+    await page.waitFor(1000);
+
+    // don't care about first 4 URLs (markup)
+    const ours = responseURLs.slice(4);
+
+    expect(ours.length).to.equal(1);
+    expect(ours).to.include(`${server}/2.html`);
+  });
+
+  it('should not call the same URL repeatedly (shared)', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-prefetch-duplicate-shared.html`);
+    await page.waitFor(1000);
+
+    // count occurences of our link
+    const target = responseURLs.filter(x => x === `${server}/2.html`);
+    expect(target.length).to.equal(1);
+  });
+
+  it('should not exceed the `limit` total', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-limit.html`);
+    await page.waitFor(1000);
+
+    // don't care about first 4 URLs (markup)
+    const ours = responseURLs.slice(4);
+
+    expect(ours.length).to.equal(1);
+    expect(ours).to.include(`${server}/1.html`);
+  });
+
+  // TODO: throttle test
 });
