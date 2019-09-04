@@ -112,25 +112,23 @@ export function listen(options) {
 * @return {Object} a Promise
 */
 export function prefetch(url, isPriority, conn) {
-  if (Array.isArray(url)) {
-    return Promise.all(url.map(x => prefetch(x, isPriority)));
-  }
-
-  if (toPrefetch.has(url)) {
-    return;
-  }
-
   if (conn = navigator.connection) {
     // Don't prefetch if using 2G or if Save-Data is enabled.
     if (conn.saveData || /2g/.test(conn.effectiveType)) return;
   }
 
-  // Add it now, regardless of its success
-  // ~> so that we don't repeat broken links
-  toPrefetch.add(url);
+  // Dev must supply own catch()
+  return Promise.all(
+    [].concat(url).map(str => {
+      if (!toPrefetch.has(str)) {
+        // Add it now, regardless of its success
+        // ~> so that we don't repeat broken links
+        toPrefetch.add(str);
 
-  // Wanna do something on catch()?
-  return (isPriority ? priority : supported)(
-    new URL(url, location.href).toString()
+        return (isPriority ? priority : supported)(
+          new URL(str, location.href).toString()
+        );
+      }
+    })
   );
 }
