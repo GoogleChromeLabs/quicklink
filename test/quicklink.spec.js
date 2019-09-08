@@ -226,5 +226,33 @@ describe('quicklink tests', function () {
     expect(ours).to.include(`${server}/1.html`);
   });
 
-  // TODO: throttle test
+  it('should respect the `throttle` concurrency', async function () {
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    const URLs = []; // Note: Page makes 4 requests
+
+    // Make HTML requests take a long time
+    // ~> so that we can ensure throttling occurs
+    await page.setRequestInterception(true);
+
+    page.on('request', async req => {
+      if (/test\/\d+\.html$/i.test(req.url())) {
+        await sleep(100);
+        URLs.push(req.url());
+        return req.respond({ status: 200 });
+      }
+      req.continue();
+    });
+
+    await page.goto(`${server}/test-throttle.html`);
+
+    // Only 2 should be done by now
+    // Note: Parallel requests, w/ 50ms buffer
+    await page.waitFor(150);
+    expect(URLs.length).to.equal(2);
+
+    // All should be done by now
+    // Note: Parallel requests, w/ 50ms buffer
+    await page.waitFor(250);
+    expect(URLs.length).to.equal(4);
+  });
 });
