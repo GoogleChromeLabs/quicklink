@@ -18,7 +18,10 @@
   <script src="../dist/quicklink.umd.js"></script>
   <script>
     quicklink.listen();
-    quicklink.prefetch('2.html');
+    setTimeout(() => {
+      // Just to make sure `listen()` already initiated
+      quicklink.prefetch('2.html');
+    }, 50);
   </script>
 </body>
 </html>
