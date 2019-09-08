@@ -44,7 +44,7 @@ Quickstart:
 <script src="dist/quicklink.umd.js"></script>
 <!-- Initialize (you can do this whenever you want) -->
 <script>
-quicklink();
+quicklink.listen();
 </script>
 ```
 
@@ -53,7 +53,7 @@ For example, you can initialize after the `load` event fires:
 ```html
 <script>
 window.addEventListener('load', () =>{
-   quicklink();
+  quicklink.listen();
 });
 </script>
 ```
@@ -61,27 +61,35 @@ window.addEventListener('load', () =>{
 ES Module import:
 
 ```js
-import quicklink from "quicklink/dist/quicklink.mjs";
-quicklink();
+import { listen, prefetch } from "quicklink";
 ```
 
 The above options are best for multi-page sites. Single-page apps have a few options available for using quicklink with a router:
 
-* Call `quicklink()` once a navigation to a new route has completed
-* Call `quicklink()` against a specific DOM element / component
-* Call `quicklink({urls:[...]})` with a custom set of URLs to prefetch
+* Call `quicklink.listen()` once a navigation to a new route has completed
+* Call `quicklink.listen()` against a specific DOM element / component
+* Call `quicklink.prefetch()` with a custom set of URLs to prefetch
 
 ## API
 
-`quicklink` accepts an optional options object with the following parameters:
+The `quicklink.listen` method accepts an optional options object with the following parameters:
 
 * `el`: DOM element to observe for in-viewport links to prefetch
 * `urls`: Static array of URLs to prefetch (instead of observing `document` or a DOM element links in the viewport)
+* `limit`: An integer representing the _total_ requests that can be prefetched. Defaults to `Infinity`
+* `throttle`: An integer representing the _concurrency limit_ for simultaneous requests. Defaults to `Infinity`
 * `timeout`: Integer for the `requestIdleCallback` timeout. A time in milliseconds by which the browser must execute prefetching. Defaults to 2 seconds.
 * `timeoutFn`: Function for specifying a timeout. Defaults to `requestIdleCallback`. Can also be swapped out for a custom function like [networkIdleCallback](https://github.com/pastelsky/network-idle-callback) (see demos)
 * `priority`: Boolean specifying preferred priority for fetches. Defaults to `false`. `true` will attempt to use the `fetch()` API where supported (rather than rel=prefetch)
 * `origins`: Static array of URL hostname strings that are allowed to be prefetched. Defaults to the same domain origin, which prevents _any_ cross-origin requests.
 * `ignores`: A RegExp, Function, or Array that further determines if a URL should be prefetched. These execute _after_ origin matching.
+* `onError`: An optional Function that will handle errors from prefetched requests. By default, these errors are silently ignored
+
+The `quicklink.prefetch` method accepts one or more URL strings and an `isPriority` toggle.<br>
+A `Promise` is returned that always resolves to an array of results (if desired) and requires that you `catch` your own reuest error(s).
+
+> **Note:** Calls to `prefetch` are "low-priority" by default. This behaves identically to `listen()`'s `priority` option.
+
 
 TODO:
 * Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for high priority fetches
@@ -107,7 +115,7 @@ Alternatively, see the [Intersection Observer polyfill](https://github.com/w3c/I
 Defaults to 2 seconds (via `requestIdleCallback`). Here we override it to 4 seconds:
 
 ```js
-quicklink({
+quicklink.listen({
   timeout: 4000
 });
 ```
@@ -117,28 +125,35 @@ quicklink({
 Defaults to `document` otherwise.
 
 ```js
-const elem = document.getElementById('carousel');
-quicklink({
-  el: elem
+quicklink.listen({
+  el: document.getElementById('carousel')
 });
 ```
 
-### Set a custom array of URLs to be prefetched
+### Programmatically `prefetch()` URLs
 
 If you would prefer to provide a static list of URLs to be prefetched, instead of detecting those in-viewport, customizing URLs is supported.
 
 ```js
-quicklink({
-   urls: ['2.html','3.html', '4.js']
-});
+// Single URL
+quicklink.prefetch('2.html');
+
+// Multiple URLs
+quicklink.prefetch(['2.html', '3.html', '4.js']);
+
+// Multiple URLs, with high priority
+// Note: Can also be use with single URL!
+quicklink.prefetch(['2.html', '3.html', '4.js'], true);
 ```
 
-### Set the request priority for prefetches
+### Set the request priority for prefetches while scrolling
 
 Defaults to low-priority (`rel=prefetch` or XHR). For high-priority (`priority: true`), attempts to use `fetch()` or falls back to XHR.
 
+> **Note:** This runs `prefetch(..., true)` with URLs found within the `options.el` container.
+
 ```js
-quicklink({ priority: true });
+quicklink.listen({ priority: true });
 ```
 
 ### Specify a custom list of allowed origins
@@ -148,7 +163,7 @@ Provide a list of hostnames that should be prefetch-able. Only the same origin i
 > **Important:** You must also include your own hostname!
 
 ```js
-quicklink({
+quicklink.listen({
   origins: [
     // add mine
     'my-website.com',
@@ -168,7 +183,7 @@ Enables all cross-origin requests to be made.
 > **Note:** You may run into [CORB](https://chromium.googlesource.com/chromium/src/+/master/services/network/cross_origin_read_blocking_explainer.md) and [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issues!
 
 ```js
-quicklink({
+quicklink.listen({
   origins: true,
   // or
   origins: []
@@ -187,7 +202,7 @@ These filters run _after_ the `origins` matching has run. Ignores can be useful 
 //  - all ".zip" extensions
 //  - all <a> tags with "noprefetch" attribute
 //
-quicklink({
+quicklink.listen({
   ignores: [
     /\/api\/?/,
     uri => uri.includes('.zip'),
@@ -201,12 +216,12 @@ You may also wish to ignore prefetches to URLs which contain a URL fragment (e.g
 Using `ignores` this can be achieved as follows:
 
 ```js
-quicklink({
-    ignores: [
-        uri => uri.includes('#')
-        // or RegExp: /#(.+)/
-        // or element matching: (uri, elem) => !!elem.hash
-    ]
+quicklink.listen({
+  ignores: [
+    uri => uri.includes('#')
+    // or RegExp: /#(.+)/
+    // or element matching: (uri, elem) => !!elem.hash
+  ]
 });
 ```
 
@@ -229,11 +244,10 @@ Certain features have layered support:
 
 ```html
 <script type="module">
-import prefetch from '../src/prefetch.mjs';
-
-const urls = ['1.html', '2.html'];
-const promises = urls.map(url => prefetch(url));
-Promise.all(promises);
+  import { prefetch } from 'quicklink';
+  prefetch(['1.html', '2.html']).catch(err => {
+    // Handle own errors
+  });
 </script>
 ```
 
@@ -258,7 +272,7 @@ Please note: this is by no means an exhaustive benchmark of the pros and cons of
 
 ### Session Stitching
 
-Cross-origin prefetching (e.g a.com/foo.html prefetches b.com/bar.html) has a number of limitations. One such limitation is with session-stitching. b.com may expect a.com's navigation requests to include session information (e.g a temporary ID - e.g b.com/bar.html?hash=<>&timestamp=<>), where this information is used to customize the experience or log information to analytics.  If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches. 
+Cross-origin prefetching (e.g a.com/foo.html prefetches b.com/bar.html) has a number of limitations. One such limitation is with session-stitching. b.com may expect a.com's navigation requests to include session information (e.g a temporary ID - e.g b.com/bar.html?hash=<>&timestamp=<>), where this information is used to customize the experience or log information to analytics.  If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches.
 
 To workaround this problem, you can consider passing along session information via the [ping attribute](https://caniuse.com/#feat=ping) (separately) so the origin can stitch a session together asynchronously.
 
