@@ -72,26 +72,110 @@ The above options are best for multi-page sites. Single-page apps have a few opt
 
 ## API
 
-The `quicklink.listen` method accepts an optional options object with the following parameters:
+### quicklink.listen(options)
+Returns: `Function`
 
-* `el`: DOM element to observe for in-viewport links to prefetch
-* `urls`: Static array of URLs to prefetch (instead of observing `document` or a DOM element links in the viewport)
-* `limit`: An integer representing the _total_ requests that can be prefetched. Defaults to `Infinity`
-* `throttle`: An integer representing the _concurrency limit_ for simultaneous requests. Defaults to `Infinity`
-* `timeout`: Integer for the `requestIdleCallback` timeout. A time in milliseconds by which the browser must execute prefetching. Defaults to 2 seconds.
-* `timeoutFn`: Function for specifying a timeout. Defaults to `requestIdleCallback`. Can also be swapped out for a custom function like [networkIdleCallback](https://github.com/pastelsky/network-idle-callback) (see demos)
-* `priority`: Boolean specifying preferred priority for fetches. Defaults to `false`. `true` will attempt to use the `fetch()` API where supported (rather than rel=prefetch)
-* `origins`: Static array of URL hostname strings that are allowed to be prefetched. Defaults to the same domain origin, which prevents _any_ cross-origin requests.
-* `ignores`: A RegExp, Function, or Array that further determines if a URL should be prefetched. These execute _after_ origin matching.
-* `onError`: An optional Function that will handle errors from prefetched requests. By default, these errors are silently ignored
+A "reset" function is returned, which will empty the active `IntersectionObserver` and the cache of URLs that have already been prefetched. This can be used between page navigations and/or when significant DOM changes have occurred.
 
-The `quicklink.prefetch` method accepts one or more URL strings and an `isPriority` toggle.<br>
-A `Promise` is returned that always resolves to an array of results (if desired) and requires that you `catch` your own reuest error(s).
+#### options.el
+Type: `HTMLElement`<br>
+Default: `document.body`
 
-> **Note:** Calls to `prefetch` are "low-priority" by default. This behaves identically to `listen()`'s `priority` option.
+The DOM element to observe for in-viewport links to prefetch.
+
+#### options.limit
+Type: `Number`<br>
+Default: `Infinity`
+
+The _total_ requests that can be prefetched while observing the `options.el` container.
+
+#### options.throttle
+Type: `Number`<br>
+Default: `Infinity`
+
+The _concurrency limit_ for simultaneous requests while observing the `options.el` container.
+
+#### options.timeout
+Type: `Number`<br>
+Default: `2000`
+
+The `requestIdleCallback` timeout, in milliseconds.
+
+> **Note:** The browser must be idle for the configured duration before prefetching.
+
+#### options.timeoutFn
+Type: `Function`<br>
+Default: `requestIdleCallback`
+
+A function used for specifying a `timeout` delay.<br>
+This can be swapped out for a custom function like [networkIdleCallback](https://github.com/pastelsky/network-idle-callback) (see demos).
+
+By default, this uses [`requestIdleCallback`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback) or the embedded polyfill.
+
+#### options.priority
+Type: `Boolean`<br>
+Default: `false`
+
+Whether or not the URLs within the `options.el` container should be treated as high priority.
+
+When `true`, quicklink will attempt to use the `fetch()` API if supported (rather than `link[rel=prefetch]`).
+
+#### options.origins
+Type: `Array<String>`<br>
+Default: `[location.hostname]`
+
+A static array of URL hostnames that are allowed to be prefetched.<br>
+Defaults to the same domain origin, which prevents _any_ cross-origin requests.
+
+**Important:** An empty array (`[]`) allows ***all origins*** to be prefetched.
+
+#### options.ignores
+Type: `RegExp` or `Function` or `Array`<br>
+Default: `[]`
+
+Determine if a URL should be prefetched.
+
+When a `RegExp` tests positive, a `Function` returns `true`, or an `Array` contains the string, then the URL is _not_ prefetched.
+
+> **Note:** An `Array` may contain `String`, `RegExp`, or `Function` values.
+
+> **Important:** This logic is executed _after_ origin matching!
+
+#### options.onError
+Type: `Function`<br>
+Default: None
+
+An optional error handler that will receive any errors from prefetched requests.<br>
+By default, these errors are silently ignored.
 
 
-TODO:
+### quicklink.prefetch(urls, isPriority)
+Returns: `Promise`
+
+The `urls` provided are always passed through `Promise.all`, which means the result will always resolve to an Array.
+
+> **Important:** You much `catch` you own request error(s).
+
+#### urls
+Type: `String` or `Array<String>`<br>
+Required: `true`
+
+One or many URLs to be prefetched.
+
+> **Note:** Each `url` value is resolved from the current location.
+
+#### isPriority
+Type: `Boolean`<br>
+Default: `false`
+
+Whether or not the URL(s) should be treated as "high priority" targets.<br>
+By default, calls to `prefetch()` are low priority.
+
+> **Note:** This behaves identically to `listen()`'s `priority` option.
+
+
+## TODO
+
 * Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for high priority fetches
 * Explore using [Priority Hints](https://github.com/WICG/priority-hints) for importance hinting
 
@@ -225,7 +309,7 @@ quicklink.listen({
 });
 ```
 
-## Browser support
+## Browser Support
 
 The prefetching provided by `quicklink` can be viewed as a [progressive enhancement](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/). Cross-browser support is as follows:
 
@@ -240,7 +324,10 @@ Certain features have layered support:
 
 ## Using the prefetcher directly
 
-`quicklink` includes a prefetcher that can be individually imported for use in other projects. After installing `quicklink` as a dependency, you can use it as follows:
+A `prefetch` method can be individually imported for use in other projects.<br>
+This method includes the logic to respect Data Saver and 2G connections. It also issues requests thru `fetch()`, XHRs, or `link[rel=prefetch]` depending on (a) the `isPriority` value and (b) the current browser's support.
+
+After installing `quicklink` as a dependency, you can use it as follows:
 
 ```html
 <script type="module">
