@@ -173,12 +173,6 @@ By default, calls to `prefetch()` are low priority.
 
 > **Note:** This behaves identically to `listen()`'s `priority` option.
 
-
-## TODO
-
-* Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for high priority fetches
-* Explore using [Priority Hints](https://github.com/WICG/priority-hints) for importance hinting
-
 ## Polyfills
 
 `quicklink`:
