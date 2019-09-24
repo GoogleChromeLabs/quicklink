@@ -357,6 +357,16 @@ Cross-origin prefetching (e.g a.com/foo.html prefetches b.com/bar.html) has a nu
 
 To workaround this problem, you can consider passing along session information via the [ping attribute](https://caniuse.com/#feat=ping) (separately) so the origin can stitch a session together asynchronously.
 
+### Ad-related considerations
+
+Sites that rely on ads as a source of monetization should not prefetch ad-links, to avoid unintentionally countinig clicks against those ad placements, which can lead to inflated Ad CTR (click-through-rate).
+
+Ads appear on sites mostly in two ways:
+
+- **Inside iframes:** By default, most ad-servers render ads within iframes. In these cases, those ad-links won't be prefetched by Quicklink, unless a developer explicitly passes in the URL of an ads iframe. The reason is that the library look-up for in-viewport elements is restricted to those of the top-level origin.
+
+- **Outside iframes:**: In cases when the site shows same-origin ads, displayed in the top-level document (e.g. by hosting the ads themselves and by displaying the ads in the page directly), the developer needs to explicitly tell Quicklink to avoid prefetching these links. This can be achieved by passing the URL or subpath of the ad-link, or the element containing it to the [custom ignore patterns list](/#custom-ignore-patterns).
+
 ## Related projects
 
 * Using [Gatsby](https://gatsbyjs.org)? You already get most of this for free baked in. It uses `Intersection Observer` to prefetch all of the links that are in view and provided heavy inspiration for this project.
