@@ -20,6 +20,7 @@
 /**
  * Checks if a feature on `link` is natively supported.
  * Examples of features include `prefetch` and `preload`.
+ * @param {Object} link Link object.
  * @return {Boolean} whether the feature is supported
  */
 function hasPrefetch(link) {

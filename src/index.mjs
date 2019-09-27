@@ -14,7 +14,7 @@
  * limitations under the License.
 **/
 import throttle from 'throttles';
-import { priority, supported } from './prefetch.mjs';
+import {priority, supported} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
 // Cache of URLs we've prefetched
@@ -52,6 +52,9 @@ function isIgnored(node, filter) {
  * @param {Number} [options.limit] - The total number of prefetches to allow
  * @param {Function} [options.timeoutFn] - Custom timeout function
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
+ * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
+ *                                             If it's not a valid function, then it will use the entry href.
+ * @return {Function}
  */
 export function listen(options) {
   if (!options) options = {};
@@ -64,6 +67,7 @@ export function listen(options) {
   const ignores = options.ignores || [];
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
+  const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -72,7 +76,7 @@ export function listen(options) {
         // Do not prefetch if will match/exceed limit
         if (toPrefetch.size < limit) {
           toAdd(() => {
-            prefetch(entry.href, options.priority).then(isDone).catch(err => {
+            prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
               isDone(); if (options.onError) options.onError(err);
             });
           });
@@ -92,7 +96,7 @@ export function listen(options) {
       }
     });
   }, {
-    timeout: options.timeout || 2000
+    timeout: options.timeout || 2000,
   });
 
   return function () {
@@ -119,16 +123,16 @@ export function prefetch(url, isPriority, conn) {
 
   // Dev must supply own catch()
   return Promise.all(
-    [].concat(url).map(str => {
-      if (!toPrefetch.has(str)) {
+      [].concat(url).map(str => {
+        if (!toPrefetch.has(str)) {
         // Add it now, regardless of its success
         // ~> so that we don't repeat broken links
-        toPrefetch.add(str);
+          toPrefetch.add(str);
 
-        return (isPriority ? priority : supported)(
-          new URL(str, location.href).toString()
-        );
-      }
-    })
+          return (isPriority ? priority : supported)(
+              new URL(str, location.href).toString()
+          );
+        }
+      })
   );
 }

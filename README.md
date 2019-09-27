@@ -148,6 +148,11 @@ Default: None
 An optional error handler that will receive any errors from prefetched requests.<br>
 By default, these errors are silently ignored.
 
+#### options.hrefFn
+Type: `Function`<br>
+Default: None
+
+An optional function to generate the URL to prefetch. It receives an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) as the argument.
 
 ### quicklink.prefetch(urls, isPriority)
 Returns: `Promise`

@@ -96,7 +96,7 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.be.an('array');
     // => origins: true
     expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include('https://foobar.com/3.html');
+    expect(responseURLs).to.include('https://google.com/');
     expect(responseURLs).to.include('https://example.com/1.html');
     expect(responseURLs).to.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
   });
@@ -238,7 +238,7 @@ describe('quicklink tests', function () {
       if (/test\/\d+\.html$/i.test(req.url())) {
         await sleep(100);
         URLs.push(req.url());
-        return req.respond({ status: 200 });
+        return req.respond({status: 200});
       }
       req.continue();
     });
@@ -254,5 +254,21 @@ describe('quicklink tests', function () {
     // Note: Parallel requests, w/ 50ms buffer
     await page.waitFor(250);
     expect(URLs.length).to.equal(4);
+  });
+
+  it('should prefetch using a custom function to build the URL', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-custom-href-function.html`);
+    await page.waitFor(1000);
+
+    // don't care about first 4 URLs (markup)
+    const ours = responseURLs.slice(4);
+    expect(ours).to.include(`https://example.com/?url=${server}/1.html`);
+    expect(ours).to.include(`https://example.com/?url=${server}/2.html`);
+    expect(ours).to.include(`https://example.com/?url=${server}/3.html`);
+    expect(ours).to.include(`https://example.com/?url=${server}/4.html`);
   });
 });
