@@ -359,7 +359,7 @@ To workaround this problem, you can consider passing along session information v
 
 ### Ad-related considerations
 
-Sites that rely on ads as a source of monetization should not prefetch ad-links, to avoid unintentionally countinig clicks against those ad placements, which can lead to inflated Ad CTR (click-through-rate).
+Sites that rely on ads as a source of monetization should not prefetch ad-links, to avoid unintentionally counting clicks against those ad placements, which can lead to inflated Ad CTR (click-through-rate).
 
 Ads appear on sites mostly in two ways:
 
