@@ -57,18 +57,6 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.include(`${server}/4.html`);
   });
 
-  it('should prefetch a static list of URLs correctly', async function () {
-    const responseURLs = [];
-    page.on('response', resp => {
-      responseURLs.push(resp.url());
-    });
-    await page.goto(`${server}/test-static-url-list.html`);
-    await page.waitFor(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include(`${server}/4.html`);
-  });
-
   it('should prefetch in-viewport links from a custom DOM source', async function () {
     const responseURLs = [];
     page.on('response', resp => {
@@ -165,5 +153,106 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.not.include('https://foobar.com/3.html');
     // (uri, elem) => elem.textContent.includes('Spinner')
     expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
+  });
+
+  it('should accept a single URL to prefetch()', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-prefetch-single.html`);
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    expect(responseURLs).to.include(`${server}/2.html`);
+  });
+
+  it('should accept multiple URLs to prefetch()', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-prefetch-multiple.html`);
+    await page.waitFor(1000);
+
+    // don't care about first 4 URLs (markup)
+    const ours = responseURLs.slice(4);
+
+    expect(ours.length).to.equal(3);
+    expect(ours).to.include(`${server}/2.html`);
+    expect(ours).to.include(`${server}/3.html`);
+    expect(ours).to.include(`${server}/4.html`);
+  });
+
+  it('should not prefetch() the same URL repeatedly', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-prefetch-duplicate.html`);
+    await page.waitFor(1000);
+
+    // don't care about first 4 URLs (markup)
+    const ours = responseURLs.slice(4);
+
+    expect(ours.length).to.equal(1);
+    expect(ours).to.include(`${server}/2.html`);
+  });
+
+  it('should not call the same URL repeatedly (shared)', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-prefetch-duplicate-shared.html`);
+    await page.waitFor(1000);
+
+    // count occurences of our link
+    const target = responseURLs.filter(x => x === `${server}/2.html`);
+    expect(target.length).to.equal(1);
+  });
+
+  it('should not exceed the `limit` total', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-limit.html`);
+    await page.waitFor(1000);
+
+    // don't care about first 4 URLs (markup)
+    const ours = responseURLs.slice(4);
+
+    expect(ours.length).to.equal(1);
+    expect(ours).to.include(`${server}/1.html`);
+  });
+
+  it('should respect the `throttle` concurrency', async function () {
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    const URLs = []; // Note: Page makes 4 requests
+
+    // Make HTML requests take a long time
+    // ~> so that we can ensure throttling occurs
+    await page.setRequestInterception(true);
+
+    page.on('request', async req => {
+      if (/test\/\d+\.html$/i.test(req.url())) {
+        await sleep(100);
+        URLs.push(req.url());
+        return req.respond({ status: 200 });
+      }
+      req.continue();
+    });
+
+    await page.goto(`${server}/test-throttle.html`);
+
+    // Only 2 should be done by now
+    // Note: Parallel requests, w/ 50ms buffer
+    await page.waitFor(150);
+    expect(URLs.length).to.equal(2);
+
+    // All should be done by now
+    // Note: Parallel requests, w/ 50ms buffer
+    await page.waitFor(250);
+    expect(URLs.length).to.equal(4);
   });
 });
