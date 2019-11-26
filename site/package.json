@@ -1,0 +1,16 @@
+{
+  "name": "eleventy-quicklink-website",
+  "description": "",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npx @11ty/eleventy",
+    "start": "npx @11ty/eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^0.8.3"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "html-minifier": "^4.0.0"
+  }
+}

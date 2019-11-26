@@ -1,0 +1,151 @@
+---
+title: Quicklink
+layout: layouts/base.njk
+description: Faster subsequent page-loads by prefetching in-viewport links during idle time.
+bottomResource:
+  caption: README on GitHub
+  link: https://github.com/GoogleChromeLabs/quicklink/#api/
+---
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% markdownConvert %}
+## API
+
+`quicklink` accepts an optional options object with the following parameters:
+
+* `el`: DOM element to observe for in-viewport links to prefetch
+* `urls`: Static array of URLs to prefetch (instead of observing `document` or a DOM element links in the viewport)
+* `timeout`: Integer for the `requestIdleCallback` timeout. A time in milliseconds by which the browser must execute prefetching. Defaults to 2 seconds.
+* `timeoutFn`: Function for specifying a timeout. Defaults to `requestIdleCallback`. Can also be swapped out for a custom function like [networkIdleCallback](https://github.com/pastelsky/network-idle-callback) (see demos)
+* `priority`: Boolean specifying preferred priority for fetches. Defaults to `false`. `true` will attempt to use the `fetch()` API where supported (rather than rel=prefetch)
+* `origins`: Static array of URL hostname strings that are allowed to be prefetched. Defaults to the same domain origin, which prevents _any_ cross-origin requests.
+* `ignores`: A RegExp, Function, or Array that further determines if a URL should be prefetched. These execute _after_ origin matching.
+
+TODO:
+* Explore detecting file-extension of resources and using [rel=preload](https://w3c.github.io/preload/) for high priority fetches
+* Explore using [Priority Hints](https://github.com/WICG/priority-hints) for importance hinting
+
+## Polyfills
+
+`quicklink`:
+
+* Includes a very small fallback for [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
+* Requires `IntersectionObserver` to be supported (see [CanIUse](https://caniuse.com/#feat=intersectionobserver)). We recommend conditionally polyfilling this feature with a service like Polyfill.io:
+
+```html
+<script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+```
+
+Alternatively, see the [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
+
+## Recipes
+
+### Set a custom timeout for prefetching resources
+
+Defaults to 2 seconds (via `requestIdleCallback`). Here we override it to 4 seconds:
+
+```js
+quicklink({
+  timeout: 4000
+});
+```
+
+### Set the DOM element to observe for in-viewport links
+
+Defaults to `document` otherwise.
+
+```js
+const elem = document.getElementById('carousel');
+quicklink({
+  el: elem
+});
+```
+
+### Set a custom array of URLs to be prefetched
+
+If you would prefer to provide a static list of URLs to be prefetched, instead of detecting those in-viewport, customizing URLs is supported.
+
+```js
+quicklink({
+   urls: ['2.html','3.html', '4.js']
+});
+```
+
+### Set the request priority for prefetches
+
+Defaults to low-priority (`rel=prefetch` or XHR). For high-priority (`priority: true`), attempts to use `fetch()` or falls back to XHR.
+
+```js
+quicklink({ priority: true });
+```
+
+### Specify a custom list of allowed origins
+
+Provide a list of hostnames that should be prefetch-able. Only the same origin is allowed by default.
+
+> **Important:** You must also include your own hostname!
+
+```js
+quicklink({
+  origins: [
+    // add mine
+    'my-website.com',
+    'api.my-website.com',
+    // add third-parties
+    'other-website.com',
+    'example.com',
+    // ...
+  ]
+});
+```
+
+### Allow all origins
+
+Enables all cross-origin requests to be made.
+
+> **Note:** You may run into [CORB](https://chromium.googlesource.com/chromium/src/+/master/services/network/cross_origin_read_blocking_explainer.md) and [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issues!
+
+```js
+quicklink({
+  origins: true,
+  // or
+  origins: []
+});
+```
+
+### Custom Ignore Patterns
+
+These filters run _after_ the `origins` matching has run. Ignores can be useful for avoiding large file downloads or for responding to DOM attributes dynamically.
+
+```js
+// Same-origin restraint is enabled by default.
+//
+// This example will ignore all requests to:
+//  - all "/api/*" pathnames
+//  - all ".zip" extensions
+//  - all <a> tags with "noprefetch" attribute
+//
+quicklink({
+  ignores: [
+    /\/api\/?/,
+    uri => uri.includes('.zip'),
+    (uri, elem) => elem.hasAttribute('noprefetch')
+  ]
+});
+```
+
+You may also wish to ignore prefetches to URLs which contain a URL fragment (e.g. `index.html#top`). This can be useful if you (1) are using anchors to headings in a page or (2) have URL fragments setup for a single-page application, and which to avoid firing prefetches for similar URLs.
+
+Using `ignores` this can be achieved as follows:
+
+```js
+quicklink({
+    ignores: [
+        uri => uri.includes('#')
+        // or RegExp: /#(.+)/
+        // or element matching: (uri, elem) => !!elem.hash
+    ]
+});
+```
+{% endmarkdownConvert %}
+{% endblock %}
