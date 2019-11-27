@@ -38,17 +38,17 @@
   },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
-    "bundlesize": "^0.17.0",
+    "bundlesize": "^0.18.0",
     "chai": "^4.2.0",
     "conventional-changelog-cli": "^2.0.11",
     "cross-var": "^1.1.0",
-    "eslint": "^5.9.0",
-    "eslint-config-google": "^0.11.0",
-    "http-server": "^0.11.1",
+    "eslint": "^6.7.1",
+    "eslint-config-google": "^0.14.0",
+    "http-server": "^0.12.0",
     "lodash": "^4.17.11",
-    "microbundle": "^0.9.0",
-    "mocha": "^5.2.0",
-    "puppeteer": "^1.10.0"
+    "microbundle": "0.11.0",
+    "mocha": "^6.2.2",
+    "puppeteer": "^2.0.0"
   },
   "bundlesize": [
     {
