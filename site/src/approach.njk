@@ -1,0 +1,23 @@
+---
+title: Quicklink
+layout: layouts/base.njk
+description: Faster subsequent page-loads by prefetching in-viewport links during idle time.
+sections:
+  howItWorks:
+    title: "How it works"
+    summary: "Quicklink attempts to make navigations to subsequent pages load faster. It:"
+    content:
+      items:
+        - "* **Detects links within the viewport** (using [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API))"
+        - "* **Waits until the browser is idle** (using [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback))"
+        - "* **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)"
+        - "* **Prefetches URLs to the links** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported)."
+---
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% sectionTitle sections.howItWorks.title %}
+{{ sections.howItWorks.summary | markdown | safe }}
+{% for item in sections.howItWorks.content.items %}
+  {{ item | markdown | safe }}
+{% endfor %}
+{% endblock %}
