@@ -4,7 +4,7 @@
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time.",
   "logo": "/assets/images/logos/quicklink.svg",
   "quicklinkGithubURL": "https://github.com/GoogleChromeLabs/quicklink/",
-  "quicklinkVersion": "1.0.1",
+  "quicklinkVersion": "2.0.0-alpha",
   "quicklinkSizeLimit": "1KB",
   "bottomResource": {
     "caption": "View source on GitHub"

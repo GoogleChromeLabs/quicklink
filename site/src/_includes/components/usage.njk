@@ -10,7 +10,7 @@
 <script src="dist/quicklink.umd.js"></script>
 <!-- Initialize (you can do this whenever you want) -->
 <script>
-quicklink();
+quicklink.listen();
 </script>
 ```
 {% endmarkdownConvert %}
@@ -20,7 +20,7 @@ quicklink();
 ```html
 <script>
 window.addEventListener('load', () => {
-  quicklink();
+  quicklink.listen();
 });
 </script>
 ```
@@ -30,12 +30,11 @@ window.addEventListener('load', () => {
 {% markdownConvert %}
 ```js
 import quicklink from "quicklink/dist/quicklink.mjs";
-quicklink();
+quicklink.listen();
 ```
 {% endmarkdownConvert %}
-
 {{ "The above options are best for multi-page sites. Single-page apps have a few options available for using quicklink with a router:" | markdown | safe }}
-{{ "* Call `quicklink()` once a navigation to a new route has completed" | markdown | safe }}
-{{ "* Call `quicklink()` against a specific DOM element / component" | markdown | safe }}
-{{ "* Call `quicklink({urls:[...]})` with a custom set of URLs to prefetch" | markdown | safe }}
+{{ "* Call `quicklink.listen()` once a navigation to a new route has completed" | markdown | safe }}
+{{ "* Call `quicklink.listen()` against a specific DOM element / component" | markdown | safe }}
+{{ "* Call `quicklink.prefetch()` with a custom set of URLs to prefetch" | markdown | safe }}
 {% endblock %}
