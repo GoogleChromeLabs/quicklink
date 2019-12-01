@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "npx @11ty/eleventy",
-    "start": "npx @11ty/eleventy --serve"
+    "start": "npx @11ty/eleventy --serve",
+    "deploy": "firebase deploy --project=quicklink-6a87b"
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.8.3"
