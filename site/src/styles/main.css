@@ -48,7 +48,8 @@ p, ul {
   height: 60.2px;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
+  margin-right: 6px;
 }
 
 .page-header__navigation a {
