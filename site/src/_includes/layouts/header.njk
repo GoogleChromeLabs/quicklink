@@ -1,0 +1,19 @@
+<header class="page-header primary-font-color">
+  <div class="page-header-content">
+    <div class="page-header__title">
+      <a href="{{ '/' | url }}" class="page-header__logo-link">
+        <div class="page-header__logo-image"></div>
+      </a>
+      <h3 class="page-header__subtitle">{{ site.subtitle }}</h3>
+    </div>
+    <nav class="page-header__navigation">
+      <ul>
+        {% for sitePage in site.pages %}
+          <li>
+            <a href="{{ sitePage.route | url }}" {% if page.url == sitePage.route %}class="active"{% endif %}><strong class="primary-font-color">{{ sitePage.caption }}<strong></a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</header>
