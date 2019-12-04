@@ -50,6 +50,6 @@ window.addEventListener('load', () => {
     console.error('[clipboard error] Action:', e.action);
     console.error('[clipboard error] Trigger:', e.trigger);
   });
-
-  hljs.initHighlightingOnLoad();
 });
+
+hljs.initHighlightingOnLoad();
