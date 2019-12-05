@@ -11,15 +11,19 @@ description: Faster subsequent page-loads by prefetching in-viewport links durin
 Implementing Quicklink in sites can speed up navigations, by automatically prefetching in-viewport links during idle time.
 Different metrics can be improved as a result of this, the most common ones being [Start Render](https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/quick-start-quide#TOC-Start-Render:) and [First Contentful Paint](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint).
 
-In this section, we explore different ways of measuring the impact of Quicklink in sites. To showcase that, we’ll use [this demo](https://mini-ecomm.glitch.me/), consisting of a listing and product page. We'll compare performance of that site with [this other version](https://mini-ecomm-quicklink.glitch.me/) that requests and initializes the library in the product listing page. You can check the head of the page, to see the following code before the closing tag:
+In this section, we explore different ways of measuring the impact of Quicklink in sites. To showcase that, we’ll use the following sites:
+- An [unoptimized e-commerce demo](https://mini-ecomm.glitch.me/), consisting of a listing and a product page. The demo introduces a 1s delay before the product page response, to similate the backend processing time of a real e-commerce site. You can see the code, and make changes by remixing the [Glitch project](https://glitch.com/edit/#!/mini-ecomm?path=server.js:11:58).
+- An [optimized version of the site](https://mini-ecomm-quicklink.glitch.me/), which is a copy of the original version, but this time, using Quicklink in the listing page, to prefetch links that come to the view. You can view and edit the code, in the [Glitch project](https://glitch.com/edit/#!/mini-ecomm-quicklink?path=server.js:1:0).
+
+If you take a look at the code of the listing page, in the optimized version of the site, you'll find the code to initialize Quicklink:
 
 ```js
-<script src="https://unpkg.com/quicklink@1.0.1/dist/quicklink.umd.js"></script>
-<script> 
-  window.addEventListener('load', () =>{
-    quicklink();
-  });
-</script>
+  <script src="https://unpkg.com/quicklink@2.0.0-alpha/dist/quicklink.umd.js"></script>
+    <script>
+      window.addEventListener('load', () =>{
+        quicklink.listen();
+    });
+  </script>
 ```
 ## Using Chrome DevTools
 
@@ -144,11 +148,13 @@ A video can be generated from the [comparison page](https://www.webpagetest.org/
 
 ### Using RUM (Real user monitoring) tools
 
-RUM tools, let you visualize how different metrics evolve in time for real users. If prefetching affects a large amount of pages, you might be able to see more page loads being loaded faster after implementing it, which can be reflected in metrics First Contentful Paint.
-For example, the [Chrome User Experience Report](https://developers.google.com/web/tools/chrome-user-experience-report/) provides user experience metrics for how real-world Chrome users experience popular destinations on the web.
-CrUX data is available in [PageSpeedInsights](https://developers.google.com/speed/pagespeed/insights/) and also in [BigQuery](https://bigquery.cloud.google.com/dataset/chrome-ux-report:all?pli=1), but you can obtain a quick visualization of the evolution of your metrics using the CrUX dashboard [here](https://g.co/chromeuxdash). [This guide](https://web.dev/chrome-ux-report-data-studio-dashboard/) explains the process in detail.
-The report contains a section for [First Contentful Paint](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint). If a large number of page views are prefetched as a result of implementing Quicklink, this graph should show a positive evolution in time.
-Note: Even when checking the performance for real users is a general performance best practice, it’s usually hard to correlate the overall performance improvement of a site to a single optimization like this one. With that said, the best way to make sure you’re measuring exactly this change is to perform a before / after test with laboratory tools as explained in previous sections.
+RUM tools, let you visualize how different metrics evolve in time for real users. If prefetching affects a large amount of pages, you might be able to see more page loads being loaded faster after implementing it, which can be reflected in metrics [First Contentful Paint](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint).
+
+For example, the [Chrome User Experience Report](https://developers.google.com/web/tools/chrome-user-experience-report/) provides performance metrics for how real-world Chrome users experience popular destinations on the web.
+CrUX data is available in [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/) and also in [BigQuery](https://bigquery.cloud.google.com/dataset/chrome-ux-report:all?pli=1), but you can obtain a quick visualization of the evolution of your metrics using the [CrUX dashboard](https://g.co/chromeuxdash) (refer to [this guide](https://web.dev/chrome-ux-report-data-studio-dashboard/) for more details).
+The report contains a section for First Contentful Paint. If a large number of page views are prefetched as a result of implementing Quicklink, this graph could show a positive evolution in time.
+
+**Note:** Even when checking the performance for real users is a general performance best practice, it’s usually hard to correlate the overall performance improvement of a site with a single optimization like this one. With that said, the best way to make sure you’re measuring exactly this change is to perform a before / after test with laboratory tools as explained in previous sections.
 
 ### Using Quicklink Chrome extension
 
