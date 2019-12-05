@@ -99,7 +99,7 @@ p, ul {
 
 .page-header__navigation li {
   display: inline;
-  margin-right: 1rem;
+  margin-right: 0.6rem;
 }
 
 .page-header__navigation li:last-child {
@@ -247,6 +247,13 @@ main.page-main .heading em {
 
 .large-github {
   display: none;
+}
+
+.article-image {
+  margin: 20px auto;
+  display:block;
+  max-width:100%;
+  height:auto;
 }
 
 @media (min-width: 600px) {

@@ -25,6 +25,10 @@
     {
       "caption": "Demo",
       "route": "/demo/"
+    },
+    {
+      "caption": "Measure",
+      "route": "/measure/"
     }
   ],
   "useWithFrameworks": [
