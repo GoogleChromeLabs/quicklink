@@ -108,6 +108,11 @@
       "websiteUrl": "https://saintagnes.org/",
       "logoFileName": "saintagnes.org.png",
       "companyName": "St Agnes"
+    },
+    {
+      "websiteUrl": "https://www.newegg.com/",
+      "logoFileName": "newegg.com.png",
+      "companyName": "Newegg"
     }
   ]
 }
