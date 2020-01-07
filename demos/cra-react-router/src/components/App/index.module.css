@@ -1,0 +1,17 @@
+.app {
+	position: relative;
+}
+
+.wrapper {
+	width: 75%;
+	margin: 0 auto;
+	position: relative;
+	min-height: calc(55vh - 16px);
+	z-index: 1;
+}
+
+@media screen and (max-width: 769px) {
+	.wrapper {
+		width: 90%;
+	}
+}

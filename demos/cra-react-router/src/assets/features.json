@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Instant Prototyping",
+    "text": "Quickly scaffold new projects with your preferred view library and toolkit. Kick it off with a perfect Lighthouse score!"
+  },
+  {
+    "title": "Feature Rich",
+    "text": "Supports Babel, Bublé, Browserlist, TypeScript, PostCSS, ESLint, Prettier, and Service Workers out of the box!"
+  },
+  {
+    "title": "Fully Extensible",
+    "text": "Includes a plugin system that allows for easy, fine-grain control of your configuration... when needed."
+  },
+  {
+    "title": "Plug 'n Play",
+    "text": "Don't worry about configuration, unless you want to. Presets and plugins are automatically applied. Just install and go!"
+  },
+  {
+    "title": "Framework Agnostic",
+    "text": "Build with your preferred framework or with none at all! Official presets for Preact, React, Vue, and Svelte."
+  },
+  {
+    "title": "Static Site Generator",
+    "text": "Export your routes as \"pre-rendered\" HTML, which is great for SEO and works on any static hosting service."
+  }
+]
