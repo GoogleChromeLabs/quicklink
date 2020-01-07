@@ -14,6 +14,9 @@
  * limitations under the License.
 **/
 import throttle from 'throttles';
+// ray test touch <
+import rmanifest from 'route-manifest/dist/rmanifest.mjs';
+// ray test touch >
 import { priority, supported } from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
@@ -65,6 +68,31 @@ export function listen(options) {
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
+  // ray test touch <
+  const prefetchChunks = async url => {
+    try {
+      if (!window._rmanifest_) {
+        const response = await fetch(options.routeManifestURL);
+        const routeManifest = await response.json();
+        // attach route manifest to global
+        window._rmanifest_ = routeManifest;
+      }
+
+      const entry = rmanifest(window._rmanifest_, url);
+      const chunkURLs = entry.files.map(file => file.href);
+      if (chunkURLs.length) {
+        console.log('[prefetchChunks] chunkURLs => ', chunkURLs);
+        prefetch(chunkURLs, options.priority).then(isDone).catch(err => {
+          isDone(); if (options.onError) options.onError(err);
+        });
+      }
+    } catch (error) {
+      console.log('[prefetchChunks] error => ', error);
+      return;
+    }
+  };
+  // ray test touch >
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -72,9 +100,17 @@ export function listen(options) {
         // Do not prefetch if will match/exceed limit
         if (toPrefetch.size < limit) {
           toAdd(() => {
-            prefetch(entry.href, options.priority).then(isDone).catch(err => {
-              isDone(); if (options.onError) options.onError(err);
-            });
+            // ray test touch <
+            if (options.routeManifestURL) {
+              console.log('ray : ***** [utils quicklink listen] fetching chunk URLs not page URLs');
+              prefetchChunks(entry.pathname);
+            } else {
+              console.log('ray : ***** [utils quicklink listen] fetching page URLs not chunk URLs');
+              prefetch(entry.href, options.priority).then(isDone).catch(err => {
+                isDone(); if (options.onError) options.onError(err);
+              });
+            }
+            // ray test touch >
           });
         }
       }
