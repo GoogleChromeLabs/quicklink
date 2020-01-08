@@ -69,27 +69,36 @@ export function listen(options) {
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
   // ray test touch <
-  const prefetchChunks = async url => {
+  const prefetchHandler = urls => {
+    prefetch(urls, options.priority).then(isDone).catch(err => {
+      isDone(); if (options.onError) options.onError(err);
+    });
+  };
+
+  const smartPrefetch = async entry => {
+    const routeManifestURL = options.routeManifestURL;
+
     try {
-      if (!window._rmanifest_) {
-        const response = await fetch(options.routeManifestURL);
-        const routeManifest = await response.json();
+      if (routeManifestURL && !window._rmanifest_) {
+        const response = await fetch(routeManifestURL);
+        const rmanifest = await response.json();
         // attach route manifest to global
-        window._rmanifest_ = routeManifest;
+        window._rmanifest_ = rmanifest;
       }
 
-      const entry = rmanifest(window._rmanifest_, url);
-      const chunkURLs = entry.files.map(file => file.href);
+      const chunkEntry = rmanifest(window._rmanifest_, entry.pathname);
+      const chunkURLs = chunkEntry.files.map(file => file.href);
       if (chunkURLs.length) {
-        console.log('[prefetchChunks] chunkURLs => ', chunkURLs);
-        prefetch(chunkURLs, options.priority).then(isDone).catch(err => {
-          isDone(); if (options.onError) options.onError(err);
-        });
+        console.log('ray : ***** [smartPrefetch] chunkURLs => ', chunkURLs);
+        prefetchHandler(chunkURLs);
+        return;
       }
     } catch (error) {
-      console.log('[prefetchChunks] error => ', error);
-      return;
+      console.log('ray : ***** [prefetchChunks] error => ', error);
     }
+
+    console.log('ray : ***** [smartPrefetch] regular link => ', entry.href);
+    prefetchHandler(entry.href);
   };
   // ray test touch >
 
@@ -101,15 +110,7 @@ export function listen(options) {
         if (toPrefetch.size < limit) {
           toAdd(() => {
             // ray test touch <
-            if (options.routeManifestURL) {
-              console.log('ray : ***** [utils quicklink listen] fetching chunk URLs not page URLs');
-              prefetchChunks(entry.pathname);
-            } else {
-              console.log('ray : ***** [utils quicklink listen] fetching page URLs not chunk URLs');
-              prefetch(entry.href, options.priority).then(isDone).catch(err => {
-                isDone(); if (options.onError) options.onError(err);
-              });
-            }
+            smartPrefetch(entry);
             // ray test touch >
           });
         }
