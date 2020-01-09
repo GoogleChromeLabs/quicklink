@@ -1,5 +1,8 @@
 describe('quicklink tests', function () {
   const server = `http://127.0.0.1:8080/test`;
+  // ray test touch <
+  const host = `http://127.0.0.1:8080`;
+  // ray test touch >
   let page;
 
   before(async function () {
@@ -255,4 +258,30 @@ describe('quicklink tests', function () {
     await page.waitFor(250);
     expect(URLs.length).to.equal(4);
   });
+  
+  // ray test touch <
+  it('should prefetch chunks for in-viewport links', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-prefetch-chunks.html`);
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    // should prefetch chunk URLs for /, /blog and /about links
+    expect(responseURLs).to.include(`${host}/static/css/home.8e91d516.chunk.css`);
+    expect(responseURLs).to.include(`${host}/static/js/home.df8e1368.chunk.js`);
+    expect(responseURLs).to.include(`${host}/static/media/video.c07b01fa.svg`);
+    expect(responseURLs).to.include(`${host}/static/css/blog.85e80e75.chunk.css`);
+    expect(responseURLs).to.include(`${host}/static/js/blog.67c84dea.chunk.js`);
+    expect(responseURLs).to.include(`${host}/static/css/about.f6fd7d80.chunk.css`);
+    expect(responseURLs).to.include(`${host}/static/js/about.3b265382.chunk.js`);
+    // should not prefetch /, /blog and /about links
+    expect(responseURLs).to.not.include(`${server}`);
+    expect(responseURLs).to.not.include(`${server}/blog`);
+    expect(responseURLs).to.not.include(`${server}/about`);
+    // should prefetch regular links
+    expect(responseURLs).to.include(`${server}/main.css`);
+  });
+  // ray test touch >
 });
