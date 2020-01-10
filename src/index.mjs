@@ -89,15 +89,15 @@ export function listen(options) {
       const chunkEntry = rmanifest(window._rmanifest_, entry.pathname);
       const chunkURLs = chunkEntry.files.map(file => file.href);
       if (chunkURLs.length) {
-        console.log('ray : ***** [smartPrefetch] chunkURLs => ', chunkURLs);
+        // console.log('ray : ***** [smartPrefetch] chunkURLs => ', chunkURLs);
         prefetchHandler(chunkURLs);
         return;
       }
     } catch (error) {
-      console.log('ray : ***** [prefetchChunks] error => ', error);
+      // console.log('ray : ***** [prefetchChunks] error => ', error);
     }
 
-    console.log('ray : ***** [smartPrefetch] regular link => ', entry.href);
+    // console.log('ray : ***** [smartPrefetch] regular link => ', entry.href);
     prefetchHandler(entry.href);
   };
   // ray test touch >
