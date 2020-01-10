@@ -71,6 +71,7 @@ export function listen(options) {
   // ray test touch <
   const routeManifestURL = options.routeManifestURL || '';
 
+  // initialize route manifest for chunks
   if (routeManifestURL && !window._rmanifest_) {
     fetch(routeManifestURL)
       .then(response => response.json())
