@@ -69,11 +69,11 @@ export function listen(options) {
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
   // ray test touch <
-  const routeManifestURL = options.routeManifestURL || '';
+  const rmanifestURL = options.rmanifestURL || '';
 
   // initialize route manifest for chunks
-  if (routeManifestURL && !window._rmanifest_) {
-    fetch(routeManifestURL)
+  if (rmanifestURL && !window._rmanifest_) {
+    fetch(rmanifestURL)
       .then(response => response.json())
       .then(data => {
         // attach route manifest to global
