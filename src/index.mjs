@@ -69,6 +69,19 @@ export function listen(options) {
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
   // ray test touch <
+  const routeManifestURL = options.routeManifestURL || '';
+
+  if (routeManifestURL && !window._rmanifest_) {
+    fetch(routeManifestURL)
+      .then(response => response.json())
+      .then(data => {
+        // attach route manifest to global
+        window._rmanifest_ = data;
+      });
+  }
+  // ray test touch >
+
+  // ray test touch <
   const prefetchHandler = urls => {
     prefetch(urls, options.priority).then(isDone).catch(err => {
       isDone(); if (options.onError) options.onError(err);
@@ -76,28 +89,19 @@ export function listen(options) {
   };
 
   const smartPrefetch = async entry => {
-    const routeManifestURL = options.routeManifestURL;
-
     try {
-      if (routeManifestURL && !window._rmanifest_) {
-        const response = await fetch(routeManifestURL);
-        const rmanifest = await response.json();
-        // attach route manifest to global
-        window._rmanifest_ = rmanifest;
-      }
-
       const chunkEntry = rmanifest(window._rmanifest_, entry.pathname);
       const chunkURLs = chunkEntry.files.map(file => file.href);
       if (chunkURLs.length) {
-        // console.log('ray : ***** [smartPrefetch] chunkURLs => ', chunkURLs);
+        console.log('ray : ***** [smartPrefetch] chunkURLs => ', chunkURLs);
         prefetchHandler(chunkURLs);
         return;
       }
     } catch (error) {
-      // console.log('ray : ***** [prefetchChunks] error => ', error);
+      console.log('ray : ***** [smartPrefetch] error => ', error);
     }
 
-    // console.log('ray : ***** [smartPrefetch] regular link => ', entry.href);
+    console.log('ray : ***** [smartPrefetch] regular link => ', entry.href);
     prefetchHandler(entry.href);
   };
   // ray test touch >
