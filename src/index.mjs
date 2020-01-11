@@ -56,7 +56,9 @@ function isIgnored(node, filter) {
  * @param {Function} [options.timeoutFn] - Custom timeout function
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  */
-export function listen(options) {
+// ray test touch <
+export async function listen(options) {
+// ray test touch >
   if (!options) options = {};
   if (!window.IntersectionObserver) return;
 
@@ -73,7 +75,7 @@ export function listen(options) {
 
   // initialize route manifest for chunks
   if (rmanifestURL && !window._rmanifest_) {
-    fetch(rmanifestURL)
+    await fetch(rmanifestURL)
       .then(response => response.json())
       .then(data => {
         // attach route manifest to global
