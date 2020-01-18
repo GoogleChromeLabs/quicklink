@@ -34,7 +34,6 @@
     "speed"
   ],
   "dependencies": {
-    "route-manifest": "^1.0.0",
     "throttles": "^1.0.0"
   },
   "devDependencies": {

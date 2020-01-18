@@ -14,9 +14,6 @@
  * limitations under the License.
 **/
 import throttle from 'throttles';
-// ray test touch <
-import rmanifest from 'route-manifest/dist/rmanifest.mjs';
-// ray test touch >
 import { priority, supported } from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
@@ -56,9 +53,7 @@ function isIgnored(node, filter) {
  * @param {Function} [options.timeoutFn] - Custom timeout function
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  */
-// ray test touch <
-export async function listen(options) {
-// ray test touch >
+export function listen(options) {
   if (!options) options = {};
   if (!window.IntersectionObserver) return;
 
@@ -71,17 +66,7 @@ export async function listen(options) {
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
   // ray test touch <
-  const rmanifestURL = options.rmanifestURL || '';
-
-  // initialize route manifest for chunks
-  if (rmanifestURL && !window._rmanifest_) {
-    await fetch(rmanifestURL)
-      .then(response => response.json())
-      .then(data => {
-        // attach route manifest to global
-        window._rmanifest_ = data;
-      });
-  }
+  const prefetchChunks = options.prefetchChunks;
   // ray test touch >
 
   // ray test touch <
@@ -89,23 +74,6 @@ export async function listen(options) {
     prefetch(urls, options.priority).then(isDone).catch(err => {
       isDone(); if (options.onError) options.onError(err);
     });
-  };
-
-  const smartPrefetch = async entry => {
-    try {
-      const chunkEntry = rmanifest(window._rmanifest_, entry.pathname);
-      const chunkURLs = chunkEntry.files.map(file => file.href);
-      if (chunkURLs.length) {
-        console.log('ray : ***** [smartPrefetch] chunkURLs => ', chunkURLs);
-        prefetchHandler(chunkURLs);
-        return;
-      }
-    } catch (error) {
-      console.log('ray : ***** [smartPrefetch] error => ', error);
-    }
-
-    console.log('ray : ***** [smartPrefetch] regular link => ', entry.href);
-    prefetchHandler(entry.href);
   };
   // ray test touch >
 
@@ -117,7 +85,7 @@ export async function listen(options) {
         if (toPrefetch.size < limit) {
           toAdd(() => {
             // ray test touch <
-            smartPrefetch(entry);
+            prefetchChunks ? prefetchChunks(entry, prefetchHandler) : prefetchHandler(entry.href);
             // ray test touch >
           });
         }
