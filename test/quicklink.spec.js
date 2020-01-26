@@ -1,7 +1,7 @@
 describe('quicklink tests', function () {
-  const server = `http://127.0.0.1:8080/test`;
   // ray test touch <
-  const host = `http://127.0.0.1:8080`;
+  const host = 'http://127.0.0.1:8080';
+  const server = `${host}/test`;
   // ray test touch >
   let page;
 
