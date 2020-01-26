@@ -20,7 +20,39 @@
   <a href="4.html" style="position:absolute;margin-top:900px;">Link 4</a>
   <script src="../dist/quicklink.umd.js"></script>
   <script>
-    quicklink.listen({rmanifestURL: '/test/rmanifest.json', origins: []});
+    const prefetchChunks = (entry, prefetchHandler) => {
+      try {
+        const chunkEntry = rmanifest(window._rmanifest_, entry.pathname);
+        const chunkURLs = chunkEntry.files.map(file => file.href);
+        if (chunkURLs.length) {
+          prefetchHandler(chunkURLs);
+          return;
+        }
+      } catch (error) {
+        console.log('[prefetchChunks] error => ', error);
+      }
+
+      // also prefetch regular links in-viewport
+      prefetchHandler(entry.href);
+    };
+
+    const listenAfterFetchingRmanifest = async () => {
+      if (!window._rmanifest_) {
+        await fetch('/test/rmanifest.json')
+          .then(response => response.json())
+          .then(data => {
+            // attach route manifest to global
+            window._rmanifest_ = data;
+          });
+      }
+
+      quicklink.listen({
+        prefetchChunks,
+        origins: []
+      });
+    };
+
+    listenAfterFetchingRmanifest();
   </script>
 </body>
 </html>
