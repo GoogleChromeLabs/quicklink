@@ -48,7 +48,8 @@
     "lodash": "^4.17.11",
     "microbundle": "0.11.0",
     "mocha": "^6.2.2",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^2.0.0",
+    "route-manifest": "^1.0.0"
   },
   "bundlesize": [
     {

@@ -1,8 +1,6 @@
 describe('quicklink tests', function () {
-  // ray test touch <
   const host = 'http://127.0.0.1:8080';
   const server = `${host}/test`;
-  // ray test touch >
   let page;
 
   before(async function () {
@@ -259,7 +257,6 @@ describe('quicklink tests', function () {
     expect(URLs.length).to.equal(4);
   });
   
-  // ray test touch <
   it('should prefetch chunks for in-viewport links', async function () {
     const responseURLs = [];
     page.on('response', resp => {
@@ -283,5 +280,4 @@ describe('quicklink tests', function () {
     // should prefetch regular links
     expect(responseURLs).to.include(`${server}/main.css`);
   });
-  // ray test touch >
 });
