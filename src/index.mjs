@@ -65,17 +65,13 @@ export function listen(options) {
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
-  // ray test touch <
   const prefetchChunks = options.prefetchChunks;
-  // ray test touch >
 
-  // ray test touch <
   const prefetchHandler = urls => {
     prefetch(urls, options.priority).then(isDone).catch(err => {
       isDone(); if (options.onError) options.onError(err);
     });
   };
-  // ray test touch >
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -84,9 +80,7 @@ export function listen(options) {
         // Do not prefetch if will match/exceed limit
         if (toPrefetch.size < limit) {
           toAdd(() => {
-            // ray test touch <
             prefetchChunks ? prefetchChunks(entry, prefetchHandler) : prefetchHandler(entry.href);
-            // ray test touch >
           });
         }
       }
