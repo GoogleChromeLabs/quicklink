@@ -52,6 +52,7 @@ function isIgnored(node, filter) {
  * @param {Number} [options.limit] - The total number of prefetches to allow
  * @param {Function} [options.timeoutFn] - Custom timeout function
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
+ * @param {Function} [options.prefetchChunks] - Function to prefetch chunks for route URLs (with route manifest for URL mapping)
  */
 export function listen(options) {
   if (!options) options = {};

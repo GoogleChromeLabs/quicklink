@@ -148,6 +148,12 @@ Default: None
 An optional error handler that will receive any errors from prefetched requests.<br>
 By default, these errors are silently ignored.
 
+#### options.prefetchChunks
+Type: `Function`<br>
+Default: None
+
+A function used for prefetching chunks corresponding to route URLs by mapping route URLs back to Webpack chunks.
+
 
 ### quicklink.prefetch(urls, isPriority)
 Returns: `Promise`
