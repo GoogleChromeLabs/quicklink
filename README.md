@@ -52,7 +52,7 @@ For example, you can initialize after the `load` event fires:
 
 ```html
 <script>
-window.addEventListener('load', () =>{
+window.addEventListener('load', () => {
   quicklink.listen();
 });
 </script>
