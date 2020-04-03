@@ -20,6 +20,8 @@
     "start": "http-server .",
     "test": "yarn run build && mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
+    "build-plugin": "microbundle src/chunks.mjs --no-sourcemap --external none -o dist/chunks",
+    "build-all": "yarn run build && yarn run build-plugin",
     "prepare": "yarn run -s build",
     "bundlesize": "bundlesize",
     "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
@@ -48,7 +50,8 @@
     "lodash": "^4.17.11",
     "microbundle": "0.11.0",
     "mocha": "^6.2.2",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^2.0.0",
+    "route-manifest": "^1.0.0"
   },
   "bundlesize": [
     {
