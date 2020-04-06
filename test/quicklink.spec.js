@@ -265,14 +265,14 @@ describe('quicklink tests', function () {
     await page.goto(`${server}/test-prefetch-chunks.html`);
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
-    console.log(responseURLs);
+    console.log('[should prefetch chunks for in-viewport links] responseURLs => ', responseURLs);
     // should prefetch chunk URLs for /, /blog and /about links
-    expect(responseURLs).to.include(`${host}/test/static/css/home.14835906.chunk.css`);
-    expect(responseURLs).to.include(`${host}/test/static/js/home.df8e1368.chunk.js`);
+    expect(responseURLs).to.include(`${host}/test/static/css/home.6d953f22.chunk.css`);
+    expect(responseURLs).to.include(`${host}/test/static/js/home.14835906.chunk.js`);
     expect(responseURLs).to.include(`${host}/test/static/media/video.b9b6e9e1.svg`);
-    expect(responseURLs).to.include(`${host}/test/static/css/blog.1dcce8a6.chunk.css`);
+    expect(responseURLs).to.include(`${host}/test/static/css/blog.2a8b6ab6.chunk.css`);
     expect(responseURLs).to.include(`${host}/test/static/js/blog.1dcce8a6.chunk.js`);
-    expect(responseURLs).to.include(`${host}/test/static/css/about.921ebc84.chunk.css`);
+    expect(responseURLs).to.include(`${host}/test/static/css/about.00ec0d84.chunk.css`);
     expect(responseURLs).to.include(`${host}/test/static/js/about.921ebc84.chunk.js`);
     // should not prefetch /, /blog and /about links
     expect(responseURLs).to.not.include(`${server}`);

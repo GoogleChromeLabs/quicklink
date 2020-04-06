@@ -23,7 +23,7 @@
     const prefetchChunks = (entry, prefetchHandler) => {
       try {
         const chunkEntry = rmanifest(window._rmanifest_, entry.pathname);
-        console.log('chunkEntry:', chunkEntry);
+        console.log('[prefetchChunks] chunkEntry => ', chunkEntry);
         const chunkURLs = chunkEntry.files.map(file => file.href);
         if (chunkURLs.length) {
           prefetchHandler(chunkURLs);
