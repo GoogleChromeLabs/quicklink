@@ -20,21 +20,21 @@
   <script src="../dist/chunks/quicklink.umd.js"></script>
   <script src="../node_modules/route-manifest/dist/rmanifest.min.js"></script>
   <script>
-    const prefetchChunks = (entry, prefetchHandler) => {
-      try {
-        const chunkEntry = rmanifest(window._rmanifest_, entry.pathname);
-        console.log('chunkEntry:', chunkEntry);
-        const chunkURLs = chunkEntry.files.map(file => file.href);
-        if (chunkURLs.length) {
-          prefetchHandler(chunkURLs);
-          return;
-        }
-      } catch (error) {
-        console.log('[prefetchChunks] error => ', error);
-      }
+    const __defaultAccessor = mix => {
+      return (mix && mix.href) || mix || '';
+    };
 
-      // also prefetch regular links in-viewport
-      prefetchHandler(entry.href);
+    const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) => {
+      const { files } = rmanifest(window._rmanifest_, entry.pathname);
+      const chunkURLs = files.map(accessor).filter(Boolean);
+      if (chunkURLs.length) {
+        console.log('[prefetchChunks] chunkURLs => ', chunkURLs);
+        prefetchHandler(chunkURLs);
+      } else {
+        // also prefetch regular links in-viewport
+        console.log('[prefetchChunks] regularURL => ', entry.href);
+        prefetchHandler(entry.href);
+      }
     };
 
     const listenAfterFetchingRmanifest = async () => {
