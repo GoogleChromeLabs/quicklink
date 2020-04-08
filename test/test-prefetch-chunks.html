@@ -17,6 +17,9 @@
     <a href="main.css">CSS</a>
   </section>
   <a href="4.html" style="position:absolute;margin-top:900px;">Link 4</a>
+  <!-- ray test touch < -->
+  <a href="2.html">Link 2</a>
+  <!-- ray test touch > -->
   <script src="../dist/chunks/quicklink.umd.js"></script>
   <script src="../node_modules/route-manifest/dist/rmanifest.min.js"></script>
   <script>
@@ -72,7 +75,7 @@
     //     origins: []
     //   });
     // };
-    quicklink.prefetch(['/blog', '/', '/about']);
+    quicklink.prefetch(['2.html']);
     function listenAfterFetchingRmanifest() {
       if (!window._rmanifest_) {
         fetch('/test/rmanifest.json')
