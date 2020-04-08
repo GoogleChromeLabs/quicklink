@@ -13,13 +13,13 @@
   <a href="/">Home</a>
   <a href="/blog">Blog</a>
   <a href="/about">About</a>
+  <!-- ray test touch < -->
+  <a href="2.html">Link 2</a>
+  <!-- ray test touch > -->
   <section id="stuff">
     <a href="main.css">CSS</a>
   </section>
   <a href="4.html" style="position:absolute;margin-top:900px;">Link 4</a>
-  <!-- ray test touch < -->
-  <a href="2.html">Link 2</a>
-  <!-- ray test touch > -->
   <script src="../dist/chunks/quicklink.umd.js"></script>
   <script src="../node_modules/route-manifest/dist/rmanifest.min.js"></script>
   <script>
@@ -27,9 +27,9 @@
     // const __defaultAccessor = mix => {
     //   return (mix && mix.href) || mix || '';
     // };
-    function __defaultAccessor(mix) {
-      return (mix && mix.href) || mix || '';
-    };
+    // function __defaultAccessor(mix) {
+    //   return (mix && mix.href) || mix || '';
+    // };
     // ray test touch >
 
     // ray test touch <
@@ -45,18 +45,18 @@
     //     prefetchHandler(entry.href);
     //   }
     // };
-    function prefetchChunks(entry, prefetchHandler, accessor = __defaultAccessor) {
-      const { files } = rmanifest(window._rmanifest_, entry.pathname);
-      const chunkURLs = files.map(accessor).filter(Boolean);
-      if (chunkURLs.length) {
-        console.log('[prefetchChunks] chunkURLs => ', chunkURLs);
-        prefetchHandler(chunkURLs);
-      } else {
-        // also prefetch regular links in-viewport
-        console.log('[prefetchChunks] regularURL => ', entry.href);
-        prefetchHandler(entry.href);
-      }
-    };
+    // function prefetchChunks(entry, prefetchHandler, accessor = __defaultAccessor) {
+    //   const { files } = rmanifest(window._rmanifest_, entry.pathname);
+    //   const chunkURLs = files.map(accessor).filter(Boolean);
+    //   if (chunkURLs.length) {
+    //     console.log('[prefetchChunks] chunkURLs => ', chunkURLs);
+    //     prefetchHandler(chunkURLs);
+    //   } else {
+    //     // also prefetch regular links in-viewport
+    //     console.log('[prefetchChunks] regularURL => ', entry.href);
+    //     prefetchHandler(entry.href);
+    //   }
+    // };
     // ray test touch >
 
     // ray test touch <
@@ -76,21 +76,21 @@
     //   });
     // };
     quicklink.prefetch('2.html');
-    function listenAfterFetchingRmanifest() {
-      if (!window._rmanifest_) {
-        fetch('/test/rmanifest.json')
-          .then(response => response.json())
-          .then(data => {
-            // attach route manifest to global
-            window._rmanifest_ = data;
+    // function listenAfterFetchingRmanifest() {
+    //   if (!window._rmanifest_) {
+    //     fetch('/test/rmanifest.json')
+    //       .then(response => response.json())
+    //       .then(data => {
+    //         // attach route manifest to global
+    //         window._rmanifest_ = data;
 
-            quicklink.listen({
-              prefetchChunks,
-              origins: []
-            });
-          });
-      }
-    };
+    //         quicklink.listen({
+    //           prefetchChunks,
+    //           origins: []
+    //         });
+    //       });
+    //   }
+    // };
     // ray test touch >
 
     listenAfterFetchingRmanifest();
