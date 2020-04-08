@@ -195,7 +195,7 @@ describe('quicklink tests', function () {
     // don't care about first 4 URLs (markup)
     const ours = responseURLs.slice(4);
 
-    expect(ours.length).to.equal(2);
+    expect(ours.length).to.equal(1);
     expect(ours).to.include(`${server}/2.html`);
   });
 
@@ -223,7 +223,7 @@ describe('quicklink tests', function () {
     // don't care about first 4 URLs (markup)
     const ours = responseURLs.slice(4);
 
-    expect(ours.length).to.equal(2);
+    expect(ours.length).to.equal(1);
     expect(ours).to.include(`${server}/1.html`);
   });
 
