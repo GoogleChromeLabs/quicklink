@@ -72,8 +72,8 @@
     //     origins: []
     //   });
     // };
+    quicklink.prefetch(['/blog', '/', '/about']);
     function listenAfterFetchingRmanifest() {
-      quicklink.prefetch(['/blog', '/', '/about']);
       if (!window._rmanifest_) {
         fetch('/test/rmanifest.json')
           .then(response => response.json())
