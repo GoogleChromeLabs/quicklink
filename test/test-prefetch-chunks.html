@@ -20,29 +20,11 @@
   <script src="../dist/chunks/quicklink.umd.js"></script>
   <script src="../node_modules/route-manifest/dist/rmanifest.min.js"></script>
   <script>
-    // ray test touch <
-    // const __defaultAccessor = mix => {
-    //   return (mix && mix.href) || mix || '';
-    // };
-    function __defaultAccessor(mix) {
+    const __defaultAccessor = mix => {
       return (mix && mix.href) || mix || '';
     };
-    // ray test touch >
 
-    // ray test touch <
-    // const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) => {
-    //   const { files } = rmanifest(window._rmanifest_, entry.pathname);
-    //   const chunkURLs = files.map(accessor).filter(Boolean);
-    //   if (chunkURLs.length) {
-    //     console.log('[prefetchChunks] chunkURLs => ', chunkURLs);
-    //     prefetchHandler(chunkURLs);
-    //   } else {
-    //     // also prefetch regular links in-viewport
-    //     console.log('[prefetchChunks] regularURL => ', entry.href);
-    //     prefetchHandler(entry.href);
-    //   }
-    // };
-    function prefetchChunks(entry, prefetchHandler, accessor = __defaultAccessor) {
+    const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) => {
       const { files } = rmanifest(window._rmanifest_, entry.pathname);
       const chunkURLs = files.map(accessor).filter(Boolean);
       if (chunkURLs.length) {
@@ -54,40 +36,22 @@
         prefetchHandler(entry.href);
       }
     };
-    // ray test touch >
 
-    // ray test touch <
-    // const listenAfterFetchingRmanifest = async () => {
-    //   if (!window._rmanifest_) {
-    //     await fetch('/test/rmanifest.json')
-    //       .then(response => response.json())
-    //       .then(data => {
-    //         // attach route manifest to global
-    //         window._rmanifest_ = data;
-    //       });
-    //   }
-
-    //   quicklink.listen({
-    //     prefetchChunks,
-    //     origins: []
-    //   });
-    // };
-    function listenAfterFetchingRmanifest() {
+    const listenAfterFetchingRmanifest = async () => {
       if (!window._rmanifest_) {
-        fetch('/test/rmanifest.json')
+        await fetch('/test/rmanifest.json')
           .then(response => response.json())
           .then(data => {
             // attach route manifest to global
             window._rmanifest_ = data;
-
-            quicklink.listen({
-              prefetchChunks,
-              origins: []
-            });
           });
       }
+
+      quicklink.listen({
+        prefetchChunks,
+        origins: []
+      });
     };
-    // ray test touch >
 
     listenAfterFetchingRmanifest();
   </script>
