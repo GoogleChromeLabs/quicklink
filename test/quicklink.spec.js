@@ -265,6 +265,9 @@ describe('quicklink tests', function () {
     await page.goto(`${server}/test-prefetch-chunks.html`);
     await page.waitFor(1000);
     expect(responseURLs).to.be.an('array');
+    // ray test touch <
+    console.log('ray : [debugging] responseURLs => ', responseURLs);
+    // ray test touch >
     // should prefetch chunk URLs for /, /blog and /about links
     expect(responseURLs).to.include(`${host}/test/static/css/home.6d953f22.chunk.css`);
     expect(responseURLs).to.include(`${host}/test/static/js/home.14835906.chunk.js`);
