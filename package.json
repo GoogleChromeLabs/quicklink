@@ -18,7 +18,7 @@
     "lint": "eslint src/*.mjs test/*.js demos/*.js",
     "lint-fix": "eslint src/*.mjs test/*.js --fix demos/*.js",
     "start": "http-server .",
-    "test": "yarn run build && mocha test/bootstrap.js --recursive test",
+    "test": "yarn run build-all && mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
     "build-plugin": "microbundle src/chunks.mjs --no-sourcemap --external none -o dist/chunks",
     "build-all": "yarn run build && yarn run build-plugin",
