@@ -24,8 +24,9 @@
     "test": "yarn run build-all && mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
     "build-plugin": "microbundle src/chunks.mjs --no-sourcemap --external none -o dist/chunks",
-    "build-all": "yarn run build && yarn run build-plugin",
+    "build-all": "yarn run build && yarn run build-plugin && yarn run copy-hoc",
     "prepare": "yarn run -s build",
+    "copy-hoc": "cp src/react-chunks.mjs dist/chunks/react-quicklink.mjs",
     "bundlesize": "bundlesize",
     "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
     "release": "cross-var yarn run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
