@@ -24,9 +24,9 @@
     "test": "yarn run build-all && mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
     "build-plugin": "microbundle src/chunks.mjs --no-sourcemap --external none -o dist/react",
-    "build-all": "yarn run build && yarn run build-plugin && yarn run copy-hoc",
+    "build-all": "yarn run build && yarn run build-plugin && yarn run build-react-chunks",
     "prepare": "yarn run -s build",
-    "copy-hoc": "cp src/react-chunks.mjs dist/react/hoc.mjs",
+    "build-react-chunks": "./node_modules/.bin/babel src/react-chunks.js --out-file dist/react/hoc.js",
     "bundlesize": "bundlesize",
     "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
     "release": "cross-var yarn run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
@@ -42,7 +42,15 @@
   "dependencies": {
     "throttles": "^1.0.0"
   },
+  "peerDependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
     "babel-preset-env": "^1.7.0",
     "bundlesize": "^0.18.0",
     "chai": "^4.2.0",
@@ -55,7 +63,9 @@
     "microbundle": "0.11.0",
     "mocha": "^6.2.2",
     "puppeteer": "^2.0.0",
-    "route-manifest": "^1.0.0"
+    "route-manifest": "^1.0.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
   "bundlesize": [
     {
