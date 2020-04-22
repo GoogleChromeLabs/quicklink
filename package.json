@@ -40,6 +40,7 @@
     "speed"
   ],
   "dependencies": {
+    "route-manifest": "^1.0.0",
     "throttles": "^1.0.0"
   },
   "peerDependencies": {
@@ -62,7 +63,8 @@
     "microbundle": "0.11.0",
     "mocha": "^6.2.2",
     "puppeteer": "^2.0.0",
-    "route-manifest": "^1.0.0"
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
   "bundlesize": [
     {
