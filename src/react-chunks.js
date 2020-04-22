@@ -51,11 +51,9 @@ const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) =>
   const { files } = rmanifest(window.__rmanifest, entry.pathname);
   const chunkURLs = files.map(accessor).filter(Boolean);
   if (chunkURLs.length) {
-    console.log('[prefetchChunks] chunkURLs => ', chunkURLs);
     prefetchHandler(chunkURLs);
   } else {
     // also prefetch regular links in-viewport
-    console.log('[prefetchChunks] regularURL => ', entry.href);
     prefetchHandler(entry.href);
   }
 };
