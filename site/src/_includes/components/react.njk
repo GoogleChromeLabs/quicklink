@@ -1,0 +1,44 @@
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% sectionTitle "Single page apps (React)" %}
+{% markdownConvert %}
+
+### Installation
+
+First, install the packages with [node](https://nodejs.org) and [npm](https://npmjs.com):
+
+```sh
+npm install quicklink webpack-route-manifest --save-dev
+```
+
+Then, configure Webpack route manifest into your project, as explained [here](https://github.com/lukeed/webpack-route-manifest).
+This will generate a map of routes and chunks called `rmanifest.json`. It can be obtained at:
+
+* URL: `site_url/rmanifest.json`
+* Window object: `window.__rmanifest`
+
+### Usage
+
+Import `quicklink` React HOC where want to add prefetching functionality. 
+Wrap your routes with the `withQuicklink()` HOC.
+
+Example:
+
+```sh
+import { withQuicklink } from 'quicklink/dist/react/hoc.js';
+
+const options = {
+  origins: []
+};
+
+<Suspense fallback={<div>Loading...</div>}>
+  <Route path="/" exact component={withQuicklink(Home, options)} />
+  <Route path="/blog" exact component={withQuicklink(Blog, options)} />
+  <Route path="/blog/:title" component={withQuicklink(Article, options)} />
+  <Route path="/about" exact component={withQuicklink(About, options)} />
+</Suspense>
+```
+
+{% endmarkdownConvert %}
+{% endblock %}
+
