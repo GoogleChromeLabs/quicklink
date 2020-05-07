@@ -29,7 +29,7 @@
     "build-react-chunks": "./node_modules/.bin/babel src/react-chunks.js --out-file dist/react/hoc.js",
     "bundlesize": "bundlesize",
     "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
-    "release": "cross-var yarn run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
+    "release": "cross-var yarn run build-all -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
   },
   "keywords": [
     "prefetch",
