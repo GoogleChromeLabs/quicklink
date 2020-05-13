@@ -10,6 +10,11 @@
   color: hsl(226, 52%, 27%) !important;
 }
 
+.markdown-body h1, h2, h3, h4, h5 {
+  /* Google Sans is for headlines only per Google guidelines*/
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
 @media (max-width: 767px) {
   .markdown-body {
     padding: 15px;
