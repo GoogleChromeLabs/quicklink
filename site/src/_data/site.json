@@ -1,6 +1,6 @@
 {
   "title": "quicklink",
-  "subtitle": "Instant next-page navigations with prefetching",
+  "subtitle": "Instant next-page navigations",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time.",
   "logo": "/assets/images/logos/quicklink.svg",
   "quicklinkGithubURL": "https://github.com/GoogleChromeLabs/quicklink/",
