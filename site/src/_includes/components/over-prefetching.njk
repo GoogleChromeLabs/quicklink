@@ -7,40 +7,32 @@
 
 {{ "* Indicating a specific DOM element to observe, with the `options.el` parameter:" | markdown | safe }}
 
-{% markdownConvert %}
-```js
+{% highlight "js" %}
 quicklink.listen({
   el: document.getElementById('content')
 });
-```
-{% endmarkdownConvert %}
+{% endhighlight %}
 
 {{ "* Passing an `options.limit` parameter, indicating the total number of requests that can be prefetched while observing the `options.el` container:" | markdown | safe }}
 
-{% markdownConvert %}
-```js
+{% highlight "js" %}
 quicklink.listen({
   limit: 5
 });
-```
-{% endmarkdownConvert %}
+{% endhighlight %}
 
 {{ "* Using `options.throttle`, to establish a concurrency limit for simultaneous requests while observing the `options.el` container:" | markdown | safe }}
 
-{% markdownConvert %}
-```js
+{% highlight "js" %}
 quicklink.listen({
   throttle: 2
 });
-```
-{% endmarkdownConvert %}
+{% endhighlight %}
 
 {{ "If none of these configuration options suits your needs, you can call `quicklink.prefetch()`, passing a single URL or an array of URLs to prefetch. Invoking `quicklink` this way, bypasses the `Intersection Observer` logic, giving you full control on the prefetch requests to be made:" | markdown | safe }}
 
-{% markdownConvert %}
-```js
+{% highlight "js" %}
 quicklink.prefetch(['2.html', '3.html', '4.js']);
-```
-{% endmarkdownConvert %}
+{% endhighlight %}
 
 {% endblock %}
