@@ -6,11 +6,13 @@
 ### Installation
 
 First, install the packages with [node](https://nodejs.org) and [npm](https://npmjs.com):
+{% endmarkdownConvert %}
 
-```sh
+{% highlight "bash" %}
 npm install quicklink webpack-route-manifest --save-dev
-```
+{% endhighlight %}
 
+{% markdownConvert %}
 Then, configure Webpack route manifest into your project, as explained [here](https://github.com/lukeed/webpack-route-manifest).
 This will generate a map of routes and chunks called `rmanifest.json`. It can be obtained at:
 
@@ -23,8 +25,9 @@ Import `quicklink` React HOC where want to add prefetching functionality.
 Wrap your routes with the `withQuicklink()` HOC.
 
 Example:
+{% endmarkdownConvert %}
 
-```sh
+{% highlight "js" %}
 import { withQuicklink } from 'quicklink/dist/react/hoc.js';
 
 const options = {
@@ -37,8 +40,7 @@ const options = {
   <Route path="/blog/:title" component={withQuicklink(Article, options)} />
   <Route path="/about" exact component={withQuicklink(About, options)} />
 </Suspense>
-```
+{% endhighlight %}
 
-{% endmarkdownConvert %}
 {% endblock %}
 
