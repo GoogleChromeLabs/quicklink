@@ -131,7 +131,7 @@ export function prefetch(url, isPriority, conn) {
         toPrefetch.add(str);
 
         return (isPriority ? priority : supported)(
-            new URL(str, location.href).toString()
+          new URL(str, location.href).toString()
         );
       }
     })
