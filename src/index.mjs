@@ -114,21 +114,26 @@ export function listen(options) {
 export function prefetch(url, isPriority, conn) {
   if (conn = navigator.connection) {
     // Don't prefetch if using 2G or if Save-Data is enabled.
-    if (conn.saveData || /2g/.test(conn.effectiveType)) return;
+    if (conn.saveData) {
+      return Promise.reject(new Error('Cannot prefetch, Save-Data is enabled'));
+    }
+    if (/2g/.test(conn.effectiveType)) {
+      return Promise.reject(new Error('Cannot prefetch, network conditions are poor'));
+    }
   }
 
   // Dev must supply own catch()
   return Promise.all(
-    [].concat(url).map(str => {
-      if (!toPrefetch.has(str)) {
-        // Add it now, regardless of its success
-        // ~> so that we don't repeat broken links
-        toPrefetch.add(str);
+      [].concat(url).map(str => {
+        if (!toPrefetch.has(str)) {
+          // Add it now, regardless of its success
+          // ~> so that we don't repeat broken links
+          toPrefetch.add(str);
 
-        return (isPriority ? priority : supported)(
-          new URL(str, location.href).toString()
-        );
-      }
-    })
+          return (isPriority ? priority : supported)(
+              new URL(str, location.href).toString()
+          );
+        }
+      })
   );
 }
