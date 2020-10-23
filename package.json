@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time",
   "repository": "https://github.com/GoogleChromeLabs/quicklink.git",
-  "homepage": "https://github.com/GoogleChromeLabs/quicklink",
+  "homepage": "https://getquick.link/",
   "bugs": {
     "url": "https://github.com/GoogleChromeLabs/quicklink/issues"
   },
