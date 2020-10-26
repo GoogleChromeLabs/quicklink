@@ -262,6 +262,7 @@ describe('quicklink tests', function () {
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
+
     await page.goto(`${server}/test-custom-href-function.html`);
     await page.waitFor(1000);
 
