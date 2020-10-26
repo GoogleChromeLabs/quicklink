@@ -1,0 +1,38 @@
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% sectionTitle "Concerned about over-prefetching? We've got you covered" %}
+{{ "By default `quicklink` observes all in-viewport links in `document.body`. There are different ways of telling `quicklink` to limit the number of links to prefetch." | markdown | safe }}
+
+{{ "The most common approach is passing different `options` to configure prefetching when calling `quicklink.listen()`:" | markdown | safe }}
+
+{{ "* Indicating a specific DOM element to observe, with the `options.el` parameter:" | markdown | safe }}
+
+{% highlight "js" %}
+quicklink.listen({
+  el: document.getElementById('content')
+});
+{% endhighlight %}
+
+{{ "* Passing an `options.limit` parameter, indicating the total number of requests that can be prefetched while observing the `options.el` container:" | markdown | safe }}
+
+{% highlight "js" %}
+quicklink.listen({
+  limit: 5
+});
+{% endhighlight %}
+
+{{ "* Using `options.throttle`, to establish a concurrency limit for simultaneous requests while observing the `options.el` container:" | markdown | safe }}
+
+{% highlight "js" %}
+quicklink.listen({
+  throttle: 2
+});
+{% endhighlight %}
+
+{{ "If none of these configuration options suits your needs, you can call `quicklink.prefetch()`, passing a single URL or an array of URLs to prefetch. Invoking `quicklink` this way, bypasses the `Intersection Observer` logic, giving you full control on the prefetch requests to be made:" | markdown | safe }}
+
+{% highlight "js" %}
+quicklink.prefetch(['2.html', '3.html', '4.js']);
+{% endhighlight %}
+
+{% endblock %}
