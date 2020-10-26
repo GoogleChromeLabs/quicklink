@@ -95,9 +95,8 @@ describe('quicklink tests', function () {
 
     expect(responseURLs).to.be.an('array');
     // => origins: true
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include('https://foobar.com/3.html');
     expect(responseURLs).to.include('https://example.com/1.html');
+    expect(responseURLs).to.include(`${server}/2.html`);
     expect(responseURLs).to.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
   });
 
