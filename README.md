@@ -344,6 +344,19 @@ quicklink.listen({
 });
 ```
 
+### Build URL to prefetch via callback
+
+The hrefFn method allows to build the URL to prefetch (e.g. API endpoint) on the fly instead of the prefetching the `href` attribute URL.
+
+```js
+quicklink.listen({
+  hrefFn: function(element) {
+    var APIURL = element.href.replace('html','json');
+    return APIURL;
+  }
+});
+```
+
 ## Browser Support
 
 The prefetching provided by `quicklink` can be viewed as a [progressive enhancement](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/). Cross-browser support is as follows:
@@ -379,6 +392,7 @@ After installing `quicklink` as a dependency, you can use it as follows:
 
 * [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news)
 * [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news-workbox)
+* [Using Quicklink to prefetch API calls instead of `href` attribute](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/hrefFn)
 
 ### Research
 

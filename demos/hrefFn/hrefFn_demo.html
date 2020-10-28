@@ -8,9 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" media="screen" href="../../test/main.css" />
   <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
-
 </head>
-
 <body>
   <div class="screen">
     <h1>Basic demo</h1>
@@ -28,9 +26,10 @@
   <script>
     quicklink.listen({
       el: document.querySelector('div.screen'),
+      // hrefFn will prevent quicklink to prefetch the "href" attribute URL
+      // and the returned value will be prefetched as a result.
       hrefFn: function(element) {
-        var href = element.href;
-        var APIURL = href.replace('html','json');
+        var APIURL = element.href.replace('html','json');
         return APIURL;
       }
     });
@@ -46,12 +45,10 @@
     link.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-
       var href = e.target.href.replace('html','json');
       fetch(href)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         title.innerHTML = document.title = data.title;
         paragraph.innerHTML = data.description;
       });
