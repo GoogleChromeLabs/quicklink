@@ -344,7 +344,7 @@ quicklink.listen({
 });
 ```
 
-### Build URL to prefetch via callback
+### Custom URL to prefetch via hrefFn callback
 
 The hrefFn method allows to build the URL to prefetch (e.g. API endpoint) on the fly instead of the prefetching the `href` attribute URL.
 
