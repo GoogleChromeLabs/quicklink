@@ -351,8 +351,7 @@ The hrefFn method allows to build the URL to prefetch (e.g. API endpoint) on the
 ```js
 quicklink.listen({
   hrefFn: function(element) {
-    var APIURL = element.href.replace('html','json');
-    return APIURL;
+    return element.href.replace('html','json');
   }
 });
 ```

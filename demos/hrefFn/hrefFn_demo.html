@@ -29,8 +29,7 @@
       // hrefFn will prevent quicklink to prefetch the "href" attribute URL
       // and the returned value will be prefetched as a result.
       hrefFn: function(element) {
-        var APIURL = element.href.replace('html','json');
-        return APIURL;
+        return element.href.replace('html','json');
       }
     });
   </script>
