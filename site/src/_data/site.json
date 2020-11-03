@@ -113,6 +113,19 @@
       "websiteUrl": "https://www.newegg.com/",
       "logoFileName": "newegg.com.png",
       "companyName": "Newegg"
+    },
+    
+    {
+      "websiteUrl": "https://www.ray-ban.com/",
+      "logoFileName": "rayban.com.png",
+      "companyName": "Ray-Ban"
+    },
+
+    {
+      "websiteUrl": "https://www.oakley.com/",
+      "logoFileName": "oakley.com.png",
+      "companyName": "Oakley"
     }
+
   ]
 }
