@@ -1,0 +1,13 @@
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% sectionTitle "Chrome Extension" %}
+{{ "We've developed a [Chrome extension](https://chrome.google.com/webstore/detail/quicklink-chrome-extensio/epmplkdcjhgigmnjmjibilpmekhgkbeg) that injects and initializes `Quicklink` in every site you visit." | markdown | safe }}
+{{ "The extension can be used with the following purposes:" | markdown | safe }}
+
+{{ "* To navigate the web faster." | markdown | safe }}
+{{ "* To estimate the potential impact of `Quicklink` on a site, before implementing it (see [impact measurement guide](/measure))." | markdown | safe }}
+
+{{ "The extension comes with a default set of URL patterns [to ignore](https://github.com/GoogleChromeLabs/quicklink#optionsignores) (e.g. signin, logout, etc). You can add more patterns, by clicking on the extension icon, and picking 'Options' from the drop-down menu." | markdown | safe }}
+{{ "The code of the extension can be found at [this repository](https://github.com/demianrenzulli/quicklink-chrome-extension). Contributions are welcomed!" | markdown | safe }}
+
+{% endblock %}

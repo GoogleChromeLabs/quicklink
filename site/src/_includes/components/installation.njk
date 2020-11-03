@@ -1,0 +1,9 @@
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% sectionTitle "Installation" %}
+{{ "For use with [node](https://nodejs.org) and [npm](https://npmjs.com):" | markdown | safe }}
+{% highlight "bash" %}
+npm install --save quicklink
+{% endhighlight %}
+{{ "You can also grab `quicklink` from [unpkg.com/quicklink](https://unpkg.com/quicklink)." | markdown | safe }}
+{% endblock %}

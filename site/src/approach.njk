@@ -1,0 +1,57 @@
+---
+title: Quicklink
+layout: layouts/base.njk
+description: Faster subsequent page-loads by prefetching in-viewport links during idle time.
+sections:
+  howItWorks:
+    title: "How it works"
+    summary: "Quicklink attempts to make navigations to subsequent pages load faster. It:"
+---
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% markdownConvert %}
+
+## How it works
+
+![](/assets/images/graphs/what-is-prefetch-svgomg.svg)
+
+Quicklink attempts to make navigations to subsequent pages load faster. It:
+
+* **Detects links within the viewport** (using [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API))
+* **Waits until the browser is idle** (using [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback))
+* **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)
+* **Prefetches URLs to the links** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
+
+![](/assets/images/graphs/prefetch-quicklink-svgomg.svg)
+
+## Future: Double-keyed HTTP Cache
+
+Most Quicklink users use the library to prefetch links on the same origin. Some users do however care about cross-origin prefetches and this section outlines some relevant notes on double-keyed caching that may impact you.
+
+Modern browsers are shifting towards a double-keyed HTTP cache. This partitions the HTTP cache roughly by the top-frame-origin that a request is made from. This breaks cross-origin resource prefetching, whose goal is to prefetch cross-origin resources and store them in the HTTP cache for later re-use. This [limits cache timing attacks](https://github.com/xsleaks/xsleaks/wiki/Browser-Side-Channels#cache-and-error-events) but does limit cross-origin prefetching from being effective.
+
+Chrome [will](https://groups.google.com/a/chromium.org/g/blink-dev/c/bSMOY-evrV4/m/qT0gCByxBAAJ) allow cross-origin prefetched resources in the HTTP cache to be re-used for top-level navigations, which should be safe because by navigating, the user is explicitly sharing their interest with the destination site. 
+
+What this means for Quicklink is that the library will continue to work for same-origin navigations. If you choose to [control which origins can be prefetched](https://github.com/GoogleChromeLabs/quicklink#specify-a-custom-list-of-allowed-origins), these will be limited to prefetching same-origin use-cases only. As this is a browser-level limitation, it will impact any prefetching library. 
+
+## Session Stitching
+
+Cross-origin prefetching (e.g a.com/foo.html prefetches b.com/bar.html) has a number of limitations. One such limitation is with session-stitching. b.com may expect a.com's navigation requests to include session information (e.g a temporary ID - e.g b.com/bar.html?hash=<>&timestamp=<>), where this information is used to customize the experience or log information to analytics.  
+
+If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches.
+
+To workaround this problem, you can consider passing along session information via the [ping attribute](https://caniuse.com/#feat=ping) (separately) so the origin can stitch a session together asynchronously.
+
+## Ad-related considerations
+
+Sites that rely on ads as a source of monetization should not prefetch ad-links, to avoid unintentionally counting clicks against those ad placements, which can lead to inflated Ad CTR (click-through-rate).
+
+Ads appear on sites mostly in two ways:
+
+- **Inside iframes:** By default, most ad-servers render ads within iframes. In these cases, those ad-links won't be prefetched by Quicklink, unless a developer explicitly passes in the URL of an ads iframe. The reason is that the library look-up for in-viewport elements is restricted to those of the top-level origin.
+
+- **Outside iframes:**: In cases when the site shows same-origin ads, displayed in the top-level document (e.g. by hosting the ads themselves and by displaying the ads in the page directly), the developer needs to explicitly tell Quicklink to avoid prefetching these links. This can be achieved by passing the URL or subpath of the ad-link, or the element containing it to the [custom ignore patterns list](/#custom-ignore-patterns).
+
+{% endmarkdownConvert %}
+{% endblock %}
+

@@ -1,0 +1,26 @@
+---
+title: Quicklink
+layout: layouts/base.njk
+description: Faster subsequent page-loads by prefetching in-viewport links during idle time.
+sections:
+  demo:
+    title: "Demo"
+    content:
+      items:
+        -
+          description: A demo showing how to use Quicklink on a simple multi-page website.
+          link: "* [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news)"
+        -
+          description: A demo showing how to use Quicklink with Workbox for offline caching and links in the visible viewport.
+          link: "* [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news-workbox)"
+        - description: A demo showing how to integrate Quicklink with create-react-app.
+          link: "* [Using Quicklink in a React single-page app](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/spa)"
+---
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% sectionTitle sections.demo.title %}
+{% for item in sections.demo.content.items %}
+  {{ item.description | markdown | safe }}
+  {{ item.link | markdown | safe }}
+{% endfor %}
+{% endblock %}
