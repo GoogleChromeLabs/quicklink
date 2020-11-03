@@ -97,7 +97,7 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.be.an('array');
     // => origins: true
     expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include('https://example.com/3.html');
+    expect(responseURLs).to.include('https://google.com/');
     expect(responseURLs).to.include('https://example.com/1.html');
     expect(responseURLs).to.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
   });
@@ -239,7 +239,7 @@ describe('quicklink tests', function () {
       if (/test\/\d+\.html$/i.test(req.url())) {
         await sleep(100);
         URLs.push(req.url());
-        return req.respond({ status: 200 });
+        return req.respond({status: 200});
       }
       req.continue();
     });
@@ -256,28 +256,21 @@ describe('quicklink tests', function () {
     await page.waitFor(250);
     expect(URLs.length).to.equal(4);
   });
-  
-  it('should prefetch chunks for in-viewport links', async function () {
+
+  it('should prefetch using a custom function to build the URL', async function () {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
-    await page.goto(`${server}/test-prefetch-chunks.html`);
+
+    await page.goto(`${server}/test-custom-href-function.html`);
     await page.waitFor(1000);
-    expect(responseURLs).to.be.an('array');
-    // should prefetch chunk URLs for /, /blog and /about links
-    expect(responseURLs).to.include(`${host}/test/static/css/home.6d953f22.chunk.css`);
-    expect(responseURLs).to.include(`${host}/test/static/js/home.14835906.chunk.js`);
-    expect(responseURLs).to.include(`${host}/test/static/media/video.b9b6e9e1.svg`);
-    expect(responseURLs).to.include(`${host}/test/static/css/blog.2a8b6ab6.chunk.css`);
-    expect(responseURLs).to.include(`${host}/test/static/js/blog.1dcce8a6.chunk.js`);
-    expect(responseURLs).to.include(`${host}/test/static/css/about.00ec0d84.chunk.css`);
-    expect(responseURLs).to.include(`${host}/test/static/js/about.921ebc84.chunk.js`);
-    // should not prefetch /, /blog and /about links
-    expect(responseURLs).to.not.include(`${server}`);
-    expect(responseURLs).to.not.include(`${server}/blog`);
-    expect(responseURLs).to.not.include(`${server}/about`);
-    // should prefetch regular links
-    expect(responseURLs).to.include(`${server}/main.css`);
+
+    // don't care about first 4 URLs (markup)
+    const ours = responseURLs.slice(4);
+    expect(ours).to.include(`https://example.com/?url=${server}/1.html`);
+    expect(ours).to.include(`https://example.com/?url=${server}/2.html`);
+    expect(ours).to.include(`https://example.com/?url=${server}/3.html`);
+    expect(ours).to.include(`https://example.com/?url=${server}/4.html`);
   });
 });

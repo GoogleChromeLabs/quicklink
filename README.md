@@ -184,6 +184,11 @@ Default: None
 An optional error handler that will receive any errors from prefetched requests.<br>
 By default, these errors are silently ignored.
 
+#### options.hrefFn
+Type: `Function`<br>
+Default: None
+
+An optional function to generate the URL to prefetch. It receives an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) as the argument.
 
 ### quicklink.prefetch(urls, isPriority)
 Returns: `Promise`
@@ -339,6 +344,18 @@ quicklink.listen({
 });
 ```
 
+### Custom URL to prefetch via hrefFn callback
+
+The hrefFn method allows to build the URL to prefetch (e.g. API endpoint) on the fly instead of the prefetching the `href` attribute URL.
+
+```js
+quicklink.listen({
+  hrefFn: function(element) {
+    return element.href.replace('html','json');
+  }
+});
+```
+
 ## Browser Support
 
 The prefetching provided by `quicklink` can be viewed as a [progressive enhancement](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/). Cross-browser support is as follows:
@@ -374,6 +391,7 @@ After installing `quicklink` as a dependency, you can use it as follows:
 
 * [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news)
 * [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news-workbox)
+* [Using Quicklink to prefetch API calls instead of `href` attribute](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/hrefFn)
 
 ### Research
 
