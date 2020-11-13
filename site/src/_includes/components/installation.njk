@@ -2,10 +2,8 @@
 {% block section %}
 {% sectionTitle "Installation" %}
 {{ "For use with [node](https://nodejs.org) and [npm](https://npmjs.com):" | markdown | safe }}
-{% markdownConvert %}
-```sh
+{% highlight "bash" %}
 npm install --save quicklink
-```
-{% endmarkdownConvert %}
+{% endhighlight %}
 {{ "You can also grab `quicklink` from [unpkg.com/quicklink](https://unpkg.com/quicklink)." | markdown | safe }}
 {% endblock %}

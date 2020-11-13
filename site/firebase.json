@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": "build",
+    "site": "getquicklink",
     "ignore": [
       "firebase.json",
       "**/.*",

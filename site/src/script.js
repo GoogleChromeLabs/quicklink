@@ -51,5 +51,3 @@ window.addEventListener('load', () => {
     console.error('[clipboard error] Trigger:', e.trigger);
   });
 });
-
-hljs.initHighlightingOnLoad();

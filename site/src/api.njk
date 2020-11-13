@@ -119,11 +119,11 @@ By default, calls to `prefetch()` are low priority.
 
 * Includes a very small fallback for [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
 * Requires `IntersectionObserver` to be supported (see [CanIUse](https://caniuse.com/#feat=intersectionobserver)). We recommend conditionally polyfilling this feature with a service like Polyfill.io:
-
-```html
+{% endmarkdownConvert %}
+{% highlight "html" %}
 <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
-```
-
+{% endhighlight %}
+{% markdownConvert %}
 Alternatively, see the [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
 
 ## Recipes
@@ -131,28 +131,28 @@ Alternatively, see the [Intersection Observer polyfill](https://github.com/w3c/I
 ### Set a custom timeout for prefetching resources
 
 Defaults to 2 seconds (via `requestIdleCallback`). Here we override it to 4 seconds:
-
-```js
+{% endmarkdownConvert %}
+{% highlight "js" %}
 quicklink.listen({
   timeout: 4000
 });
-```
-
+{% endhighlight %}
+{% markdownConvert %}
 ### Set the DOM element to observe for in-viewport links
 
 Defaults to `document` otherwise.
-
-```js
+{% endmarkdownConvert %}
+{% highlight "js" %}
 quicklink.listen({
   el: document.getElementById('carousel')
 });
-```
-
+{% endhighlight %}
+{% markdownConvert %}
 ### Programmatically `prefetch()` URLs
 
 If you would prefer to provide a static list of URLs to be prefetched, instead of detecting those in-viewport, customizing URLs is supported.
-
-```js
+{% endmarkdownConvert %}
+{% highlight "js" %}
 // Single URL
 quicklink.prefetch('2.html');
 
@@ -162,25 +162,25 @@ quicklink.prefetch(['2.html', '3.html', '4.js']);
 // Multiple URLs, with high priority
 // Note: Can also be use with single URL!
 quicklink.prefetch(['2.html', '3.html', '4.js'], true);
-```
-
+{% endhighlight %}
+{% markdownConvert %}
 ### Set the request priority for prefetches while scrolling
 
 Defaults to low-priority (`rel=prefetch` or XHR). For high-priority (`priority: true`), attempts to use `fetch()` or falls back to XHR.
 
 > **Note:** This runs `prefetch(..., true)` with URLs found within the `options.el` container.
-
-```js
+{% endmarkdownConvert %}
+{% highlight "js" %}
 quicklink.listen({ priority: true });
-```
-
+{% endhighlight %}
+{% markdownConvert %}
 ### Specify a custom list of allowed origins
 
 Provide a list of hostnames that should be prefetch-able. Only the same origin is allowed by default.
 
 > **Important:** You must also include your own hostname!
-
-```js
+{% endmarkdownConvert %}
+{% highlight "js" %}
 quicklink.listen({
   origins: [
     // add mine
@@ -192,27 +192,27 @@ quicklink.listen({
     // ...
   ]
 });
-```
-
+{% endhighlight %}
+{% markdownConvert %}
 ### Allow all origins
 
 Enables all cross-origin requests to be made.
 
 > **Note:** You may run into [CORB](https://chromium.googlesource.com/chromium/src/+/master/services/network/cross_origin_read_blocking_explainer.md) and [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issues!
-
-```js
+{% endmarkdownConvert %}
+{% highlight "js" %}
 quicklink.listen({
   origins: true,
   // or
   origins: []
 });
-```
-
+{% endhighlight %}
+{% markdownConvert %}
 ### Custom Ignore Patterns
 
 These filters run _after_ the `origins` matching has run. Ignores can be useful for avoiding large file downloads or for responding to DOM attributes dynamically.
-
-```js
+{% endmarkdownConvert %}
+{% highlight "js" %}
 // Same-origin restraint is enabled by default.
 //
 // This example will ignore all requests to:
@@ -227,13 +227,14 @@ quicklink.listen({
     (uri, elem) => elem.hasAttribute('noprefetch')
   ]
 });
-```
-
+{% endhighlight %}
+{% markdownConvert %}
 You may also wish to ignore prefetches to URLs which contain a URL fragment (e.g. `index.html#top`). This can be useful if you (1) are using anchors to headings in a page or (2) have URL fragments setup for a single-page application, and which to avoid firing prefetches for similar URLs.
 
 Using `ignores` this can be achieved as follows:
 
-```js
+{% endmarkdownConvert %}
+{% highlight "js" %}
 quicklink.listen({
   ignores: [
     uri => uri.includes('#')
@@ -241,7 +242,8 @@ quicklink.listen({
     // or element matching: (uri, elem) => !!elem.hash
   ]
 });
-```
+{% endhighlight %}
+{% markdownConvert %}
 
 ## Browser Support
 
@@ -262,15 +264,14 @@ A `prefetch` method can be individually imported for use in other projects.<br>
 This method includes the logic to respect Data Saver and 2G connections. It also issues requests thru `fetch()`, XHRs, or `link[rel=prefetch]` depending on (a) the `isPriority` value and (b) the current browser's support.
 
 After installing `quicklink` as a dependency, you can use it as follows:
-
-```html
+{% endmarkdownConvert %}
+{% highlight "html" %}
 <script type="module">
   import { prefetch } from 'quicklink';
   prefetch(['1.html', '2.html']).catch(err => {
     // Handle own errors
   });
 </script>
-```
+{% endhighlight %}
 
-{% endmarkdownConvert %}
 {% endblock %}

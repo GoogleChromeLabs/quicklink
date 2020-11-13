@@ -12,6 +12,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.1",
     "html-minifier": "^4.0.0"
   }
 }

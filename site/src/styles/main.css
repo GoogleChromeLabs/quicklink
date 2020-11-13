@@ -99,7 +99,7 @@ p, ul {
 
 .page-header__navigation li {
   display: inline;
-  margin-right: 0.6rem;
+  margin: 6px 0px 0px 15px;
 }
 
 .page-header__navigation li:last-child {
@@ -223,11 +223,15 @@ main.page-main {
 }
 
 .secondary-font-color {
-  /* TODO: opt for font color */
-  color: hsl(330, 73%, 49%);
+  color: #fe8ec6;
+}
+
+.tertiary-font-color {
+  color: #d74b91;
 }
 
 main.page-main .heading {
+  letter-spacing: -1px;
   font-size: 1.5em;
   font-weight: 900;
   margin: 0;
@@ -258,7 +262,7 @@ main.page-main .heading em {
 
 @media (min-width: 600px) {
   main.page-main .heading {
-    font-size: 2em;
+    font-size: 2.1em;
     margin: 24px 0 18px 0;
   }
 
@@ -268,7 +272,7 @@ main.page-main .heading em {
   }
 
   .page-header__subtitle {
-    margin: 1em 0;
+    margin: 1.7em 0;
   }
 
   .page-header__logo-image {

@@ -1,9 +1,9 @@
 {
   "name": "quicklink",
-  "version": "2.0.0-alpha",
+  "version": "2.0.0",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time",
   "repository": "https://github.com/GoogleChromeLabs/quicklink.git",
-  "homepage": "https://github.com/GoogleChromeLabs/quicklink",
+  "homepage": "https://getquick.link/",
   "bugs": {
     "url": "https://github.com/GoogleChromeLabs/quicklink/issues"
   },
@@ -14,16 +14,22 @@
   "jsnext:main": "dist/quicklink.mjs",
   "umd:main": "dist/quicklink.umd.js",
   "unpkg": "dist/quicklink.umd.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "eslint src/*.mjs test/*.js demos/*.js",
     "lint-fix": "eslint src/*.mjs test/*.js --fix demos/*.js",
     "start": "http-server .",
-    "test": "yarn run build && mocha test/bootstrap.js --recursive test",
+    "test": "yarn run build-all && mocha test/bootstrap.js --recursive test",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
+    "build-plugin": "microbundle src/chunks.mjs --no-sourcemap --external none -o dist/react",
+    "build-all": "yarn run build && yarn run build-plugin && yarn run build-react-chunks",
     "prepare": "yarn run -s build",
+    "build-react-chunks": "./node_modules/.bin/babel src/react-chunks.js --out-file dist/react/hoc.js",
     "bundlesize": "bundlesize",
     "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
-    "release": "cross-var yarn run build -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
+    "release": "cross-var yarn run build-all -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
   },
   "keywords": [
     "prefetch",
@@ -34,10 +40,18 @@
     "speed"
   ],
   "dependencies": {
+    "route-manifest": "^1.0.0",
     "throttles": "^1.0.0"
   },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
   "devDependencies": {
-    "babel-preset-env": "^1.7.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
     "bundlesize": "^0.18.0",
     "chai": "^4.2.0",
     "conventional-changelog-cli": "^2.0.11",
@@ -48,7 +62,9 @@
     "lodash": "^4.17.11",
     "microbundle": "0.11.0",
     "mocha": "^6.2.2",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^2.0.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
   "bundlesize": [
     {

@@ -8,9 +8,9 @@
 }
 
 .snippet-for-copy {
-  border: 1px solid hsla(0, 0%, 0%, .15);
+  /* border: 1px solid hsla(0, 0%, 0%, .15); */
   border-radius: 1px;
-  background: hsla(0, 0%, 0%, .075);
+  /* background: hsla(0, 0%, 0%, .075); */
   margin: 10px 0;
   font-size: .95em;
 }

@@ -1,10 +1,10 @@
 {
   "title": "quicklink",
-  "subtitle": "Instant next-page navigations with prefetching",
+  "subtitle": "Instant next-page navigations",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time.",
   "logo": "/assets/images/logos/quicklink.svg",
   "quicklinkGithubURL": "https://github.com/GoogleChromeLabs/quicklink/",
-  "quicklinkVersion": "2.0.0-alpha",
+  "quicklinkVersion": "2.0.0",
   "quicklinkSizeLimit": "1KB",
   "bottomResource": {
     "caption": "View source on GitHub"
@@ -108,6 +108,24 @@
       "websiteUrl": "https://saintagnes.org/",
       "logoFileName": "saintagnes.org.png",
       "companyName": "St Agnes"
+    },
+    {
+      "websiteUrl": "https://www.newegg.com/",
+      "logoFileName": "newegg.com.png",
+      "companyName": "Newegg"
+    },
+    
+    {
+      "websiteUrl": "https://www.ray-ban.com/",
+      "logoFileName": "rayban.com.png",
+      "companyName": "Ray-Ban"
+    },
+
+    {
+      "websiteUrl": "https://www.oakley.com/",
+      "logoFileName": "oakley.com.png",
+      "companyName": "Oakley"
     }
+
   ]
 }

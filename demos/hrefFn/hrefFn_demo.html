@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Basic demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" media="screen" href="../../test/main.css" />
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+</head>
+<body>
+  <div class="screen">
+    <h1>Basic demo</h1>
+    <p>
+      <a href="2.html">Link 1</a>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+  </div>
+  <script src="../../dist/quicklink.umd.js"></script>
+  <script>
+    quicklink.listen({
+      el: document.querySelector('div.screen'),
+      // hrefFn will prevent quicklink to prefetch the "href" attribute URL
+      // and the returned value will be prefetched as a result.
+      hrefFn: function(element) {
+        return element.href.replace('html','json');
+      }
+    });
+  </script>
+
+  <script>
+    // Simple SPA-like page transition for demo purposes
+    var container = document.querySelector('div.screen'),
+      link = container.querySelector('a'),
+      title = container.querySelector('h1'),
+      paragraph = container.querySelector('p');
+
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var href = e.target.href.replace('html','json');
+      fetch(href)
+      .then(response => response.json())
+      .then(data => {
+        title.innerHTML = document.title = data.title;
+        paragraph.innerHTML = data.description;
+      });
+    }); 
+  </script>
+</body>
+</html>
