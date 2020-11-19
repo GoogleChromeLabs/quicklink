@@ -7,7 +7,7 @@ const globalVariables = _.pick(global, ['browser', 'expect']);
 const opts = {
   headless: true,
   slowMo: 100,
-  timeout: 20000,
+  timeout: 30000,
 };
 
 // expose variables
