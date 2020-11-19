@@ -31,9 +31,9 @@ const toPrefetch = new Set();
  * @return {Boolean}          If true, then it should be ignored
  */
 function isIgnored(node, filter) {
-  return Array.isArray(filter)
-    ? filter.some(x => isIgnored(node, x))
-    : (filter.test || filter).call(filter, node.href, node);
+  return Array.isArray(filter) ?
+    filter.some(x => isIgnored(node, x)) :
+    (filter.test || filter).call(filter, node.href, node);
 }
 
 /**
@@ -135,9 +135,9 @@ export function prefetch(url, isPriority, conn) {
           toPrefetch.add(str);
 
           return (isPriority ? priority : supported)(
-              new URL(str, location.href).toString()
+              new URL(str, location.href).toString(),
           );
         }
-      })
+      }),
   );
 }

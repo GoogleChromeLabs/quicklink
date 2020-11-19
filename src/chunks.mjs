@@ -14,7 +14,7 @@
  * limitations under the License.
 **/
 import throttle from 'throttles';
-import { priority, supported } from './prefetch.mjs';
+import {priority, supported} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
 // Cache of URLs we've prefetched
@@ -31,9 +31,9 @@ const toPrefetch = new Set();
  * @return {Boolean}          If true, then it should be ignored
  */
 function isIgnored(node, filter) {
-  return Array.isArray(filter)
-    ? filter.some(x => isIgnored(node, x))
-    : (filter.test || filter).call(filter, node.href, node);
+  return Array.isArray(filter) ?
+    filter.some(x => isIgnored(node, x)) :
+    (filter.test || filter).call(filter, node.href, node);
 }
 
 /**
@@ -99,7 +99,7 @@ export function listen(options) {
       }
     });
   }, {
-    timeout: options.timeout || 2000
+    timeout: options.timeout || 2000,
   });
 
   return function () {
@@ -131,16 +131,16 @@ export function prefetch(url, isPriority, conn) {
 
   // Dev must supply own catch()
   return Promise.all(
-    [].concat(url).map(str => {
-      if (!toPrefetch.has(str)) {
+      [].concat(url).map(str => {
+        if (!toPrefetch.has(str)) {
         // Add it now, regardless of its success
         // ~> so that we don't repeat broken links
-        toPrefetch.add(str);
+          toPrefetch.add(str);
 
-        return (isPriority ? priority : supported)(
-          new URL(str, location.href).toString()
-        );
-      }
-    })
+          return (isPriority ? priority : supported)(
+              new URL(str, location.href).toString(),
+          );
+        }
+      }),
   );
 }
