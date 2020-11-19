@@ -60,7 +60,7 @@
     "eslint-config-google": "^0.14.0",
     "http-server": "^0.12.0",
     "lodash": "^4.17.11",
-    "microbundle": "0.11.0",
+    "microbundle": "0.12.0",
     "mocha": "^6.2.2",
     "puppeteer": "^2.0.0",
     "react": "^16.12.0",
