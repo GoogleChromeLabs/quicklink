@@ -63,14 +63,13 @@ export function listen(options) {
 
   const [toAdd, isDone] = throttle(options.throttle || 1 / 0);
   const limit = options.limit || 1 / 0;
+  const delay = options.delay || 0;
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === "function" && options.hrefFn;
-
-  const delay = options.delay || 0;
 
   const addToThrottle = (entry) => {
     toAdd(() => {
@@ -83,28 +82,29 @@ export function listen(options) {
     });
   };
 
+  const dataAttrTimerId = "data-ql-timerid";
+
   const onEnter = (entry) => {
     const element = entry.target;
-    // Do not prefetch if will match/exceed limit
-    if (toPrefetch.size < limit) {
-      if (!delay) {
-        observer.unobserve(element);
-        addToThrottle(element);
-        return;
-      }
-      const timerId = setTimeout(() => {
-        observer.unobserve(element);
-        addToThrottle(element);
-      }, delay);
-      element.setAttribute("data-ql-timerid", timerId);
+    if (toPrefetch.size >= limit) {
+      observer.unobserve(element);
       return;
     }
-    observer.unobserve(element);
+    if (!delay) {
+      observer.unobserve(element);
+      addToThrottle(element);
+      return;
+    }
+    const timerId = setTimeout(() => {
+      observer.unobserve(element);
+      addToThrottle(element);
+    }, delay);
+    element.setAttribute(dataAttrTimerId, timerId);
   };
 
   const onExit = (entry) => {
     const element = entry.target;
-    const timerId = element.getAttribute("data-ql-timerid");
+    const timerId = element.getAttribute(dataAttrTimerId);
     if (timerId) {
       clearTimeout(timerId);
     }
