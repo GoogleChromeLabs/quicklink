@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-**/
+ **/
 import throttle from 'throttles';
 import {priority, supported} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
@@ -50,6 +50,7 @@ function isIgnored(node, filter) {
  * @param {Number} [options.timeout] - Timeout after which prefetching will occur
  * @param {Number} [options.throttle] - The concurrency limit for prefetching
  * @param {Number} [options.limit] - The total number of prefetches to allow
+ * @param {Number} [options.delay] - Time each link needs to stay inside viewport before prefetching (milliseconds)
  * @param {Function} [options.timeoutFn] - Custom timeout function
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
@@ -60,8 +61,9 @@ export function listen(options) {
   if (!options) options = {};
   if (!window.IntersectionObserver) return;
 
-  const [toAdd, isDone] = throttle(options.throttle || 1/0);
-  const limit = options.limit || 1/0;
+  const [toAdd, isDone] = throttle(options.throttle || 1 / 0);
+  const limit = options.limit || 1 / 0;
+  const delay = options.delay || 0;
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
@@ -69,21 +71,53 @@ export function listen(options) {
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
 
-  const observer = new IntersectionObserver(entries => {
+  const process = element => {
+    toAdd(() => {
+      prefetch(hrefFn ? hrefFn(element) : element.href, options.priority).then(isDone).catch(err => {
+        isDone(); if (options.onError) options.onError(err);
+      });
+    });
+  };
+
+  const dataAttrTimerId = 'data-ql-timerid';
+
+  const onEnter = entry => {
+    const linkEl = entry.target;
+    if (toPrefetch.size >= limit) {
+      observer.unobserve(linkEl);
+      return;
+    }
+    if (!delay) {
+      observer.unobserve(linkEl);
+      process(linkEl);
+      return;
+    }
+    const timerId = setTimeout(() => {
+      observer.unobserve(linkEl);
+      process(linkEl);
+    }, delay);
+    linkEl.setAttribute(dataAttrTimerId, timerId);
+  };
+
+  const onExit = entry => {
+    const element = entry.target;
+    const timerId = element.getAttribute(dataAttrTimerId);
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+  };
+
+  const intersectionCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        observer.unobserve(entry = entry.target);
-        // Do not prefetch if will match/exceed limit
-        if (toPrefetch.size < limit) {
-          toAdd(() => {
-            prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
-              isDone(); if (options.onError) options.onError(err);
-            });
-          });
-        }
+        onEnter(entry);
+        return;
       }
+      onExit(entry);
     });
-  });
+  };
+
+  const observer = new IntersectionObserver(intersectionCallback);
 
   timeoutFn(() => {
     // Find all links & Connect them to IO if allowed
@@ -109,12 +143,12 @@ export function listen(options) {
 
 
 /**
-* Prefetch a given URL with an optional preferred fetch priority
-* @param {String} url - the URL to fetch
-* @param {Boolean} [isPriority] - if is "high" priority
-* @param {Object} [conn] - navigator.connection (internal)
-* @return {Object} a Promise
-*/
+ * Prefetch a given URL with an optional preferred fetch priority
+ * @param {String} url - the URL to fetch
+ * @param {Boolean} [isPriority] - if is "high" priority
+ * @param {Object} [conn] - navigator.connection (internal)
+ * @return {Object} a Promise
+ */
 export function prefetch(url, isPriority, conn) {
   if (conn = navigator.connection) {
     // Don't prefetch if using 2G or if Save-Data is enabled.
@@ -128,16 +162,16 @@ export function prefetch(url, isPriority, conn) {
 
   // Dev must supply own catch()
   return Promise.all(
-      [].concat(url).map(str => {
-        if (!toPrefetch.has(str)) {
+    [].concat(url).map(str => {
+      if (!toPrefetch.has(str)) {
         // Add it now, regardless of its success
         // ~> so that we don't repeat broken links
-          toPrefetch.add(str);
+        toPrefetch.add(str);
 
-          return (isPriority ? priority : supported)(
-              new URL(str, location.href).toString()
-          );
-        }
-      })
+        return (isPriority ? priority : supported)(
+          new URL(str, location.href).toString()
+      );
+      }
+    })
   );
 }
