@@ -71,9 +71,9 @@ export function listen(options) {
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === "function" && options.hrefFn;
 
-  const addToThrottle = (entry) => {
+  const process = (element) => {
     toAdd(() => {
-      prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority)
+      prefetch(hrefFn ? hrefFn(element) : element.href, options.priority)
         .then(isDone)
         .catch((err) => {
           isDone();
@@ -85,21 +85,21 @@ export function listen(options) {
   const dataAttrTimerId = "data-ql-timerid";
 
   const onEnter = (entry) => {
-    const element = entry.target;
+    const linkEl = entry.target;
     if (toPrefetch.size >= limit) {
-      observer.unobserve(element);
+      observer.unobserve(linkEl);
       return;
     }
     if (!delay) {
-      observer.unobserve(element);
-      addToThrottle(element);
+      observer.unobserve(linkEl);
+      process(linkEl);
       return;
     }
     const timerId = setTimeout(() => {
-      observer.unobserve(element);
-      addToThrottle(element);
+      observer.unobserve(linkEl);
+      process(linkEl);
     }, delay);
-    element.setAttribute(dataAttrTimerId, timerId);
+    linkEl.setAttribute(dataAttrTimerId, timerId);
   };
 
   const onExit = (entry) => {
