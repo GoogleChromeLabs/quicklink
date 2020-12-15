@@ -8,6 +8,7 @@ const opts = {
   headless: true,
   slowMo: 100,
   timeout: 20000,
+  ignoreDefaultArgs: ["--disable-extensions --ignore-certificate-errors"],
 };
 
 // expose variables
