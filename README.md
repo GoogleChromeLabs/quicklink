@@ -119,6 +119,12 @@ Default: `document.body`
 
 The DOM element to observe for in-viewport links to prefetch.
 
+#### options.delay
+Type: `Number`<br>
+Default: `0`
+
+The _amount of time_ each link needs to stay inside the viewport before being prefetched, in milliseconds.
+
 #### options.limit
 Type: `Number`<br>
 Default: `Infinity`
