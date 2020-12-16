@@ -49,6 +49,7 @@ function isIgnored(node, filter) {
  * @param {Array|RegExp|Function} [options.ignores] - Custom filter(s) that run after origin checks
  * @param {Number} [options.timeout] - Timeout after which prefetching will occur
  * @param {Number} [options.throttle] - The concurrency limit for prefetching
+ * @param {Number} [options.threshold] - The area percentage of each link that must have entered the viewport to be fetched
  * @param {Number} [options.limit] - The total number of prefetches to allow
  * @param {Number} [options.delay] - Time each link needs to stay inside viewport before prefetching (milliseconds)
  * @param {Function} [options.timeoutFn] - Custom timeout function
@@ -64,6 +65,7 @@ export function listen(options) {
   const [toAdd, isDone] = throttle(options.throttle || 1 / 0);
   const limit = options.limit || 1 / 0;
   const delay = options.delay || 0;
+  const threshold = options.threshold || 0;
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
@@ -117,7 +119,7 @@ export function listen(options) {
     });
   };
 
-  const observer = new IntersectionObserver(intersectionCallback);
+  const observer = new IntersectionObserver(intersectionCallback, { threshold });
 
   timeoutFn(() => {
     // Find all links & Connect them to IO if allowed
