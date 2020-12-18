@@ -50,6 +50,7 @@ function isIgnored(node, filter) {
  * @param {Number} [options.timeout] - Timeout after which prefetching will occur
  * @param {Number} [options.throttle] - The concurrency limit for prefetching
  * @param {Number} [options.limit] - The total number of prefetches to allow
+ * @param {Number} [options.delay] - Time each link needs to stay inside viewport before prefetching (milliseconds)
  * @param {Function} [options.timeoutFn] - Custom timeout function
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
@@ -65,22 +66,49 @@ export function listen(options) {
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
+  const delay = options.delay || 0;
+  const hrefsInViewport = [];
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
 
+  const setTimeoutIfDelay = (callback, delay) => {
+    if (!delay) {
+      callback();
+      return;
+    }
+    setTimeout(callback, delay);
+  }
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
+      // On enter
       if (entry.isIntersecting) {
-        observer.unobserve(entry = entry.target);
-        // Do not prefetch if will match/exceed limit
-        if (toPrefetch.size < limit) {
-          toAdd(() => {
-            prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
-              isDone(); if (options.onError) options.onError(err);
+        entry = entry.target;
+        // Adding href to array of hrefsInViewport
+        hrefsInViewport.push(entry.href);
+
+        // Setting timeout
+        setTimeoutIfDelay(() => {
+          const found = hrefsInViewport.indexOf(entry.href) > -1;
+          if (!found) return;
+
+          observer.unobserve(entry);
+          // Do not prefetch if will match/exceed limit
+          if (toPrefetch.size < limit) {
+            toAdd(() => {
+              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
+                isDone(); if (options.onError) options.onError(err);
+              });
             });
-          });
-        }
+          }
+        }, delay);
+      }
+      // On exit
+      else {
+        entry = entry.target;
+        const index = hrefsInViewport.indexOf(entry.href);
+        hrefsInViewport.splice(index);
       }
     });
   });
