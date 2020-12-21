@@ -80,56 +80,62 @@ export function listen(options) {
       return;
     }
     setTimeout(callback, delay);
-  }
+  };
+
+  const onEnter = link => {
+    hrefsInViewport.push(link.href);
+    setTimeoutIfDelay(() => {
+      const found = hrefsInViewport.indexOf(link.href) > -1;
+      if (!found) return;
+
+      observer.unobserve(link);
+      // Do not prefetch if will match/exceed limit
+      if (toPrefetch.size < limit) {
+        toAdd(() => {
+          prefetch(hrefFn ? hrefFn(link) : link.href, options.priority)
+            .then(isDone)
+            .catch(err => {
+              isDone();
+              if (options.onError) options.onError(err);
+            });
+        });
+      }
+    }, delay);
+  };
+
+  const onExit = link => {
+    const index = hrefsInViewport.indexOf(link.href);
+    hrefsInViewport.splice(index);
+  };
 
   const intersectionCallback = entries => {
     entries.forEach(entry => {
-      // On enter
-      if (entry.isIntersecting) {
-        entry = entry.target;
-        // Adding href to array of hrefsInViewport
-        hrefsInViewport.push(entry.href);
-
-        // Setting timeout
-        setTimeoutIfDelay(() => {
-          const found = hrefsInViewport.indexOf(entry.href) > -1;
-          if (!found) return;
-
-          observer.unobserve(entry);
-          // Do not prefetch if will match/exceed limit
-          if (toPrefetch.size < limit) {
-            toAdd(() => {
-              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
-                isDone(); if (options.onError) options.onError(err);
-              });
-            });
-          }
-        }, delay);
-      }
-      // On exit
-      else {
-        entry = entry.target;
-        const index = hrefsInViewport.indexOf(entry.href);
-        hrefsInViewport.splice(index);
-      }
+      const link = entry.target;
+      const onFn = entry.isIntersecting ? onEnter : onExit;
+      onFn(link);
     });
   };
 
-  const observer = new IntersectionObserver(intersectionCallback, { threshold });
-
-  timeoutFn(() => {
-    // Find all links & Connect them to IO if allowed
-    (options.el || document).querySelectorAll('a').forEach(link => {
-      // If the anchor matches a permitted origin
-      // ~> A `[]` or `true` means everything is allowed
-      if (!allowed.length || allowed.includes(link.hostname)) {
-        // If there are any filters, the link must not match any of them
-        isIgnored(link, ignores) || observer.observe(link);
-      }
-    });
-  }, {
-    timeout: options.timeout || 2000,
+  const observer = new IntersectionObserver(intersectionCallback, {
+    threshold,
   });
+
+  timeoutFn(
+    () => {
+      // Find all links & Connect them to IO if allowed
+      (options.el || document).querySelectorAll('a').forEach(link => {
+        // If the anchor matches a permitted origin
+        // ~> A `[]` or `true` means everything is allowed
+        if (!allowed.length || allowed.includes(link.hostname)) {
+          // If there are any filters, the link must not match any of them
+          isIgnored(link, ignores) || observer.observe(link);
+        }
+      });
+    },
+    {
+      timeout: options.timeout || 2000,
+    }
+  );
 
   return function () {
     // wipe url list
@@ -148,13 +154,15 @@ export function listen(options) {
  * @return {Object} a Promise
  */
 export function prefetch(url, isPriority, conn) {
-  if (conn = navigator.connection) {
+  if ((conn = navigator.connection)) {
     // Don't prefetch if using 2G or if Save-Data is enabled.
     if (conn.saveData) {
       return Promise.reject(new Error('Cannot prefetch, Save-Data is enabled'));
     }
     if (/2g/.test(conn.effectiveType)) {
-      return Promise.reject(new Error('Cannot prefetch, network conditions are poor'));
+      return Promise.reject(
+        new Error('Cannot prefetch, network conditions are poor')
+      );
     }
   }
 
@@ -168,7 +176,7 @@ export function prefetch(url, isPriority, conn) {
 
         return (isPriority ? priority : supported)(
           new URL(str, location.href).toString()
-      );
+        );
       }
     })
   );
