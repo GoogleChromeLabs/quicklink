@@ -69,53 +69,49 @@ export function listen(options) {
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
+  const hrefsInViewport = [];
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
 
-  const process = element => {
-    toAdd(() => {
-      prefetch(hrefFn ? hrefFn(element) : element.href, options.priority).then(isDone).catch(err => {
-        isDone(); if (options.onError) options.onError(err);
-      });
-    });
-  };
-
-  const dataAttrTimerId = 'data-ql-timerid';
-
-  const onEnter = entry => {
-    const linkEl = entry.target;
-    if (toPrefetch.size >= limit) {
-      observer.unobserve(linkEl);
-      return;
-    }
+  const setTimeoutIfDelay = (callback, delay) => {
     if (!delay) {
-      observer.unobserve(linkEl);
-      process(linkEl);
+      callback();
       return;
     }
-    const timerId = setTimeout(() => {
-      observer.unobserve(linkEl);
-      process(linkEl);
-    }, delay);
-    linkEl.setAttribute(dataAttrTimerId, timerId);
-  };
-
-  const onExit = entry => {
-    const element = entry.target;
-    const timerId = element.getAttribute(dataAttrTimerId);
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-  };
+    setTimeout(callback, delay);
+  }
 
   const intersectionCallback = entries => {
     entries.forEach(entry => {
+      // On enter
       if (entry.isIntersecting) {
-        onEnter(entry);
-        return;
+        entry = entry.target;
+        // Adding href to array of hrefsInViewport
+        hrefsInViewport.push(entry.href);
+
+        // Setting timeout
+        setTimeoutIfDelay(() => {
+          const found = hrefsInViewport.indexOf(entry.href) > -1;
+          if (!found) return;
+
+          observer.unobserve(entry);
+          // Do not prefetch if will match/exceed limit
+          if (toPrefetch.size < limit) {
+            toAdd(() => {
+              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
+                isDone(); if (options.onError) options.onError(err);
+              });
+            });
+          }
+        }, delay);
       }
-      onExit(entry);
+      // On exit
+      else {
+        entry = entry.target;
+        const index = hrefsInViewport.indexOf(entry.href);
+        hrefsInViewport.splice(index);
+      }
     });
   };
 
