@@ -111,8 +111,7 @@ export function listen(options) {
   const intersectionCallback = entries => {
     entries.forEach(entry => {
       const link = entry.target;
-      const onFn = entry.isIntersecting ? onEnter : onExit;
-      onFn(link);
+      entry.isIntersecting ? onEnter(link) : onExit(link);
     });
   };
 
