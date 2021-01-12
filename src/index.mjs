@@ -105,6 +105,7 @@ export function listen(options) {
 
   const onExit = link => {
     const index = hrefsInViewport.indexOf(link.href);
+    if (index === -1) return;
     hrefsInViewport.splice(index);
   };
 
