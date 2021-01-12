@@ -108,7 +108,9 @@ export function listen(options) {
       else {
         entry = entry.target;
         const index = hrefsInViewport.indexOf(entry.href);
-        hrefsInViewport.splice(index);
+        if (index > -1) {
+          hrefsInViewport.splice(index);
+        }
       }
     });
   });
