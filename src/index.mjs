@@ -90,8 +90,8 @@ export function listen(options) {
 
         // Setting timeout
         setTimeoutIfDelay(() => {
-          const found = hrefsInViewport.indexOf(entry.href) > -1;
-          if (!found) return;
+          // Do not prefetch if not found in viewport
+          if (hrefsInViewport.indexOf(entry.href) === -1) return;
 
           observer.unobserve(entry);
           // Do not prefetch if will match/exceed limit
