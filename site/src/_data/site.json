@@ -60,6 +60,16 @@
   ],
   "trustedByLogos": [
     {
+      "websiteUrl": "https://www.ray-ban.com/",
+      "logoFileName": "rayban.com.png",
+      "companyName": "Ray-Ban"
+    },
+    {
+      "websiteUrl": "https://www.oakley.com/",
+      "logoFileName": "oakley.com.png",
+      "companyName": "Oakley"
+    },
+    {
       "websiteUrl": "https://www.syfy.com/",
       "logoFileName": "syfy.com.png",
       "companyName": "SYFY WIRE"
