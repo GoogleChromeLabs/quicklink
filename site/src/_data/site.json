@@ -43,6 +43,11 @@
       "url": "https://www.drupal.org/project/quicklink/"
     },
     {
+      "title": "magento",
+      "logoFileName": "magento.svg",
+      "url": "https://marketplace.magento.com/rafaelcg-magento2-quicklink.html"
+    },
+    {
       "title": "react",
       "logoFileName": "react.svg",
       "url": "https://github.com/HOUCe/react-quicklink-component/"
