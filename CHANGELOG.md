@@ -4,6 +4,10 @@ This release includes support for a new `threshold` option [PR](https://github.c
 
 Thanks to [@verlock](https://github.com/verlok) from YNAP for this contribution.
 
+* Added `threshold` option to allow users select the % of link areas that entered the viewport before  ([d3746e1](https://github.com/GoogleChromeLabs/quicklink/commit/d3746e1)), closes [#214](https://github.com/GoogleChromeLabs/quicklink/issues/214)
+* Add Magento Quicklink module (Readme + Site) (#216) ([c77e057](https://github.com/GoogleChromeLabs/quicklink/commit/c77e057)), closes [#216](https://github.com/GoogleChromeLabs/quicklink/issues/216)
+* Instructions to debug Quicklink ([2b3dc21](https://github.com/GoogleChromeLabs/quicklink/commit/2b3dc21))
+
 ## 2.1.0 (2021-02-07)
 
 * [docs] Add React SPA demos to repo and site (#179) ([179cb56](https://github.com/GoogleChromeLabs/quicklink/commit/179cb56)), closes [#179](https://github.com/GoogleChromeLabs/quicklink/issues/179)
@@ -18,6 +22,7 @@ Thanks to [@verlock](https://github.com/verlok) from YNAP for this contribution.
 * [docs] refactor usage docs syntax highlighting ([25367f4](https://github.com/GoogleChromeLabs/quicklink/commit/25367f4))
 * [docs] remainder of syntax highlighting fixes ([cf32a85](https://github.com/GoogleChromeLabs/quicklink/commit/cf32a85))
 * [docs] remove highlightjs ([7ff8c8f](https://github.com/GoogleChromeLabs/quicklink/commit/7ff8c8f))
+* [docs] Update CHANGELOG ([c4a4726](https://github.com/GoogleChromeLabs/quicklink/commit/c4a4726))
 * [docs] various style theme improvements ([06786fb](https://github.com/GoogleChromeLabs/quicklink/commit/06786fb))
 * [feat] (options): Add a `hrefFn` option to build the URL to prefetch. (#201) ([ee072d4](https://github.com/GoogleChromeLabs/quicklink/commit/ee072d4)), closes [#201](https://github.com/GoogleChromeLabs/quicklink/issues/201)
 * [feat] `delay` option to reduce impact on CDNs and servers [alternative without data-attributes] (#2 ([5cdf569](https://github.com/GoogleChromeLabs/quicklink/commit/5cdf569)), closes [#217](https://github.com/GoogleChromeLabs/quicklink/issues/217)
@@ -26,6 +31,7 @@ Thanks to [@verlock](https://github.com/verlok) from YNAP for this contribution.
 * [infra] bump version to 2.1.0 ([81232e8](https://github.com/GoogleChromeLabs/quicklink/commit/81232e8))
 * Added Ray-Ban and Oakley from Luxxotica to trustedByLogos section (#202) ([b4494b0](https://github.com/GoogleChromeLabs/quicklink/commit/b4494b0)), closes [#202](https://github.com/GoogleChromeLabs/quicklink/issues/202)
 * Correct typo, duplicate "passing" (#185) ([932f655](https://github.com/GoogleChromeLabs/quicklink/commit/932f655)), closes [#185](https://github.com/GoogleChromeLabs/quicklink/issues/185)
+* Fix issues typo in 'network-idle.js' (#218) ([534e7b3](https://github.com/GoogleChromeLabs/quicklink/commit/534e7b3)), closes [#218](https://github.com/GoogleChromeLabs/quicklink/issues/218)
 * New demo page (#205) ([5205d62](https://github.com/GoogleChromeLabs/quicklink/commit/5205d62)), closes [#205](https://github.com/GoogleChromeLabs/quicklink/issues/205)
 * update homepage url in package.json (#184) ([172275b](https://github.com/GoogleChromeLabs/quicklink/commit/172275b)), closes [#184](https://github.com/GoogleChromeLabs/quicklink/issues/184)
 * Updating broken link ([224df77](https://github.com/GoogleChromeLabs/quicklink/commit/224df77))
