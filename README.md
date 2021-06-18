@@ -131,6 +131,12 @@ Default: `Infinity`
 
 The _total_ requests that can be prefetched while observing the `options.el` container.
 
+#### options.threshold
+Type: `Number`<br>
+Default: `0`
+
+The _area percentage_ of each link that must have entered the viewport to be fetched, in its decimal form (e.g. 0.25 = 25%).
+
 #### options.throttle
 Type: `Number`<br>
 Default: `Infinity`
