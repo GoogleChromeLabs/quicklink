@@ -1,3 +1,9 @@
+## 2.2.0 (2021-06-18)
+
+This release includes support for a new `threshold` option [PR](https://github.com/GoogleChromeLabs/quicklink/pull/214) to allow users select the % of link areas that entered the viewport before prefetching. This can reduce the number of links to prefetch at a time, and ultimately reduce the impact on CDNs and servers. 
+
+Thanks to [@verlock](https://github.com/verlok) from YNAP for this contribution.
+
 ## 2.1.0 (2021-02-07)
 
 * [docs] Add React SPA demos to repo and site (#179) ([179cb56](https://github.com/GoogleChromeLabs/quicklink/commit/179cb56)), closes [#179](https://github.com/GoogleChromeLabs/quicklink/issues/179)
