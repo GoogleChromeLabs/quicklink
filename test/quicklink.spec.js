@@ -274,6 +274,34 @@ describe('quicklink tests', function () {
     expect(ours).to.include(`https://example.com/?url=${server}/3.html`);
     expect(ours).to.include(`https://example.com/?url=${server}/4.html`);
   });
+  
+  it('should delay prefetch for in-viewport links correctly (UMD)', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-delay.html`);
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    expect(responseURLs).to.include(`${server}/1.html`);
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).to.include(`${server}/3.html`);
+    // Scroll down and up
+    await page.evaluate(_ => {
+      window.scrollBy(0, window.innerHeight);
+    });
+    await page.waitFor(100);
+    await page.evaluate(_ => {
+      window.scrollBy(0, -window.innerHeight);
+    });
+    expect(responseURLs).not.to.include(`${server}/4.html`);
+    // Scroll down and test
+    await page.evaluate(_ => {
+      window.scrollBy(0, window.innerHeight);
+    });
+    await page.waitFor(200);
+    expect(responseURLs).to.include(`${server}/4.html`);
+  });
 
   it('should consider threshold option before prefetching (UMD)', async function () {
     const responseURLs = [];

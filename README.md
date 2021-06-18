@@ -113,6 +113,12 @@ Returns: `Function`
 
 A "reset" function is returned, which will empty the active `IntersectionObserver` and the cache of URLs that have already been prefetched. This can be used between page navigations and/or when significant DOM changes have occurred.
 
+#### options.delay
+Type: `Number`<br>
+Default: `0`
+
+The _amount of time_ each link needs to stay inside the viewport before being prefetched, in milliseconds.
+
 #### options.el
 Type: `HTMLElement`<br>
 Default: `document.body`
