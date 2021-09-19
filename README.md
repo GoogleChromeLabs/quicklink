@@ -89,7 +89,7 @@ Wrap your routes with the `withQuicklink()` HOC.
 
 Example:
 
-```sh
+```jsx
 import { withQuicklink } from 'quicklink/dist/react/hoc.js';
 
 const options = {
