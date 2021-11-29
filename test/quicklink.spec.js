@@ -208,7 +208,7 @@ describe('quicklink tests', function () {
     await page.goto(`${server}/test-prefetch-duplicate-shared.html`);
     await page.waitFor(1000);
 
-    // count occurences of our link
+    // count occurrences of our link
     const target = responseURLs.filter(x => x === `${server}/2.html`);
     expect(target.length).to.equal(1);
   });
