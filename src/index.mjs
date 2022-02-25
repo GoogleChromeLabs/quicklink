@@ -61,7 +61,8 @@ function isIgnored(node, filter) {
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
  *                                             If it's not a valid function, then it will use the entry href.
- * @param {Boolean|String|URLPattern|String} [options.prerender] - Option to use prerendering and the URL(s)/URLPattern(s) that can be prerendered
+ * @param {Boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
+ * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
  * @return {Function}
  */
 export function listen(options) {
@@ -166,7 +167,7 @@ export function listen(options) {
 }
 
 /**
-* Prerender a given URL with an optional preferred fetch priority
+* Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
 * @param {Object} [conn] - navigator.connection (internal)
