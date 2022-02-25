@@ -34,12 +34,26 @@ export function isSameOrigin(str){
  * @return {Object} a promise
  */
 export function addSpeculationRules(urlsToPrerender){
-
-  return new Promise((resolve, reject, specScript) => {
+  return new Promise( (resolve, reject, specScript) => {
     specScript = document.createElement('script');
     specScript.type = 'speculationrules';
     specScript.text = '{"prerender":[{"source": "list","urls": ["'+Array.from(urlsToPrerender).join('","')+'"]}]}';
     document.head.appendChild(specScript);
   });
-  
+}
+
+/**
+ * Check whether UA supports Speculation Rules API
+ * @return {Boolean} whether UA has support for Speculation Rules API
+ */
+export function hasSpecRulesSupport(){
+  return HTMLScriptElement.supports('speculationrules');
+}
+
+/**
+ * Check whether Spec Rules is already defined in the document
+ * @return {Boolean} whether Spec Rules exists/already defined
+ */
+export function isSpecRulesExists(){
+  return document.querySelector('script[type="speculationrules"]');
 }
