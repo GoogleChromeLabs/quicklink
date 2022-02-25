@@ -104,7 +104,8 @@ export function listen(options) {
   const shouldOnlyPrerender = options.prerender || false;
   shouldPrerenderAndPrefetch = options.prerenderAndPrefetch || false;
   
-
+  const prerenderLimit = 1;
+  
   const setTimeoutIfDelay = (callback, delay) => {
     if (!delay) {
       callback();
@@ -133,7 +134,7 @@ export function listen(options) {
           //&& no link has been prerendered before (no spec rules defined)
           //--> we can drop toPrerender.size checking since it will be handled by spec rules check in prerender function but will be less efficient
           if(shouldPrerenderAndPrefetch || shouldOnlyPrerender){
-             if(toPrerender.size <= 0){
+             if(toPrerender.size < prerenderLimit){
                 prerender(hrefFn ? hrefFn(entry) : entry.href).catch(err => {
                     if (options.onError) options.onError(err); else throw err;
                 });
