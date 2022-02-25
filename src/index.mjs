@@ -129,23 +129,20 @@ export function listen(options) {
           observer.unobserve(entry);
           
           //prerender, if..
-          //either it's the prerender + prefetch mode && no link has been prerendered before (no spec rules defined)
-          //or it's prerender *only* mode && no link has been prefetched && no link has been prerendered before (no spec rules defined)
+          //either it's the prerender + prefetch mode or it's prerender *only* mode
+          //&& no link has been prerendered before (no spec rules defined)
           //--> we can drop toPrerender.size checking since it will be handled by spec rules check in prerender function but will be less efficient
-          //if((shouldPrerenderAndPrefetch || (shouldOnlyPrerender && toPrefetch.size <=0))
-          //   && toPrerender.size <= 0){
           if(shouldPrerenderAndPrefetch || shouldOnlyPrerender){
              if(toPrerender.size <= 0){
                 prerender(hrefFn ? hrefFn(entry) : entry.href).catch(err => {
                     if (options.onError) options.onError(err); else throw err;
                 });
+                return;
              }
-             //return;
           }
           
           // Do not prefetch if will match/exceed limit and user has not switched to prerender mode only
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
-          //if (toPrefetch.size < limit) {
             toAdd(() => {
               prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
                 isDone(); if (options.onError) options.onError(err);
