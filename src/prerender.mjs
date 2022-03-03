@@ -39,6 +39,7 @@ export function addSpeculationRules(urlsToPrerender){
     specScript.type = 'speculationrules';
     specScript.text = '{"prerender":[{"source": "list","urls": ["'+Array.from(urlsToPrerender).join('","')+'"]}]}';
     document.head.appendChild(specScript);
+    resolve();
   });
 }
 
