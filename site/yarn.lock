@@ -2269,6 +2269,11 @@ path-type@^1.0.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
+picocolors@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-0.2.1.tgz#570670f793646851d1ba135996962abad587859f"
+  integrity sha512-cMlDqaLEqfSaW8Z7N5Jw+lyIW869EzT73/F5lhtY9cLGoVxSXznfgfXMO0Z5K0o0Q2TkTXq+0KFsdnSe3jDViA==
+
 pify@^2.0.0, pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
@@ -2313,12 +2318,12 @@ postcss-values-parser@^1.5.0:
     uniq "^1.0.1"
 
 postcss@^7.0.2:
-  version "7.0.23"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.23.tgz#9f9759fad661b15964f3cfc3140f66f1e05eadc1"
+  version "7.0.39"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.39.tgz#9624375d965630e2e1f2c02a935c82a59cb48309"
+  integrity sha512-yioayjNbHn6z1/Bywyb2Y4s3yvDAeXGOyxqD+LnVOinq6Mdmd++SW2wUNVzavyyHxd6+DxzWGIuosg6P1Rj8uA==
   dependencies:
-    chalk "^2.4.2"
+    picocolors "^0.2.1"
     source-map "^0.6.1"
-    supports-color "^6.1.0"
 
 precinct@^5.3.1:
   version "5.3.1"
@@ -3037,12 +3042,6 @@ supports-color@^2.0.0:
 supports-color@^5.3.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
-  dependencies:
-    has-flag "^3.0.0"
-
-supports-color@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-6.1.0.tgz#0764abc69c63d5ac842dd4867e8d025e880df8f3"
   dependencies:
     has-flag "^3.0.0"
 
