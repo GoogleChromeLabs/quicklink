@@ -415,7 +415,6 @@ Certain features have layered support:
 
 * The [Network Information API](https://wicg.github.io/netinfo/), which is used to check if the user has a slow effective connection type (via `navigator.connection.effectiveType`) is only available in [Chrome 61+ and Opera 57+](https://caniuse.com/#feat=netinfo)
 * If opting for `{priority: true}` and the [Fetch API](https://fetch.spec.whatwg.org/) isn't available, XHR will be used instead.
-* Prerendering using Speculative Rules API can be experimented on Chrome >= 94 on any platform by enabling the experimental flag `chrome://flags/#enable-prerender2` for local development. Live testing is available for Chrome for Android by signing up for the [origin trial](https://developer.chrome.com/origintrials/#/view_trial/1325184190353768449) and adding the [origin trial meta tag](https://github.com/WICG/nav-speculation/blob/main/same-origin-chrome-origin-trial.md#origin-trial-registration).
 
 ## Using the prefetcher directly
 

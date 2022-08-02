@@ -47,13 +47,13 @@ function isIgnored(node, filter) {
  * @param  {NetworkInformation}  conn    The connection information to be checked
  * @return {Promise}  reject is the constrainst are met or resolved otherwise
  */
-function checkConnection (conn){
+function checkConnection (conn) {
   if (conn) {
     // Don't pre* if using 2G or if Save-Data is enabled.
     if (conn.saveData) {
       return Promise.reject(new Error('Save-Data is enabled'));
     }
-    if (/3g/.test(conn.effectiveType)) {
+    if (/2g/.test(conn.effectiveType)) {
       return Promise.reject(new Error('network conditions are poor'));
     }
   }
@@ -203,7 +203,7 @@ export function prefetch(url, isPriority, conn) {
     return Promise.reject(new Error('Cannot prefetch, '+err.message));
   });
   
-  if(toPrerender.size > 0 && !shouldPrerenderAndPrefetch){
+  if(toPrerender.size > 0 && !shouldPrerenderAndPrefetch) {
     console.warn('[Warning] You are using both prefetching and prerendering on the same document');
   }
 
@@ -229,7 +229,7 @@ export function prefetch(url, isPriority, conn) {
 * @param {Object} [conn] - navigator.connection (internal)
 * @return {Object} a Promise
 */
-export function prerender(urls, conn){
+export function prerender(urls, conn) {
   checkConnection(conn = navigator.connection).catch(err => {
     return Promise.reject(new Error('Cannot prerender, '+err.message));
   });

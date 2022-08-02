@@ -21,8 +21,8 @@
  * @param {string} str - the URL to check
  * @return {Boolean} true for same origin url
  */
-export function isSameOrigin(str){
-  if(typeof str === 'string' && window.location.origin !== new URL(str,window.location.origin).origin){
+export function isSameOrigin(str) {
+  if(typeof str === 'string' && window.location.origin !== new URL(str,window.location.origin).origin) {
       throw str;
   }
   return true;
@@ -33,9 +33,9 @@ export function isSameOrigin(str){
  * @param {Set} toPrerender - the URLs to add to speculation rules
  * @return {Object} a promise
  */
-export function addSpeculationRules(urlsToPrerender){
-  return new Promise( (resolve, reject, specScript) => {
-    specScript = document.createElement('script');
+export function addSpeculationRules(urlsToPrerender) {
+  return new Promise( (resolve, reject) => {
+    let specScript = document.createElement('script');
     specScript.type = 'speculationrules';
     specScript.text = '{"prerender":[{"source": "list","urls": ["'+Array.from(urlsToPrerender).join('","')+'"]}]}';
     document.head.appendChild(specScript);
@@ -47,7 +47,7 @@ export function addSpeculationRules(urlsToPrerender){
  * Check whether UA supports Speculation Rules API
  * @return {Boolean} whether UA has support for Speculation Rules API
  */
-export function hasSpecRulesSupport(){
+export function hasSpecRulesSupport() {
   return HTMLScriptElement.supports('speculationrules');
 }
 
@@ -55,6 +55,6 @@ export function hasSpecRulesSupport(){
  * Check whether Spec Rules is already defined in the document
  * @return {Boolean} whether Spec Rules exists/already defined
  */
-export function isSpecRulesExists(){
+export function isSpecRulesExists() {
   return document.querySelector('script[type="speculationrules"]');
 }
