@@ -51,14 +51,14 @@ function checkConnection (conn) {
   if (conn) {
     // Don't pre* if using 2G or if Save-Data is enabled.
     if (conn.saveData) {
-      return Promise.reject(new Error('Save-Data is enabled'));
+      return new Error('Save-Data is enabled');
     }
     if (/2g/.test(conn.effectiveType)) {
-      return Promise.reject(new Error('network conditions are poor'));
+      return new Error('network conditions are poor');
     }
   }
   
-  return Promise.resolve(true);
+  return true;
 }
 
 /**
@@ -199,9 +199,10 @@ export function listen(options) {
 * @return {Object} a Promise
 */
 export function prefetch(url, isPriority, conn) {
-  checkConnection(conn = navigator.connection).catch(err => {
-    return Promise.reject(new Error('Cannot prefetch, '+err.message));
-  });
+  let chkConn = checkConnection(conn = navigator.connection);
+  if(chkConn instanceof Error) {
+    return Promise.reject(new Error('Cannot prefetch, '+chkConn.message));
+  }
   
   if(toPrerender.size > 0 && !shouldPrerenderAndPrefetch) {
     console.warn('[Warning] You are using both prefetching and prerendering on the same document');
@@ -230,9 +231,10 @@ export function prefetch(url, isPriority, conn) {
 * @return {Object} a Promise
 */
 export function prerender(urls, conn) {
-  checkConnection(conn = navigator.connection).catch(err => {
-    return Promise.reject(new Error('Cannot prerender, '+err.message));
-  });
+  let chkConn = checkConnection(conn = navigator.connection);
+  if(chkConn instanceof Error) {
+    return Promise.reject(new Error('Cannot prerender, '+chkConn.message));
+  }
   
   // prerendering preconditions:
   // 1) whether UA supports spec rules.. If not, fallback to prefetch
