@@ -240,7 +240,7 @@ export function prerender(urls, conn) {
   // 1) whether UA supports spec rules.. If not, fallback to prefetch
   if (!hasSpecRulesSupport()) {
     prefetch (urls);
-    return Promise.reject(new Error('This Browser does not support Speculation Rules API. Falling back to Prefetch.'));
+    return Promise.reject(new Error('This browser does not support the speculation rules API. Falling back to prefetch.'));
   }
   
   // 2) whether spec rules is already defined (and with this we also covered when we have created spec rules before)
