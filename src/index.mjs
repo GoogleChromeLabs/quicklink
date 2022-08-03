@@ -45,7 +45,7 @@ function isIgnored(node, filter) {
 /**
  * Checks network conditions
  * @param  {NetworkInformation}  conn    The connection information to be checked
- * @return {Promise}  reject is the constrainst are met or resolved otherwise
+ * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
  */
 function checkConnection (conn) {
   if (conn) {
