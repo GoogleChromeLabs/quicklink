@@ -249,14 +249,12 @@ export function prerender(urls, conn) {
   }
     
   // 3) whether it's a same origin url,
-  try{
-    [].concat(urls).filter(isSameOrigin).map(str => {
-      if (!toPrerender.has(str)) {
-        toPrerender.add(str);
-      }
-    });
-  } catch (e) {
-    return Promise.reject(new Error('Only same origin URL(s) are allowed: '+e));
+  for (const url of [].concat(urls)) {
+    if (!isSameOrigin(url)) {
+      return Promise.reject(new Error('Only same origin URLs are allowed: ' + url));
+    }
+
+    toPrerender.add(url);
   }
   
   // check if both prerender and prefetch exists.. throw a warning but still proceed
