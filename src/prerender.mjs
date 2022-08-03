@@ -22,10 +22,7 @@
  * @return {Boolean} true for same origin url
  */
 export function isSameOrigin(str) {
-  if(typeof str === 'string' && window.location.origin !== new URL(str,window.location.origin).origin) {
-      throw str;
-  }
-  return true;
+  return window.location.origin === (new URL(str, window.location.href)).origin;
 }
 
 /**
