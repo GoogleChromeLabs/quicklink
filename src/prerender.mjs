@@ -28,16 +28,19 @@ export function isSameOrigin(str) {
 /**
  * Add a given set of urls to the speculation rules
  * @param {Set} toPrerender - the URLs to add to speculation rules
- * @return {Object} a promise
+ * @return {Boolean|Object}  boolean or Error Object
  */
 export function addSpeculationRules(urlsToPrerender) {
-  return new Promise( (resolve, reject) => {
-    let specScript = document.createElement('script');
-    specScript.type = 'speculationrules';
-    specScript.text = '{"prerender":[{"source": "list","urls": ["'+Array.from(urlsToPrerender).join('","')+'"]}]}';
+  let specScript = document.createElement('script');
+  specScript.type = 'speculationrules';
+  specScript.text = '{"prerender":[{"source": "list","urls": ["'+Array.from(urlsToPrerender).join('","')+'"]}]}';  
+  try {
     document.head.appendChild(specScript);
-    resolve();
-  });
+  }catch(e) {
+    return e;
+  }
+  
+  return true;
 }
 
 /**

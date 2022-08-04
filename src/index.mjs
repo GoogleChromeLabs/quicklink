@@ -199,7 +199,7 @@ export function listen(options) {
 */
 export function prefetch(url, isPriority) {
   let chkConn = checkConnection(navigator.connection);
-  if(chkConn instanceof Error) {
+  if (chkConn instanceof Error) {
     return Promise.reject(new Error('Cannot prefetch, '+chkConn.message));
   }
   
@@ -230,7 +230,7 @@ export function prefetch(url, isPriority) {
 */
 export function prerender(urls) {
   let chkConn = checkConnection(navigator.connection);
-  if(chkConn instanceof Error) {
+  if (chkConn instanceof Error) {
     return Promise.reject(new Error('Cannot prerender, '+chkConn.message));
   }
   
@@ -260,5 +260,6 @@ export function prerender(urls) {
     console.warn('[Warning] You are using both prefetching and prerendering on the same document');
   }
   
-  return Promise.resolve(addSpeculationRules(toPrerender));
+  let addSpecRules = addSpeculationRules(toPrerender);
+  return (addSpecRules === true) ? Promise.resolve() : Promise.reject(addSpecRules);
 }
