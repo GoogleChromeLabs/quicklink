@@ -195,10 +195,11 @@ export function listen(options) {
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
+* @param {Object} [conn] - navigator.connection (internal)
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority) {
-  let chkConn = checkConnection(navigator.connection);
+export function prefetch(url, isPriority, conn) {
+  let chkConn = checkConnection(conn = navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error('Cannot prefetch, '+chkConn.message));
   }
@@ -226,10 +227,11 @@ export function prefetch(url, isPriority) {
 /**
 * Prerender a given URL
 * @param {String} url - the URL to fetch
+* @param {Object} [conn] - navigator.connection (internal)
 * @return {Object} a Promise
 */
-export function prerender(urls) {
-  let chkConn = checkConnection(navigator.connection);
+export function prerender(urls, conn) {
+  let chkConn = checkConnection(conn = navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error('Cannot prerender, '+chkConn.message));
   }
