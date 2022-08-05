@@ -8,7 +8,7 @@
 </p>
 
 # quicklink
-> Faster subsequent page-loads by prefetching in-viewport links during idle time
+> Faster subsequent page-loads by prefetching or prerendering in-viewport links during idle time
 
 ## How it works
 
@@ -17,11 +17,11 @@ Quicklink attempts to make navigations to subsequent pages load faster. It:
 * **Detects links within the viewport** (using [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API))
 * **Waits until the browser is idle** (using [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback))
 * **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)
-* **Prefetches URLs to the links** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
+* **Prefetches** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR) or **prerenders** (using [Speculation Rules API](https://github.com/WICG/nav-speculation/blob/main/triggers.md))  URLs to the links. Provides some control over the request priority (can switch to `fetch()` if supported).
 
 ## Why
 
-This project aims to be a drop-in solution for sites to prefetch links based on what is in the user's viewport. It also aims to be small (**< 1KB minified/gzipped**).
+This project aims to be a drop-in solution for sites to prefetch or prerender links based on what is in the user's viewport. It also aims to be small (**< 1KB minified/gzipped**).
 
 ## Multi page apps
 
@@ -111,7 +111,16 @@ const options = {
 ### quicklink.listen(options)
 Returns: `Function`
 
-A "reset" function is returned, which will empty the active `IntersectionObserver` and the cache of URLs that have already been prefetched. This can be used between page navigations and/or when significant DOM changes have occurred.
+A "reset" function is returned, which will empty the active `IntersectionObserver` and the cache of URLs that have already been prefetched or prerendered. This can be used between page navigations and/or when significant DOM changes have occurred.
+
+#### options.prerender
+Type: `Boolean`<br>
+Default: `false`
+
+Whether to switch from the default prefetching mode to the prerendering mode for the links inside the viewport.
+
+> **Note:** The prerendering mode (when this option is set to true) will fallback to the prefetching mode if the browser does not support prerender.
+
 
 #### options.delay
 Type: `Number`<br>
@@ -226,6 +235,19 @@ By default, calls to `prefetch()` are low priority.
 
 > **Note:** This behaves identically to `listen()`'s `priority` option.
 
+### quicklink.prerender(urls)
+Returns: `Promise`
+
+> **Important:** You much `catch` you own request error(s).
+
+#### urls
+Type: `String` or `Array<String>`<br>
+Required: `true`
+
+One or many URLs to be prerendered.
+
+> **Note:** As prerendering using Speculative Rules API only supports same-origin at this point, only same-origin urls are accepted. Any non same-origin urls will return a rejected Promise.
+
 ## Polyfills
 
 `quicklink`:
@@ -276,6 +298,19 @@ quicklink.prefetch(['2.html', '3.html', '4.js']);
 // Note: Can also be use with single URL!
 quicklink.prefetch(['2.html', '3.html', '4.js'], true);
 ```
+
+### Programmatically `prerender()` URLs
+
+If you would prefer to provide a static list of URLs to be prerendered, instead of detecting those in-viewport, customizing URLs is supported.
+
+```js
+// Single URL
+quicklink.prerender('2.html');
+
+// Multiple URLs
+quicklink.prerender(['2.html', '3.html', '4.js']);
+```
+
 
 ### Set the request priority for prefetches while scrolling
 
@@ -404,6 +439,7 @@ After installing `quicklink` as a dependency, you can use it as follows:
 * [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news)
 * [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news-workbox)
 * [Using Quicklink to prefetch API calls instead of `href` attribute](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/hrefFn)
+* [Using Quicklink to prerender a specific page](https://uskay-prerender2.glitch.me/next.html)
 
 ### Research
 

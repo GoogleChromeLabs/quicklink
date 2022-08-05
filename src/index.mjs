@@ -16,10 +16,16 @@
 import throttle from 'throttles';
 import {priority, supported} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
+import {isSameOrigin, addSpeculationRules, hasSpecRulesSupport, isSpecRulesExists} from './prerender.mjs';
 
 // Cache of URLs we've prefetched
 // Its `size` is compared against `opts.limit` value.
 const toPrefetch = new Set();
+
+// Cache of URLs we've prerendered
+const toPrerender = new Set();
+// global var to keep prerenderAndPrefer option
+let shouldPrerenderAndPrefetch = false;
 
 /**
  * Determine if the anchor tag should be prefetched.
@@ -34,6 +40,25 @@ function isIgnored(node, filter) {
   return Array.isArray(filter)
     ? filter.some(x => isIgnored(node, x))
     : (filter.test || filter).call(filter, node.href, node);
+}
+
+/**
+ * Checks network conditions
+ * @param  {NetworkInformation}  conn    The connection information to be checked
+ * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
+ */
+function checkConnection (conn) {
+  if (conn) {
+    // Don't pre* if using 2G or if Save-Data is enabled.
+    if (conn.saveData) {
+      return new Error('Save-Data is enabled');
+    }
+    if (/2g/.test(conn.effectiveType)) {
+      return new Error('network conditions are poor');
+    }
+  }
+  
+  return true;
 }
 
 /**
@@ -56,6 +81,8 @@ function isIgnored(node, filter) {
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
  *                                             If it's not a valid function, then it will use the entry href.
+ * @param {Boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
+ * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
  * @return {Function}
  */
 export function listen(options) {
@@ -73,7 +100,12 @@ export function listen(options) {
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
-
+  
+  const shouldOnlyPrerender = options.prerender || false;
+  shouldPrerenderAndPrefetch = options.prerenderAndPrefetch || false;
+  
+  const prerenderLimit = 1;
+  
   const setTimeoutIfDelay = (callback, delay) => {
     if (!delay) {
       callback();
@@ -96,14 +128,32 @@ export function listen(options) {
           if (hrefsInViewport.indexOf(entry.href) === -1) return;
 
           observer.unobserve(entry);
-          // Do not prefetch if will match/exceed limit
-          if (toPrefetch.size < limit) {
+          
+          // prerender, if..
+          // either it's the prerender + prefetch mode or it's prerender *only* mode
+          // && no link has been prerendered before (no spec rules defined)
+          if (shouldPrerenderAndPrefetch || shouldOnlyPrerender) {
+            if (toPrerender.size < prerenderLimit) {
+              prerender(hrefFn ? hrefFn(entry) : entry.href).catch(err => {
+                if (options.onError) {
+                  options.onError(err);
+                }else {
+                  throw err;
+                }
+              });
+              return;
+            }
+          }
+          
+          // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
+          if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
               prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
                 isDone(); if (options.onError) options.onError(err);
               });
             });
           }
+          
         }, delay);
       }
       // On exit
@@ -141,7 +191,6 @@ export function listen(options) {
   };
 }
 
-
 /**
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
@@ -150,14 +199,13 @@ export function listen(options) {
 * @return {Object} a Promise
 */
 export function prefetch(url, isPriority, conn) {
-  if (conn = navigator.connection) {
-    // Don't prefetch if using 2G or if Save-Data is enabled.
-    if (conn.saveData) {
-      return Promise.reject(new Error('Cannot prefetch, Save-Data is enabled'));
-    }
-    if (/2g/.test(conn.effectiveType)) {
-      return Promise.reject(new Error('Cannot prefetch, network conditions are poor'));
-    }
+  let chkConn = checkConnection(conn = navigator.connection);
+  if (chkConn instanceof Error) {
+    return Promise.reject(new Error('Cannot prefetch, '+chkConn.message));
+  }
+  
+  if(toPrerender.size > 0 && !shouldPrerenderAndPrefetch) {
+    console.warn('[Warning] You are using both prefetching and prerendering on the same document');
   }
 
   // Dev must supply own catch()
@@ -174,4 +222,46 @@ export function prefetch(url, isPriority, conn) {
         }
       })
   );
+}
+
+/**
+* Prerender a given URL
+* @param {String} url - the URL to fetch
+* @param {Object} [conn] - navigator.connection (internal)
+* @return {Object} a Promise
+*/
+export function prerender(urls, conn) {
+  let chkConn = checkConnection(conn = navigator.connection);
+  if (chkConn instanceof Error) {
+    return Promise.reject(new Error('Cannot prerender, '+chkConn.message));
+  }
+  
+  // prerendering preconditions:
+  // 1) whether UA supports spec rules.. If not, fallback to prefetch
+  if (!hasSpecRulesSupport()) {
+    prefetch (urls);
+    return Promise.reject(new Error('This browser does not support the speculation rules API. Falling back to prefetch.'));
+  }
+  
+  // 2) whether spec rules is already defined (and with this we also covered when we have created spec rules before)
+  if (isSpecRulesExists()) {
+    return Promise.reject(new Error('Speculation Rules is already defined and cannot be altered.'));
+  }
+    
+  // 3) whether it's a same origin url,
+  for (const url of [].concat(urls)) {
+    if (!isSameOrigin(url)) {
+      return Promise.reject(new Error('Only same origin URLs are allowed: ' + url));
+    }
+
+    toPrerender.add(url);
+  }
+  
+  // check if both prerender and prefetch exists.. throw a warning but still proceed
+  if (toPrefetch.size > 0 && !shouldPrerenderAndPrefetch) {
+    console.warn('[Warning] You are using both prefetching and prerendering on the same document');
+  }
+  
+  let addSpecRules = addSpeculationRules(toPrerender);
+  return (addSpecRules === true) ? Promise.resolve() : Promise.reject(addSpecRules);
 }
