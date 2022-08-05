@@ -1,12 +1,27 @@
+## 2.3.0 (2022-08-05)
+
+* 2.3.0 ([6189deb](https://github.com/GoogleChromeLabs/quicklink/commit/6189deb))
+* Add support for same-site prerendering with Speculation Rules API (#258) ([3d26f40](https://github.com/GoogleChromeLabs/quicklink/commit/3d26f40)), closes [#258](https://github.com/GoogleChromeLabs/quicklink/issues/258)
+* Create node.js.yml ([2f69b42](https://github.com/GoogleChromeLabs/quicklink/commit/2f69b42))
+* Fix Markdown (#250) ([13e2f82](https://github.com/GoogleChromeLabs/quicklink/commit/13e2f82)), closes [#250](https://github.com/GoogleChromeLabs/quicklink/issues/250)
+* Update node.js.yml ([312dbbb](https://github.com/GoogleChromeLabs/quicklink/commit/312dbbb))
+* chore: Modify repository default languages (#264) ([5a0d396](https://github.com/GoogleChromeLabs/quicklink/commit/5a0d396)), closes [#264](https://github.com/GoogleChromeLabs/quicklink/issues/264)
+
+
+
 ## 2.2.0 (2021-06-18)
 
-This release includes support for a new `threshold` option [PR](https://github.com/GoogleChromeLabs/quicklink/pull/214) to allow users select the % of link areas that entered the viewport before prefetching. This can reduce the number of links to prefetch at a time, and ultimately reduce the impact on CDNs and servers. 
-
-Thanks to [@verlock](https://github.com/verlok) from YNAP for this contribution.
-
-* Added `threshold` option to allow users select the % of link areas that entered the viewport before  ([d3746e1](https://github.com/GoogleChromeLabs/quicklink/commit/d3746e1)), closes [#214](https://github.com/GoogleChromeLabs/quicklink/issues/214)
+* [release] additions to changelog ([6ac410c](https://github.com/GoogleChromeLabs/quicklink/commit/6ac410c))
+* [release] bump core to 2.2.0 ([418eb50](https://github.com/GoogleChromeLabs/quicklink/commit/418eb50))
+* [release] bump site to 2.2.0 ([22a055c](https://github.com/GoogleChromeLabs/quicklink/commit/22a055c))
+* [release] update changelog for 2.2.0 ([bb1a648](https://github.com/GoogleChromeLabs/quicklink/commit/bb1a648))
+* [site] reorder logos ([09907bb](https://github.com/GoogleChromeLabs/quicklink/commit/09907bb))
+* [site] update version ([7babbda](https://github.com/GoogleChromeLabs/quicklink/commit/7babbda))
 * Add Magento Quicklink module (Readme + Site) (#216) ([c77e057](https://github.com/GoogleChromeLabs/quicklink/commit/c77e057)), closes [#216](https://github.com/GoogleChromeLabs/quicklink/issues/216)
+* Added `threshold` option to allow users select the % of link areas that entered the viewport before  ([d3746e1](https://github.com/GoogleChromeLabs/quicklink/commit/d3746e1)), closes [#214](https://github.com/GoogleChromeLabs/quicklink/issues/214)
 * Instructions to debug Quicklink ([2b3dc21](https://github.com/GoogleChromeLabs/quicklink/commit/2b3dc21))
+
+
 
 ## 2.1.0 (2021-02-07)
 
