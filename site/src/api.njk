@@ -15,7 +15,15 @@ bottomResource:
 ### quicklink.listen(options)
 Returns: `Function`
 
-A "reset" function is returned, which will empty the active `IntersectionObserver` and the cache of URLs that have already been prefetched. This can be used between page navigations and/or when significant DOM changes have occurred.
+A "reset" function is returned, which will empty the active `IntersectionObserver` and the cache of URLs that have already been prefetched or prerendered. This can be used between page navigations and/or when significant DOM changes have occurred.
+
+#### options.prerender
+Type: `Boolean`<br>
+Default: `false`
+
+Whether to switch from the default prefetching mode to the prerendering mode for the links inside the viewport.
+
+> **Note:** The prerendering mode (when this option is set to true) will fallback to the prefetching mode if the browser does not support prerender.
 
 #### options.el
 Type: `HTMLElement`<br>
@@ -119,6 +127,19 @@ By default, calls to `prefetch()` are low priority.
 
 > **Note:** This behaves identically to `listen()`'s `priority` option.
 
+### quicklink.prerender(urls)
+Returns: `Promise`
+
+> **Important:** You much `catch` you own request error(s).
+
+#### urls
+Type: `String` or `Array<String>`<br>
+Required: `true`
+
+One or many URLs to be prerendered.
+
+> **Note:** As prerendering using Speculative Rules API only supports same-origin at this point, only same-origin urls are accepted. Any non same-origin urls will return a rejected Promise.
+
 ## Polyfills
 
 `quicklink`:
@@ -168,6 +189,19 @@ quicklink.prefetch(['2.html', '3.html', '4.js']);
 // Multiple URLs, with high priority
 // Note: Can also be use with single URL!
 quicklink.prefetch(['2.html', '3.html', '4.js'], true);
+{% endhighlight %}
+{% markdownConvert %}
+### Programmatically `prerender()` URLs
+
+If you would prefer to provide a static list of URLs to be prerendered, instead of detecting those in-viewport, customizing URLs is supported.
+
+{% endmarkdownConvert %}
+{% highlight "js" %}
+// Single URL
+quicklink.prerender('2.html');
+
+// Multiple URLs
+quicklink.prerender(['2.html', '3.html', '4.js']);
 {% endhighlight %}
 {% markdownConvert %}
 ### Set the request priority for prefetches while scrolling
