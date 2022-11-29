@@ -68,7 +68,7 @@ function checkConnection (conn) {
  * links for `document`. Can also work off a supplied
  * DOM element or static array of URLs.
  * @param {Object} options - Configuration options for quicklink
- * @param {Object} [options.el] - DOM element to prefetch in-viewport links of
+ * @param {Object|Array} [options.el] - DOM element(s) to prefetch in-viewport links of
  * @param {Boolean} [options.priority] - Attempt higher priority fetch (low or high)
  * @param {Array} [options.origins] - Allowed origins to prefetch (empty allows all)
  * @param {Array|RegExp|Function} [options.ignores] - Custom filter(s) that run after origin checks
@@ -171,7 +171,12 @@ export function listen(options) {
 
   timeoutFn(() => {
     // Find all links & Connect them to IO if allowed
-    (options.el || document).querySelectorAll('a').forEach(link => {
+    let elementsToListen;
+    if (options.el && options.el.length && options.el.length > 0 && options.el[0].nodeName == 'A')
+        elementsToListen = options.el;
+    else 
+      elementsToListen = (options.el || document).querySelectorAll('a');
+    elementsToListen.forEach(link => {
       // If the anchor matches a permitted origin
       // ~> A `[]` or `true` means everything is allowed
       if (!allowed.length || allowed.includes(link.hostname)) {

@@ -69,6 +69,18 @@ describe('quicklink tests', function () {
     expect(responseURLs).to.include(`${server}/main.css`);
   });
 
+  it('should prefetch in-viewport links from NodeList', async function () {
+    const responseURLs = [];
+    page.on('response', resp => {
+      responseURLs.push(resp.url());
+    });
+    await page.goto(`${server}/test-node-list.html`);
+    await page.waitFor(1000);
+    expect(responseURLs).to.be.an('array');
+    expect(responseURLs).to.include(`${server}/2.html`);
+    expect(responseURLs).to.include(`${server}/3.html`);
+  });
+
   it('should only prefetch links if allowed in origins list', async function () {
     const responseURLs = [];
     page.on('response', resp => {
