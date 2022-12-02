@@ -46,9 +46,7 @@ Quickstart:
 <script src="dist/quicklink.umd.js"></script>
 <!-- Initialize (you can do this whenever you want) -->
 <script>
-  quicklink.listen({
-    el: document.querySelectorAll('a.linksToPrefetch'),
-  });
+  quicklink.listen();
 </script>
 ```
 
@@ -57,9 +55,7 @@ For example, you can initialize after the `load` event fires:
 ```html
 <script>
 window.addEventListener('load', () =>{
-  quicklink.listen({
-    el: document.querySelectorAll('a.linksToPrefetch'),
-  });
+  quicklink.listen();
 });
 </script>
 ```
