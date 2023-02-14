@@ -45,20 +45,30 @@ function isIgnored(node, filter) {
 /**
  * Checks network conditions
  * @param  {NetworkInformation}  conn    The connection information to be checked
+ * @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection nedded to prefetch and prerender
  * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
  */
-function checkConnection (conn) {
-  if (conn) {
-    // Don't pre* if using 2G or if Save-Data is enabled.
-    if (conn.saveData) {
-      return new Error('Save-Data is enabled');
-    }
-    if (/2g/.test(conn.effectiveType)) {
-      return new Error('network conditions are poor');
-    }
-  }
-  
-  return true;
+function checkConnection (conn, minConnectionType) {
+	const connDictionary = {
+		'slow-2g': 0,
+		'2g': 1,
+		'3g': 2,
+		'4g': 3
+	};
+
+	if (conn) {
+		// Don't pre* if using 2G or if Save-Data is enabled.
+		if (conn.saveData) {
+			return new Error('Save-Data is enabled');
+		}
+		if (connDictionary[minConnectionType] === undefined) {
+			return new Error('select a valid type of minConnectionType');
+		} else if (connDictionary[minConnectionType] > connDictionary[conn.effectiveType]) {
+			return new Error('network conditions are poor');
+		}
+	}
+
+	return true;
 }
 
 /**
@@ -81,6 +91,7 @@ function checkConnection (conn) {
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
  *                                             If it's not a valid function, then it will use the entry href.
+ * @param { 'slow-2g' | '2g' | '3g' | '4g' } [options.minConnectionType ] - The minimum of internet connection nedded to prefetch and prerender
  * @param {Boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
  * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
  * @return {Function}
@@ -100,6 +111,7 @@ export function listen(options) {
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
+	const minConnectionType = options.minConnectionType || '3g'
   
   const shouldOnlyPrerender = options.prerender || false;
   shouldPrerenderAndPrefetch = options.prerenderAndPrefetch || false;
@@ -134,7 +146,7 @@ export function listen(options) {
           // && no link has been prerendered before (no spec rules defined)
           if (shouldPrerenderAndPrefetch || shouldOnlyPrerender) {
             if (toPrerender.size < prerenderLimit) {
-              prerender(hrefFn ? hrefFn(entry) : entry.href).catch(err => {
+              prerender(hrefFn ? hrefFn(entry) : entry.href, minConnectionType, conn).catch(err => {
                 if (options.onError) {
                   options.onError(err);
                 }else {
@@ -148,7 +160,7 @@ export function listen(options) {
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
-              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
+              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority, minConnectionType).then(isDone).catch(err => {
                 isDone(); if (options.onError) options.onError(err);
               });
             });
@@ -195,11 +207,12 @@ export function listen(options) {
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
+* @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection nedded to prefetch and prerender
 * @param {Object} [conn] - navigator.connection (internal)
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, conn) {
-  let chkConn = checkConnection(conn = navigator.connection);
+export function prefetch(url, isPriority, minConnectionType, conn) {
+  let chkConn = checkConnection(conn = navigator.connection, minConnectionType);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error('Cannot prefetch, '+chkConn.message));
   }
@@ -227,11 +240,12 @@ export function prefetch(url, isPriority, conn) {
 /**
 * Prerender a given URL
 * @param {String} url - the URL to fetch
+* @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection nedded to prefetch and prerender
 * @param {Object} [conn] - navigator.connection (internal)
 * @return {Object} a Promise
 */
-export function prerender(urls, conn) {
-  let chkConn = checkConnection(conn = navigator.connection);
+export function prerender(urls, minConnectionType, conn) {
+  let chkConn = checkConnection(conn = navigator.connection, minConnectionType);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error('Cannot prerender, '+chkConn.message));
   }
