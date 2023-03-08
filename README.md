@@ -46,7 +46,7 @@ Quickstart:
 <script src="dist/quicklink.umd.js"></script>
 <!-- Initialize (you can do this whenever you want) -->
 <script>
-quicklink.listen();
+  quicklink.listen();
 </script>
 ```
 
@@ -129,10 +129,9 @@ Default: `0`
 The _amount of time_ each link needs to stay inside the viewport before being prefetched, in milliseconds.
 
 #### options.el
-Type: `HTMLElement`<br>
+Type: `HTMLElement|NodeList<A>`<br>
 Default: `document.body`
-
-The DOM element to observe for in-viewport links to prefetch.
+The DOM element to observe for in-viewport links to prefetch or the NodeList of Anchor Elements.
 
 #### options.limit
 Type: `Number`<br>
@@ -270,6 +269,16 @@ Defaults to 2 seconds (via `requestIdleCallback`). Here we override it to 4 seco
 ```js
 quicklink.listen({
   timeout: 4000
+});
+```
+
+### Set a specific Anchor Elements NodeList to observe for in-viewport links
+
+Defaults to `document` otherwise.
+
+```js
+quicklink.listen({
+  el: document.querySelectorAll('a.linksToPrefetch')
 });
 ```
 
