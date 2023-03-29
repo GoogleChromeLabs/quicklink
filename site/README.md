@@ -12,8 +12,8 @@ $ npm install
 
 ## Commands
 
-| Command         | Description                                                  |
-| --------------- | ------------------------------------------------------------ |
-| `npm start`     | Start a development server and watch for updates             |
-| `npm run build` | Build templates, data, CSS, and JS for production envrioment |
+| Command         | Description                                                   |
+| --------------- | ------------------------------------------------------------- |
+| `npm start`     | Start a development server and watch for updates              |
+| `npm run build` | Build templates, data, CSS, and JS for production environment |
 
