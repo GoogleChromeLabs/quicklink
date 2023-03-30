@@ -27,12 +27,12 @@
     "test": "npm-run-all build-all --parallel --race start mocha",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
     "build-plugin": "microbundle src/chunks.mjs --no-sourcemap --external none -o dist/react",
-    "build-all": "npm-run-all build build-plugin build-react-chunks",
-    "prepare": "npm run build",
     "build-react-chunks": "babel src/react-chunks.js --out-file dist/react/hoc.js",
+    "build-all": "npm-run-all --parallel build build-plugin build-react-chunks",
+    "prepare": "npm run build",
     "bundlewatch": "bundlewatch",
     "changelog": "npm run conventional-changelog -i CHANGELOG.md -s -r 0",
-    "release": "cross-env-shell \"npm run build-all -s && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags\""
+    "release": "cross-env-shell \"npm run build-all && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags\""
   },
   "keywords": [
     "prefetch",
