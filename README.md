@@ -1,13 +1,13 @@
 <p align="center">
   <img src="https://i.imgur.com/NVRZLHv.png" width="640" alt="quicklink">
   <br>
-  <a href="https://www.npmjs.org/package/quicklink"><img src="https://img.shields.io/npm/v/quicklink.svg?style=flat" alt="npm"></a>
+  <a href="https://www.npmjs.com/package/quicklink"><img src="https://img.shields.io/npm/v/quicklink?style=flat&logo=npm&logoColor=fff" alt="npm"></a>
   <a href="https://unpkg.com/quicklink"><img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size"></a>
-  <a href="https://www.npmjs.com/package/quicklink"><img src="https://img.shields.io/npm/dt/quicklink.svg" alt="downloads" ></a>
-  <a href="https://travis-ci.org/GoogleChromeLabs/quicklink"><img src="https://travis-ci.org/GoogleChromeLabs/quicklink.svg?branch=master" alt="travis"></a>
+  <a href="https://github.com/GoogleChromeLabs/quicklink/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amaster"><img src="https://img.shields.io/github/actions/workflow/status/GoogleChromeLabs/quicklink/ci.yml?branch=master&label=ci&logo=github" alt="ci"></a>
 </p>
 
 # quicklink
+
 > Faster subsequent page-loads by prefetching or prerendering in-viewport links during idle time
 
 ## How it works
@@ -27,7 +27,7 @@ This project aims to be a drop-in solution for sites to prefetch or prerender li
 
 ### Installation
 
-For use with [node](https://nodejs.org) and [npm](https://npmjs.com):
+For use with [node](https://nodejs.org) and [npm](https://www.npmjs.com/):
 
 ```sh
 npm install --save quicklink
@@ -84,7 +84,7 @@ This will generate a map of routes and chunks called `rmanifest.json`. It can be
 
 ### Usage
 
-Import `quicklink` React HOC where want to add prefetching functionality. 
+Import `quicklink` React HOC where want to add prefetching functionality.
 Wrap your routes with the `withQuicklink()` HOC.
 
 Example:
@@ -104,16 +104,16 @@ const options = {
 </Suspense>
 ```
 
-
-
 ## API
 
 ### quicklink.listen(options)
+
 Returns: `Function`
 
 A "reset" function is returned, which will empty the active `IntersectionObserver` and the cache of URLs that have already been prefetched or prerendered. This can be used between page navigations and/or when significant DOM changes have occurred.
 
 #### options.prerender
+
 Type: `Boolean`<br>
 Default: `false`
 
@@ -121,37 +121,42 @@ Whether to switch from the default prefetching mode to the prerendering mode for
 
 > **Note:** The prerendering mode (when this option is set to true) will fallback to the prefetching mode if the browser does not support prerender.
 
-
 #### options.delay
+
 Type: `Number`<br>
 Default: `0`
 
 The _amount of time_ each link needs to stay inside the viewport before being prefetched, in milliseconds.
 
 #### options.el
+
 Type: `HTMLElement|NodeList<A>`<br>
 Default: `document.body`
 The DOM element to observe for in-viewport links to prefetch or the NodeList of Anchor Elements.
 
 #### options.limit
+
 Type: `Number`<br>
 Default: `Infinity`
 
 The _total_ requests that can be prefetched while observing the `options.el` container.
 
 #### options.threshold
+
 Type: `Number`<br>
 Default: `0`
 
 The _area percentage_ of each link that must have entered the viewport to be fetched, in its decimal form (e.g. 0.25 = 25%).
 
 #### options.throttle
+
 Type: `Number`<br>
 Default: `Infinity`
 
 The _concurrency limit_ for simultaneous requests while observing the `options.el` container.
 
 #### options.timeout
+
 Type: `Number`<br>
 Default: `2000`
 
@@ -160,6 +165,7 @@ The `requestIdleCallback` timeout, in milliseconds.
 > **Note:** The browser must be idle for the configured duration before prefetching.
 
 #### options.timeoutFn
+
 Type: `Function`<br>
 Default: `requestIdleCallback`
 
@@ -169,6 +175,7 @@ This can be swapped out for a custom function like [networkIdleCallback](https:/
 By default, this uses [`requestIdleCallback`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback) or the embedded polyfill.
 
 #### options.priority
+
 Type: `Boolean`<br>
 Default: `false`
 
@@ -177,6 +184,7 @@ Whether or not the URLs within the `options.el` container should be treated as h
 When `true`, quicklink will attempt to use the `fetch()` API if supported (rather than `link[rel=prefetch]`).
 
 #### options.origins
+
 Type: `Array<String>`<br>
 Default: `[location.hostname]`
 
@@ -186,6 +194,7 @@ Defaults to the same domain origin, which prevents _any_ cross-origin requests.
 **Important:** An empty array (`[]`) allows ***all origins*** to be prefetched.
 
 #### options.ignores
+
 Type: `RegExp` or `Function` or `Array`<br>
 Default: `[]`
 
@@ -198,6 +207,7 @@ When a `RegExp` tests positive, a `Function` returns `true`, or an `Array` conta
 > **Important:** This logic is executed _after_ origin matching!
 
 #### options.onError
+
 Type: `Function`<br>
 Default: None
 
@@ -205,12 +215,14 @@ An optional error handler that will receive any errors from prefetched requests.
 By default, these errors are silently ignored.
 
 #### options.hrefFn
+
 Type: `Function`<br>
 Default: None
 
 An optional function to generate the URL to prefetch. It receives an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) as the argument.
 
 ### quicklink.prefetch(urls, isPriority)
+
 Returns: `Promise`
 
 The `urls` provided are always passed through `Promise.all`, which means the result will always resolve to an Array.
@@ -218,6 +230,7 @@ The `urls` provided are always passed through `Promise.all`, which means the res
 > **Important:** You much `catch` you own request error(s).
 
 #### urls
+
 Type: `String` or `Array<String>`<br>
 Required: `true`
 
@@ -226,6 +239,7 @@ One or many URLs to be prefetched.
 > **Note:** Each `url` value is resolved from the current location.
 
 #### isPriority
+
 Type: `Boolean`<br>
 Default: `false`
 
@@ -235,11 +249,13 @@ By default, calls to `prefetch()` are low priority.
 > **Note:** This behaves identically to `listen()`'s `priority` option.
 
 ### quicklink.prerender(urls)
+
 Returns: `Promise`
 
 > **Important:** You much `catch` you own request error(s).
 
 #### urls
+
 Type: `String` or `Array<String>`<br>
 Required: `true`
 
@@ -319,7 +335,6 @@ quicklink.prerender('2.html');
 // Multiple URLs
 quicklink.prerender(['2.html', '3.html', '4.js']);
 ```
-
 
 ### Set the request priority for prefetches while scrolling
 
@@ -474,9 +489,9 @@ Sites that rely on ads as a source of monetization should not prefetch ad-links,
 
 Ads appear on sites mostly in two ways:
 
-- **Inside iframes:** By default, most ad-servers render ads within iframes. In these cases, those ad-links won't be prefetched by Quicklink, unless a developer explicitly passes in the URL of an ads iframe. The reason is that the library look-up for in-viewport elements is restricted to those of the top-level origin.
+* **Inside iframes:** By default, most ad-servers render ads within iframes. In these cases, those ad-links won't be prefetched by Quicklink, unless a developer explicitly passes in the URL of an ads iframe. The reason is that the library look-up for in-viewport elements is restricted to those of the top-level origin.
 
-- **Outside iframes:**: In cases when the site shows same-origin ads, displayed in the top-level document (e.g. by hosting the ads themselves and by displaying the ads in the page directly), the developer needs to explicitly tell Quicklink to avoid prefetching these links. This can be achieved by passing the URL or subpath of the ad-link, or the element containing it to the [custom ignore patterns list](https://github.com/GoogleChromeLabs/quicklink#custom-ignore-patterns).
+* **Outside iframes:**: In cases when the site shows same-origin ads, displayed in the top-level document (e.g. by hosting the ads themselves and by displaying the ads in the page directly), the developer needs to explicitly tell Quicklink to avoid prefetching these links. This can be achieved by passing the URL or subpath of the ad-link, or the element containing it to the [custom ignore patterns list](https://github.com/GoogleChromeLabs/quicklink#custom-ignore-patterns).
 
 ## Related projects
 

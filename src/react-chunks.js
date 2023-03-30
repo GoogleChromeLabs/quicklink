@@ -60,23 +60,23 @@ const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) =>
 
 const withQuicklink = (Component, options = {}) => {
   return props => {
-		const [ref, entry] = useIntersect({root: document.body.parentElement});
+    const [ref, entry] = useIntersect({root: document.body.parentElement});
     const intersectionRatio = entry.intersectionRatio;
-    
-		useEffect(() => {
+
+    useEffect(() => {
       options.prefetchChunks = prefetchChunks;
 
       if (intersectionRatio > 0) {
         listen(options);
       }
-    }, [intersectionRatio]);    
-		
-		return (
-			<div ref={ref}>
+    }, [intersectionRatio]);
+
+    return (
+      <div ref={ref}>
         <Component {...props} />
-			</div>
-		);
-	};
+      </div>
+    );
+  };
 };
 
 export {
