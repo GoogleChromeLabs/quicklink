@@ -1,1 +1,4 @@
+# Enforce Unix newlines
+* text=auto eol=lf
+
 *.njk linguist-language=js
