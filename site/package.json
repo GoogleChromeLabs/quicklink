@@ -5,7 +5,8 @@
   "scripts": {
     "build": "eleventy",
     "start": "eleventy --serve",
-    "deploy": "firebase deploy --project=quicklink-6a87b"
+    "deploy": "firebase deploy --project=quicklink-6a87b",
+    "test": "npm run build"
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.12.1"

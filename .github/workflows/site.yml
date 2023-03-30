@@ -1,4 +1,4 @@
-name: CI
+name: Site
 
 on:
   push:
@@ -15,8 +15,12 @@ env:
 permissions:
   contents: read
 
-jobs:
+defaults:
   run:
+    working-directory: site
+
+jobs:
+  build:
     runs-on: ubuntu-latest
 
     steps:
