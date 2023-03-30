@@ -21,7 +21,7 @@ Quicklink attempts to make navigations to subsequent pages load faster. It:
 
 ## Why
 
-This project aims to be a drop-in solution for sites to prefetch or prerender links based on what is in the user's viewport. It also aims to be small (**< 1KB minified/gzipped**).
+This project aims to be a drop-in solution for sites to prefetch or prerender links based on what is in the user's viewport. It also aims to be small (**< 2KB minified/gzipped**).
 
 ## Multi page apps
 
