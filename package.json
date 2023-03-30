@@ -23,7 +23,7 @@
     "lint": "eslint \"src/*.mjs\" \"test/*.js\" \"demos/*.js\"",
     "lint-fix": "eslint \"src/*.mjs\" \"test/*.js\" \"demos/*.js\" --fix",
     "start": "sirv --dev --no-clear --host 127.0.0.1 --port 8080 --quiet",
-    "mocha": "mocha test/bootstrap.js --recursive test",
+    "mocha": "mocha test/bootstrap.js --recursive --exit --timeout 50000 test",
     "test": "npm-run-all build-all --parallel --race start mocha",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
     "build-plugin": "microbundle src/chunks.mjs --no-sourcemap --external none -o dist/react",
