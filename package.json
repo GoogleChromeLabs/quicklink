@@ -2,7 +2,10 @@
   "name": "quicklink",
   "version": "2.3.0",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time",
-  "repository": "https://github.com/GoogleChromeLabs/quicklink.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoogleChromeLabs/quicklink.git"
+  },
   "homepage": "https://getquick.link/",
   "bugs": {
     "url": "https://github.com/GoogleChromeLabs/quicklink/issues"
@@ -21,7 +24,7 @@
     "lint-fix": "eslint \"src/*.mjs\" \"test/*.js\" \"demos/*.js\" --fix",
     "start": "sirv --dev --no-clear --host 127.0.0.1 --port 8080 --quiet",
     "mocha": "mocha test/bootstrap.js --recursive test",
-    "test": "npm-run-all build-all --parallel start mocha --race",
+    "test": "npm-run-all build-all --parallel --race start mocha",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
     "build-plugin": "microbundle src/chunks.mjs --no-sourcemap --external none -o dist/react",
     "build-all": "npm-run-all build build-plugin build-react-chunks",
