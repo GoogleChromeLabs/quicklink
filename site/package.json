@@ -3,8 +3,8 @@
   "description": "",
   "version": "1.0.0",
   "scripts": {
-    "build": "npx @11ty/eleventy",
-    "start": "npx @11ty/eleventy --serve",
+    "build": "eleventy",
+    "start": "eleventy --serve",
     "deploy": "firebase deploy --project=quicklink-6a87b"
   },
   "devDependencies": {
@@ -12,7 +12,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^3.2.2",
     "html-minifier": "^4.0.0"
   }
 }

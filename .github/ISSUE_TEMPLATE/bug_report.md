@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Something is not working as expected
-labels: 
+labels:
 ---
 
 **Before you start**

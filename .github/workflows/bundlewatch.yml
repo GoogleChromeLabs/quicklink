@@ -1,4 +1,4 @@
-name: Lint
+name: Bundlewatch
 
 on:
   push:
@@ -12,13 +12,18 @@ env:
   FORCE_COLOR: 2
   NODE: 18
 
+permissions:
+  contents: read
+
 jobs:
-  lint:
+  bundlewatch:
     runs-on: ubuntu-latest
 
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
+        env:
+          FORCE_COLOR: 0
         with:
           persist-credentials: false
 
@@ -26,13 +31,15 @@ jobs:
         uses: actions/setup-node@v3
         env:
           FORCE_COLOR: 0
-
         with:
-          node-version: "${{ env.NODE }}"
+          node-version: ${{ env.NODE }}
           cache: yarn
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Lint
-        run: yarn lint
+      - name: Run bundlewatch
+        run: yarn bundlewatch
+#        env:
+#          BUNDLEWATCH_GITHUB_TOKEN: "${{ secrets.BUNDLEWATCH_GITHUB_TOKEN }}"
+#          CI_BRANCH_BASE: master
