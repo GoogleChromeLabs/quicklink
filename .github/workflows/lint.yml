@@ -24,15 +24,12 @@ jobs:
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
-        env:
-          FORCE_COLOR: 0
-
         with:
           node-version: "${{ env.NODE }}"
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
