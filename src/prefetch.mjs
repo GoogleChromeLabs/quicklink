@@ -58,6 +58,8 @@ function viaXHR(url) {
     req.open(`GET`, url, req.withCredentials=true);
 
     req.onload = () => {
+      // TODO Fix me
+      // eslint-disable-next-line prefer-promise-reject-errors
       (req.status === 200) ? res() : rej();
     };
 

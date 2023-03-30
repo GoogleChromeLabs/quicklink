@@ -286,7 +286,7 @@ describe('quicklink tests', function () {
     expect(ours).to.include(`https://example.com/?url=${server}/3.html`);
     expect(ours).to.include(`https://example.com/?url=${server}/4.html`);
   });
-  
+
   it('should delay prefetch for in-viewport links correctly (UMD)', async function () {
     const responseURLs = [];
     page.on('response', resp => {
