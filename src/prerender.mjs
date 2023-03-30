@@ -33,7 +33,7 @@ export function isSameOrigin(str) {
 export function addSpeculationRules(urlsToPrerender) {
   const specScript = document.createElement('script');
   specScript.type = 'speculationrules';
-  specScript.text = '{"prerender":[{"source": "list","urls": ["'+Array.from(urlsToPrerender).join('","')+'"]}]}';
+  specScript.text = `{"prerender":[{"source": "list","urls": ["${Array.from(urlsToPrerender).join('","')}"]}]}`;
   try {
     document.head.appendChild(specScript);
   } catch (e) {

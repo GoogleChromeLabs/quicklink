@@ -16,7 +16,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import rmanifest from 'route-manifest';
-import {listen} from './quicklink';
+import {listen} from './quicklink.js';
 
 const useIntersect = ({root = null, rootMargin, threshold = 0} = {}) => {
   const [entry, updateEntry] = useState({});
@@ -62,7 +62,7 @@ const withQuicklink = (Component, options = {}) => {
   // eslint-disable-next-line react/display-name
   return props => {
     const [ref, entry] = useIntersect({root: document.body.parentElement});
-    const intersectionRatio = entry.intersectionRatio;
+    const {intersectionRatio} = entry;
 
     useEffect(() => {
       options.prefetchChunks = prefetchChunks;

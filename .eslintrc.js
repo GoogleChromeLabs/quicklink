@@ -37,6 +37,14 @@ module.exports = {
       }
     ],
     'no-negated-condition': 'warn',
+    'prefer-destructuring': [
+      'off',
+      {
+        object: true,
+        array: false
+      }
+    ],
+    'prefer-template': 'error',
     'spaced-comment': [
       'error',
       'always',

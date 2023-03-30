@@ -56,23 +56,23 @@ function isIgnored(node, filter) {
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.prefetchChunks] - Function to prefetch chunks for route URLs (with route manifest for URL mapping)
  */
-export function listen(options) {
-  if (!options) options = {};
+export function listen(options = {}) {
   if (!window.IntersectionObserver) return;
 
-  const [toAdd, isDone] = throttle(options.throttle || 1/0);
-  const limit = options.limit || 1/0;
+  const [toAdd, isDone] = throttle(options.throttle || 1 / 0);
+  const limit = options.limit || 1 / 0;
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
-  const prefetchChunks = options.prefetchChunks;
+  const {prefetchChunks} = options;
 
   const prefetchHandler = urls => {
     prefetch(urls, options.priority).then(isDone).catch(err => {
-      isDone(); if (options.onError) options.onError(err);
+      isDone();
+      if (options.onError) options.onError(err);
     });
   };
 
@@ -97,7 +97,7 @@ export function listen(options) {
       // ~> A `[]` or `true` means everything is allowed
       if (!allowed.length || allowed.includes(link.hostname)) {
         // If there are any filters, the link must not match any of them
-        isIgnored(link, ignores) || observer.observe(link);
+        if (!isIgnored(link, ignores)) observer.observe(link);
       }
     });
   }, {
@@ -112,21 +112,22 @@ export function listen(options) {
   };
 }
 
-
 /**
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
-* @param {Object} [conn] - navigator.connection (internal)
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, conn) {
-  if (conn = navigator.connection) {
+export function prefetch(url, isPriority) {
+  const {connection} = navigator;
+
+  if (connection) {
     // Don't prefetch if using 2G or if Save-Data is enabled.
-    if (conn.saveData) {
+    if (connection.saveData) {
       return Promise.reject(new Error('Cannot prefetch, Save-Data is enabled'));
     }
-    if (/2g/.test(conn.effectiveType)) {
+
+    if (/2g/.test(connection.effectiveType)) {
       return Promise.reject(new Error('Cannot prefetch, network conditions are poor'));
     }
   }
@@ -134,15 +135,15 @@ export function prefetch(url, isPriority, conn) {
   // Dev must supply own catch()
   return Promise.all(
       [].concat(url).map(str => {
-        if (!toPrefetch.has(str)) {
+        if (toPrefetch.has(str)) return [];
+
         // Add it now, regardless of its success
         // ~> so that we don't repeat broken links
-          toPrefetch.add(str);
+        toPrefetch.add(str);
 
-          return (isPriority ? priority : supported)(
-              new URL(str, location.href).toString(),
-          );
-        }
+        return (isPriority ? priority : supported)(
+            new URL(str, location.href).toString(),
+        );
       }),
   );
 }
