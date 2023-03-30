@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "lint": "eslint \"src/*.mjs\" \"test/*.js\" \"demos/*.js\"",
-    "lint-fix": "eslint \"src/*.mjs\" \"test/*.js\" \"demos/*.js\" --fix",
+    "lint-fix": "npm run lint -- --fix",
     "start": "sirv --dev --no-clear --host 127.0.0.1 --port 8080 --quiet",
     "mocha": "mocha test/bootstrap.js --recursive --exit --timeout 50000 test",
     "test": "npm-run-all build-all --parallel --race start mocha",
