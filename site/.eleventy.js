@@ -1,5 +1,5 @@
 const markdownIt = require('markdown-it');
-const htmlminifier = require('html-minifier');
+const htmlminifier = require('html-minifier-terser');
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 
 module.exports = function(eleventyConfig) {
