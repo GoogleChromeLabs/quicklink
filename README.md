@@ -30,7 +30,7 @@ This project aims to be a drop-in solution for sites to prefetch or prerender li
 For use with [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/):
 
 ```sh
-npm install --save quicklink
+npm install quicklink
 ```
 
 You can also grab `quicklink` from [unpkg.com/quicklink](https://unpkg.com/quicklink).
@@ -63,7 +63,7 @@ window.addEventListener('load', () =>{
 ES Module import:
 
 ```js
-import { listen, prefetch } from "quicklink";
+import { listen, prefetch } from 'quicklink';
 ```
 
 ## Single page apps (React)
