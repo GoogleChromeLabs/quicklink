@@ -1,8 +1,9 @@
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+const host = 'http://127.0.0.1:8080';
+const server = `${host}/test`;
+
 describe('quicklink tests', () => {
-  const host = 'http://127.0.0.1:8080';
-  const server = `${host}/test`;
   let page;
 
   before(async () => {
