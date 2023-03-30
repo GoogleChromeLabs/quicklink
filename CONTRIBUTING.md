@@ -49,22 +49,22 @@ Here's an example of how to debug the library by using one of these tests:
    source file:
 
 ```javascript
-<script type="module"> 
-    import { listen } from "../src/index.mjs"; 
-    listen(); 
+<script type="module">
+    import { listen } from "../src/index.mjs";
+    listen();
 </script>
 ```
 
 3. Open
    [src/index.mjs](https://github.com/GoogleChromeLabs/quicklink/blob/master/src/index.mjs)
-   for edit and replace the following line: 
-   
+   for edit and replace the following line:
+
 ```javascript
 import throttle from 'throttles';
-``` 
+```
 
 By:
-   
+
 ```javascript
 import throttle from '../node_modules/throttles/dist/index.mjs'
 ```
