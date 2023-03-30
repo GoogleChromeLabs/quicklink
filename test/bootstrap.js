@@ -1,6 +1,8 @@
-const {expect} = require('chai');
+const assert = require('assert').strict;
 const puppeteer = require('puppeteer');
-const {browser: globalBrowser, expect: globalExpect} = global;
+
+const {browser: globalBrowser} = global;
+const globalAssert = assert;
 
 // puppeteer options
 const opts = {
@@ -10,15 +12,15 @@ const opts = {
 };
 
 // expose variables
-before(async function () {
-  global.expect = expect;
+before(async () => {
+  global.assert = assert;
   global.browser = await puppeteer.launch(opts);
 });
 
 // close browser and reset global variables
-after(function () {
+after(() => {
   global.browser.close();
 
   global.browser = globalBrowser;
-  global.expect = globalExpect;
+  global.assert = globalAssert;
 });
