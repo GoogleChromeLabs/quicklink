@@ -1,4 +1,4 @@
-name: Lint
+name: CI
 
 on:
   push:
@@ -12,8 +12,12 @@ env:
   FORCE_COLOR: 2
   NODE: 18
 
+permissions:
+  contents: read
+
 jobs:
-  lint:
+  build:
+    name: CI
     runs-on: ubuntu-latest
 
     steps:
@@ -26,13 +30,12 @@ jobs:
         uses: actions/setup-node@v3
         env:
           FORCE_COLOR: 0
-
         with:
-          node-version: "${{ env.NODE }}"
+          node-version: ${{ env.NODE }}
           cache: yarn
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Lint
-        run: yarn lint
+      - name: Run tests
+        run: yarn test
