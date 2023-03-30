@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/NVRZLHv.png" width="640" alt="quicklink">
+  <img src="https://raw.githubusercontent.com/GoogleChromeLabs/quicklink/blob/HEAD/assets/images/logos/banner.png" alt="" width="640" height="241">
   <br>
   <a href="https://www.npmjs.com/package/quicklink"><img src="https://img.shields.io/npm/v/quicklink?style=flat&logo=npm&logoColor=fff" alt="npm"></a>
   <a href="https://unpkg.com/quicklink"><img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size"></a>
