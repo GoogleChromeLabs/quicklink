@@ -27,7 +27,7 @@ This project aims to be a drop-in solution for sites to prefetch or prerender li
 
 ### Installation
 
-For use with [node](https://nodejs.org) and [npm](https://www.npmjs.com/):
+For use with [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/):
 
 ```sh
 npm install --save quicklink
@@ -70,7 +70,7 @@ import { listen, prefetch } from "quicklink";
 
 ### Installation
 
-First, install the packages with [node](https://nodejs.org) and [npm](https://npmjs.com):
+First, install the packages with [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/):
 
 ```sh
 npm install quicklink webpack-route-manifest --save-dev
@@ -132,6 +132,7 @@ The _amount of time_ each link needs to stay inside the viewport before being pr
 
 Type: `HTMLElement|NodeList<A>`<br>
 Default: `document.body`
+
 The DOM element to observe for in-viewport links to prefetch or the NodeList of Anchor Elements.
 
 #### options.limit
