@@ -1,45 +1,45 @@
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-describe('quicklink tests', function () {
+describe('quicklink tests', () => {
   const host = 'http://127.0.0.1:8080';
   const server = `${host}/test`;
   let page;
 
-  before(async function () {
+  before(async () => {
     page = await browser.newPage();
   });
 
-  after(async function () {
+  after(async () => {
     await page.close();
   });
 
-  it('should prefetch in-viewport links correctly (UMD)', async function () {
+  it('should prefetch in-viewport links correctly (UMD)', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
     await page.goto(`${server}/test-basic-usage.html`);
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/1.html`);
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include(`${server}/3.html`);
+    assert.equal(Array.isArray(responseURLs), true);
+    assert.equal(responseURLs.includes(`${server}/1.html`), true);
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
+    assert.equal(responseURLs.includes(`${server}/3.html`), true);
   });
 
-  it('should prefetch in-viewport links correctly (ES Modules)', async function () {
+  it('should prefetch in-viewport links correctly (ES Modules)', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
     await page.goto(`${server}/test-es-modules.html`);
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/1.html`);
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include(`${server}/3.html`);
+    assert.equal(Array.isArray(responseURLs), true);
+    assert.equal(responseURLs.includes(`${server}/1.html`), true);
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
+    assert.equal(responseURLs.includes(`${server}/3.html`), true);
   });
 
-  it('should prefetch in-viewport links that scroll into view correctly (UMD)', async function () {
+  it('should prefetch in-viewport links that scroll into view correctly (UMD)', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -53,37 +53,37 @@ describe('quicklink tests', function () {
       window.scrollBy(0, window.innerHeight);
     });
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/1.html`);
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include(`${server}/3.html`);
-    expect(responseURLs).to.include(`${server}/4.html`);
+    assert.equal(Array.isArray(responseURLs), true);
+    assert.equal(responseURLs.includes(`${server}/1.html`), true);
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
+    assert.equal(responseURLs.includes(`${server}/3.html`), true);
+    assert.equal(responseURLs.includes(`${server}/4.html`), true);
   });
 
-  it('should prefetch in-viewport links from a custom DOM source', async function () {
+  it('should prefetch in-viewport links from a custom DOM source', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
     await page.goto(`${server}/test-custom-dom-source.html`);
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/main.css`);
+    assert.equal(Array.isArray(responseURLs), true);
+    assert.equal(responseURLs.includes(`${server}/main.css`), true);
   });
 
-  it('should prefetch in-viewport links from NodeList', async function () {
+  it('should prefetch in-viewport links from NodeList', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
     await page.goto(`${server}/test-node-list.html`);
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include(`${server}/3.html`);
+    assert.equal(Array.isArray(responseURLs), true);
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
+    assert.equal(responseURLs.includes(`${server}/3.html`), true);
   });
 
-  it('should only prefetch links if allowed in origins list', async function () {
+  it('should only prefetch links if allowed in origins list', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -92,14 +92,14 @@ describe('quicklink tests', function () {
 
     await sleep(1000);
 
-    expect(responseURLs).to.be.an('array');
+    assert.equal(Array.isArray(responseURLs), true);
     // => origins: ['github.githubassets.com']
-    expect(responseURLs).to.not.include(`${server}/2.html`);
-    expect(responseURLs).to.include('https://example.com/1.html');
-    expect(responseURLs).to.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
+    assert.equal(responseURLs.includes(`${server}/2.html`), false);
+    assert.equal(responseURLs.includes('https://example.com/1.html'), true);
+    assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), true);
   });
 
-  it('should prefetch all links when allowing all origins', async function () {
+  it('should prefetch all links when allowing all origins', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -108,16 +108,16 @@ describe('quicklink tests', function () {
 
     await sleep(1000);
 
-    expect(responseURLs).to.be.an('array');
+    assert.equal(Array.isArray(responseURLs), true);
     // => origins: true
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include('https://google.com/');
-    expect(responseURLs).to.include('https://example.com/1.html');
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
+    assert.equal(responseURLs.includes('https://google.com/'), true);
+    assert.equal(responseURLs.includes('https://example.com/1.html'), true);
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
+    assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), true);
   });
 
-  it('should only prefetch links of same origin (default)', async function () {
+  it('should only prefetch links of same origin (default)', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -125,14 +125,14 @@ describe('quicklink tests', function () {
     await page.goto(`${server}/test-same-origin.html`);
 
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
+    assert.equal(Array.isArray(responseURLs), true);
     // => origins: [location.hostname] (default)
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.not.include('https://example.com/1.html');
-    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
+    assert.equal(responseURLs.includes('https://example.com/1.html'), false);
+    assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), false);
   });
 
-  it('should only prefetch links after ignore patterns allowed it', async function () {
+  it('should only prefetch links after ignore patterns allowed it', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -140,18 +140,18 @@ describe('quicklink tests', function () {
     await page.goto(`${server}/test-ignore-basic.html`);
 
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
+    assert.equal(Array.isArray(responseURLs), true);
     // => origins: [location.hostname] (default)
     // => ignores: /2.html/
     // via ignores
-    expect(responseURLs).to.not.include(`${server}/2.html`);
+    assert.equal(responseURLs.includes(`${server}/2.html`), false);
     // via same origin
-    expect(responseURLs).to.not.include('https://example.com/1.html');
+    assert.equal(responseURLs.includes('https://example.com/1.html'), false);
     // via same origin
-    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
+    assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), false);
   });
 
-  it('should only prefetch links after ignore patterns allowed it (multiple)', async function () {
+  it('should only prefetch links after ignore patterns allowed it (multiple)', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -159,30 +159,30 @@ describe('quicklink tests', function () {
     await page.goto(`${server}/test-ignore-multiple.html`);
 
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
+    assert.equal(Array.isArray(responseURLs), true);
     // => origins: true (all)
     // => ignores: [...]
-    expect(responseURLs).to.include(`${server}/2.html`);
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
     // /example/
-    expect(responseURLs).to.not.include('https://example.com/1.html');
+    assert.equal(responseURLs.includes('https://example.com/1.html'), false);
     // (uri) => uri.includes('foobar')
-    expect(responseURLs).to.not.include('https://foobar.com/3.html');
+    assert.equal(responseURLs.includes('https://foobar.com/3.html'), false);
     // (uri, elem) => elem.textContent.includes('Spinner')
-    expect(responseURLs).to.not.include('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif');
+    assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), false);
   });
 
-  it('should accept a single URL to prefetch()', async function () {
+  it('should accept a single URL to prefetch()', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
     await page.goto(`${server}/test-prefetch-single.html`);
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/2.html`);
+    assert.equal(Array.isArray(responseURLs), true);
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
   });
 
-  it('should accept multiple URLs to prefetch()', async function () {
+  it('should accept multiple URLs to prefetch()', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -193,13 +193,13 @@ describe('quicklink tests', function () {
     // don't care about first 4 URLs (markup)
     const ours = responseURLs.slice(4);
 
-    expect(ours.length).to.equal(3);
-    expect(ours).to.include(`${server}/2.html`);
-    expect(ours).to.include(`${server}/3.html`);
-    expect(ours).to.include(`${server}/4.html`);
+    assert.equal(ours.length, 3);
+    assert.equal(ours.includes(`${server}/2.html`), true);
+    assert.equal(ours.includes(`${server}/3.html`), true);
+    assert.equal(ours.includes(`${server}/4.html`), true);
   });
 
-  it('should not prefetch() the same URL repeatedly', async function () {
+  it('should not prefetch() the same URL repeatedly', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -210,12 +210,12 @@ describe('quicklink tests', function () {
     // don't care about first 4 URLs (markup)
     const ours = responseURLs.slice(4);
 
-    expect(ours.length).to.equal(1);
-    expect(ours).to.include(`${server}/2.html`);
+    assert.equal(ours.length, 1);
+    assert.equal(ours.includes(`${server}/2.html`), true);
   });
 
   // TODO Fix and enable the test later
-  it.skip('should not call the same URL repeatedly (shared)', async function () {
+  it.skip('should not call the same URL repeatedly (shared)', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -225,10 +225,10 @@ describe('quicklink tests', function () {
 
     // count occurrences of our link
     const target = responseURLs.filter(x => x === `${server}/2.html`);
-    expect(target.length).to.equal(1);
+    assert.equal(target.length, 1);
   });
 
-  it('should not exceed the `limit` total', async function () {
+  it('should not exceed the `limit` total', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -239,11 +239,11 @@ describe('quicklink tests', function () {
     // don't care about first 4 URLs (markup)
     const ours = responseURLs.slice(4);
 
-    expect(ours.length).to.equal(1);
-    expect(ours).to.include(`${server}/1.html`);
+    assert.equal(ours.length, 1);
+    assert.equal(ours.includes(`${server}/1.html`), true);
   });
 
-  it('should respect the `throttle` concurrency', async function () {
+  it('should respect the `throttle` concurrency', async () => {
     const URLs = []; // Note: Page makes 4 requests
 
     // Make HTML requests take a long time
@@ -256,6 +256,7 @@ describe('quicklink tests', function () {
         URLs.push(req.url());
         return req.respond({status: 200});
       }
+
       req.continue();
     });
 
@@ -264,15 +265,15 @@ describe('quicklink tests', function () {
     // Only 2 should be done by now
     // Note: Parallel requests, w/ 50ms buffer
     await sleep(150);
-    expect(URLs.length).to.equal(2);
+    assert.equal(URLs.length, 2);
 
     // All should be done by now
     // Note: Parallel requests, w/ 50ms buffer
     await sleep(250);
-    expect(URLs.length).to.equal(4);
+    assert.equal(URLs.length, 4);
   });
 
-  it('should prefetch using a custom function to build the URL', async function () {
+  it('should prefetch using a custom function to build the URL', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -283,23 +284,23 @@ describe('quicklink tests', function () {
 
     // don't care about first 4 URLs (markup)
     const ours = responseURLs.slice(4);
-    expect(ours).to.include(`https://example.com/?url=${server}/1.html`);
-    expect(ours).to.include(`https://example.com/?url=${server}/2.html`);
-    expect(ours).to.include(`https://example.com/?url=${server}/3.html`);
-    expect(ours).to.include(`https://example.com/?url=${server}/4.html`);
+    assert.equal(ours.includes(`https://example.com/?url=${server}/1.html`), true);
+    assert.equal(ours.includes(`https://example.com/?url=${server}/2.html`), true);
+    assert.equal(ours.includes(`https://example.com/?url=${server}/3.html`), true);
+    assert.equal(ours.includes(`https://example.com/?url=${server}/4.html`), true);
   });
 
-  it('should delay prefetch for in-viewport links correctly (UMD)', async function () {
+  it('should delay prefetch for in-viewport links correctly (UMD)', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
     await page.goto(`${server}/test-delay.html`);
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/1.html`);
-    expect(responseURLs).to.include(`${server}/2.html`);
-    expect(responseURLs).to.include(`${server}/3.html`);
+    assert.equal(Array.isArray(responseURLs), true);
+    assert.equal(responseURLs.includes(`${server}/1.html`), true);
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
+    assert.equal(responseURLs.includes(`${server}/3.html`), true);
     // Scroll down and up
     await page.evaluate(_ => {
       window.scrollBy(0, window.innerHeight);
@@ -308,16 +309,16 @@ describe('quicklink tests', function () {
     await page.evaluate(_ => {
       window.scrollBy(0, -window.innerHeight);
     });
-    expect(responseURLs).not.to.include(`${server}/4.html`);
+    assert.equal(responseURLs.includes(`${server}/4.html`), false);
     // Scroll down and test
     await page.evaluate(_ => {
       window.scrollBy(0, window.innerHeight);
     });
     await sleep(200);
-    expect(responseURLs).to.include(`${server}/4.html`);
+    assert.equal(responseURLs.includes(`${server}/4.html`), true);
   });
 
-  it('should consider threshold option before prefetching (UMD)', async function () {
+  it('should consider threshold option before prefetching (UMD)', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
@@ -329,14 +330,14 @@ describe('quicklink tests', function () {
       height: 800,
     });
     await sleep(1000);
-    expect(responseURLs).to.be.an('array');
-    expect(responseURLs).to.include(`${server}/1.html`);
-    expect(responseURLs).to.include(`${server}/2.html`);
+    assert.equal(Array.isArray(responseURLs), true);
+    assert.equal(responseURLs.includes(`${server}/1.html`), true);
+    assert.equal(responseURLs.includes(`${server}/2.html`), true);
     await page.evaluate(_ => {
       window.scrollBy(0, window.innerHeight);
     });
     await sleep(400);
-    expect(responseURLs).to.include(`${server}/3.html`);
-    expect(responseURLs).to.include(`${server}/4.html`);
+    assert.equal(responseURLs.includes(`${server}/3.html`), true);
+    assert.equal(responseURLs.includes(`${server}/4.html`), true);
   });
 });
