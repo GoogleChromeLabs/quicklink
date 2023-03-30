@@ -215,14 +215,13 @@ describe('quicklink tests', () => {
     assert.equal(ours.includes(`${server}/2.html`), true);
   });
 
-  // TODO Fix and enable the test later
-  it.skip('should not call the same URL repeatedly (shared)', async () => {
+  it('should not call the same URL repeatedly (shared)', async () => {
     const responseURLs = [];
     page.on('response', resp => {
       responseURLs.push(resp.url());
     });
     await page.goto(`${server}/test-prefetch-duplicate-shared.html`);
-    await sleep(1000);
+    await sleep(250);
 
     // count occurrences of our link
     const target = responseURLs.filter(x => x === `${server}/2.html`);
