@@ -191,8 +191,8 @@ describe('quicklink tests', () => {
     await page.goto(`${server}/test-prefetch-multiple.html`);
     await sleep(1000);
 
-    // don't care about first 4 URLs (markup)
-    const ours = responseURLs.slice(4);
+    // don't care about first 3 URLs (markup)
+    const ours = responseURLs.slice(3);
 
     assert.equal(ours.length, 3);
     assert.equal(ours.includes(`${server}/2.html`), true);
@@ -208,8 +208,8 @@ describe('quicklink tests', () => {
     await page.goto(`${server}/test-prefetch-duplicate.html`);
     await sleep(1000);
 
-    // don't care about first 4 URLs (markup)
-    const ours = responseURLs.slice(4);
+    // don't care about first 3 URLs (markup)
+    const ours = responseURLs.slice(3);
 
     assert.equal(ours.length, 1);
     assert.equal(ours.includes(`${server}/2.html`), true);
@@ -237,8 +237,8 @@ describe('quicklink tests', () => {
     await page.goto(`${server}/test-limit.html`);
     await sleep(1000);
 
-    // don't care about first 4 URLs (markup)
-    const ours = responseURLs.slice(4);
+    // don't care about first 3 URLs (markup)
+    const ours = responseURLs.slice(3);
 
     assert.equal(ours.length, 1);
     assert.equal(ours.includes(`${server}/1.html`), true);
@@ -283,8 +283,8 @@ describe('quicklink tests', () => {
     await page.goto(`${server}/test-custom-href-function.html`);
     await sleep(1000);
 
-    // don't care about first 4 URLs (markup)
-    const ours = responseURLs.slice(4);
+    // don't care about first 3 URLs (markup)
+    const ours = responseURLs.slice(3);
     assert.equal(ours.includes(`https://example.com/?url=${server}/1.html`), true);
     assert.equal(ours.includes(`https://example.com/?url=${server}/2.html`), true);
     assert.equal(ours.includes(`https://example.com/?url=${server}/3.html`), true);

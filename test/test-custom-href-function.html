@@ -6,7 +6,6 @@
   <title>Prefetch: Custom function to build the URL.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="main.css">
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
 </head>
 
 <body>
@@ -17,7 +16,7 @@
   <script src="../dist/quicklink.umd.js"></script>
   <script>
     quicklink.listen({
-        hrefFn: (entry) => ( `https://example.com/?url=${entry.href}` ),
+      hrefFn: (entry) => (`https://example.com/?url=${entry.href}`),
     });
   </script>
 </body>
