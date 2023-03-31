@@ -3,7 +3,7 @@ const {suite} = require('uvu');
 const assert = require('uvu/assert');
 
 const host = 'http://127.0.0.1:8080';
-const server = `${host}/test`;
+const server = `${host}/test/fixtures`;
 const mainSuite = suite('quicklink tests');
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -264,7 +264,7 @@ mainSuite('should respect the `throttle` concurrency', async () => {
 
   page.on('request', async req => {
     const url = req.url();
-    if (/test\/\d+\.html$/i.test(url)) {
+    if (/test\/fixtures\/\d+\.html$/i.test(url)) {
       await sleep(100);
       URLs.push(url);
       return req.respond({status: 200});

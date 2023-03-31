@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <title>network-idle-callback demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../test/main.css">
+  <link rel="stylesheet" href="../test/fixtures/main.css">
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
@@ -22,13 +22,13 @@
 <body>
   <p>This demo uses <a href="https://github.com/pastelsky/network-idle-callback">network-idle-callback</a> to only
     prefetch when network activity goes idle in the current tab.</p>
-  <a href="../test/1.html">Link 1</a>
-  <a href="../test/2.html">Link 2</a>
-  <a href="../test/3.html">Link 3</a>
+  <a href="../test/fixtures/1.html">Link 1</a>
+  <a href="../test/fixtures/2.html">Link 2</a>
+  <a href="../test/fixtures/3.html">Link 3</a>
   <section id="stuff">
-    <a href="../test/main.css">CSS</a>
+    <a href="../test/fixtures/main.css">CSS</a>
   </section>
-  <a href="../test/4.html" style="position:absolute;margin-top:900px;">Link 4</a>
+  <a href="../test/fixtures/4.html" style="position:absolute;margin-top:900px;">Link 4</a>
   <script src="network-idle.js"></script>
   <script type="module">
     import quicklink from "../dist/quicklink.mjs";
