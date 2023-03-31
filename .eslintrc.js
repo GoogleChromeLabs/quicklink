@@ -8,7 +8,10 @@ module.exports = {
     sourceType: 'module',
     ecmaVersion: 9
   },
-  extends: 'google',
+  extends: [
+    'google',
+    'plugin:react/recommended'
+  ],
   rules: {
     'max-len': [
       'warn',
