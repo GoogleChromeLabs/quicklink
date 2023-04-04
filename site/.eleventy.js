@@ -10,7 +10,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/styles");
   eleventyConfig.addPassthroughCopy("src/script.js");
   eleventyConfig.addPassthroughCopy("src/site.webmanifest");
-  eleventyConfig.addPassthroughCopy("src/browserconfig.xml");
 
   eleventyConfig.addNunjucksFilter("markdown", function(string) {
     const md = new markdownIt();
