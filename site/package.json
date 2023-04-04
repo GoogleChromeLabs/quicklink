@@ -11,8 +11,8 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@11ty/eleventy": "^0.12.1",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^3.2.2",
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^4.2.0",
     "html-minifier-terser": "^7.1.0"
   }
 }
