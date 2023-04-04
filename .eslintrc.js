@@ -12,6 +12,11 @@ module.exports = {
     'google',
     'plugin:react/recommended'
   ],
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  },
   rules: {
     'max-len': [
       'warn',
