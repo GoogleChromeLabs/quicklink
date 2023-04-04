@@ -26,15 +26,21 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addTransform("htmlminifier", async function(content, outputPath) {
     if (outputPath.endsWith(".html")) {
         return htmlminifier.minify(content, {
+            collapseBooleanAttributes: true,
             collapseWhitespace: true,
+            conservativeCollapse: false,
+            decodeEntities: true,
             minifyCSS: true,
             minifyJS: true,
+            minifyURLs: false,
             removeAttributeQuotes: true,
             removeComments: true,
-            removeEmptyAttributes: true,
+            removeOptionalAttributes: true,
+            removeOptionalTags: true,
             removeRedundantAttributes: true,
             removeScriptTypeAttributes: true,
             removeStyleLinkTypeAttributes: true,
+            removeTagWhitespace: false,
             sortAttributes: true,
             sortClassName: true
         })
