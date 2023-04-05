@@ -1,6 +1,6 @@
-const assert = require('assert').strict;
 const puppeteer = require('puppeteer');
 const {suite} = require('uvu');
+const assert = require('uvu/assert');
 
 const host = 'http://127.0.0.1:8080';
 const server = `${host}/test`;
@@ -34,10 +34,10 @@ mainSuite('should prefetch in-viewport links correctly (UMD)', async () => {
   });
   await page.goto(`${server}/test-basic-usage.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
-  assert.equal(responseURLs.includes(`${server}/1.html`), true);
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
-  assert.equal(responseURLs.includes(`${server}/3.html`), true);
+  assert.instance(responseURLs, Array);
+  assert.ok(responseURLs.includes(`${server}/1.html`));
+  assert.ok(responseURLs.includes(`${server}/2.html`));
+  assert.ok(responseURLs.includes(`${server}/3.html`));
 });
 
 mainSuite('should prefetch in-viewport links correctly (ES Modules)', async () => {
@@ -47,10 +47,10 @@ mainSuite('should prefetch in-viewport links correctly (ES Modules)', async () =
   });
   await page.goto(`${server}/test-es-modules.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
-  assert.equal(responseURLs.includes(`${server}/1.html`), true);
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
-  assert.equal(responseURLs.includes(`${server}/3.html`), true);
+  assert.instance(responseURLs, Array);
+  assert.ok(responseURLs.includes(`${server}/1.html`));
+  assert.ok(responseURLs.includes(`${server}/2.html`));
+  assert.ok(responseURLs.includes(`${server}/3.html`));
 });
 
 mainSuite('should prefetch in-viewport links that scroll into view correctly (UMD)', async () => {
@@ -67,11 +67,11 @@ mainSuite('should prefetch in-viewport links that scroll into view correctly (UM
     window.scrollBy(0, window.innerHeight);
   });
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
-  assert.equal(responseURLs.includes(`${server}/1.html`), true);
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
-  assert.equal(responseURLs.includes(`${server}/3.html`), true);
-  assert.equal(responseURLs.includes(`${server}/4.html`), true);
+  assert.instance(responseURLs, Array);
+  assert.ok(responseURLs.includes(`${server}/1.html`));
+  assert.ok(responseURLs.includes(`${server}/2.html`));
+  assert.ok(responseURLs.includes(`${server}/3.html`));
+  assert.ok(responseURLs.includes(`${server}/4.html`));
 });
 
 mainSuite('should prefetch in-viewport links from a custom DOM source', async () => {
@@ -81,8 +81,8 @@ mainSuite('should prefetch in-viewport links from a custom DOM source', async ()
   });
   await page.goto(`${server}/test-custom-dom-source.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
-  assert.equal(responseURLs.includes(`${server}/main.css`), true);
+  assert.instance(responseURLs, Array);
+  assert.ok(responseURLs.includes(`${server}/main.css`));
 });
 
 mainSuite('should prefetch in-viewport links from NodeList', async () => {
@@ -92,9 +92,9 @@ mainSuite('should prefetch in-viewport links from NodeList', async () => {
   });
   await page.goto(`${server}/test-node-list.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
-  assert.equal(responseURLs.includes(`${server}/3.html`), true);
+  assert.instance(responseURLs, Array);
+  assert.ok(responseURLs.includes(`${server}/2.html`));
+  assert.ok(responseURLs.includes(`${server}/3.html`));
 });
 
 mainSuite('should only prefetch links if allowed in origins list', async () => {
@@ -104,12 +104,12 @@ mainSuite('should only prefetch links if allowed in origins list', async () => {
   });
   await page.goto(`${server}/test-allow-origin.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
+  assert.instance(responseURLs, Array);
 
   // => origins: ['github.githubassets.com']
-  assert.equal(responseURLs.includes(`${server}/2.html`), false);
-  assert.equal(responseURLs.includes('https://example.com/1.html'), true);
-  assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), true);
+  assert.not.ok(responseURLs.includes(`${server}/2.html`));
+  assert.ok(responseURLs.includes('https://example.com/1.html'));
+  assert.ok(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'));
 });
 
 mainSuite('should prefetch all links when allowing all origins', async () => {
@@ -119,14 +119,14 @@ mainSuite('should prefetch all links when allowing all origins', async () => {
   });
   await page.goto(`${server}/test-allow-origin-all.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
+  assert.instance(responseURLs, Array);
 
   // => origins: true
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
-  assert.equal(responseURLs.includes('https://google.com/'), true);
-  assert.equal(responseURLs.includes('https://example.com/1.html'), true);
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
-  assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), true);
+  assert.ok(responseURLs.includes(`${server}/2.html`));
+  assert.ok(responseURLs.includes('https://google.com/'));
+  assert.ok(responseURLs.includes('https://example.com/1.html'));
+  assert.ok(responseURLs.includes(`${server}/2.html`));
+  assert.ok(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'));
 });
 
 mainSuite('should only prefetch links of same origin (default)', async () => {
@@ -136,12 +136,12 @@ mainSuite('should only prefetch links of same origin (default)', async () => {
   });
   await page.goto(`${server}/test-same-origin.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
+  assert.instance(responseURLs, Array);
 
   // => origins: [location.hostname] (default)
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
-  assert.equal(responseURLs.includes('https://example.com/1.html'), false);
-  assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), false);
+  assert.ok(responseURLs.includes(`${server}/2.html`));
+  assert.not.ok(responseURLs.includes('https://example.com/1.html'));
+  assert.not.ok(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'));
 });
 
 mainSuite('should only prefetch links after ignore patterns allowed it', async () => {
@@ -151,16 +151,16 @@ mainSuite('should only prefetch links after ignore patterns allowed it', async (
   });
   await page.goto(`${server}/test-ignore-basic.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
+  assert.instance(responseURLs, Array);
 
   // => origins: [location.hostname] (default)
   // => ignores: /2.html/
   // via ignores
-  assert.equal(responseURLs.includes(`${server}/2.html`), false);
+  assert.not.ok(responseURLs.includes(`${server}/2.html`));
   // via same origin
-  assert.equal(responseURLs.includes('https://example.com/1.html'), false);
+  assert.not.ok(responseURLs.includes('https://example.com/1.html'));
   // via same origin
-  assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), false);
+  assert.not.ok(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'));
 });
 
 mainSuite('should only prefetch links after ignore patterns allowed it (multiple)', async () => {
@@ -170,17 +170,17 @@ mainSuite('should only prefetch links after ignore patterns allowed it (multiple
   });
   await page.goto(`${server}/test-ignore-multiple.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
+  assert.instance(responseURLs, Array);
 
   // => origins: true (all)
   // => ignores: [...]
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
+  assert.ok(responseURLs.includes(`${server}/2.html`));
   // /example/
-  assert.equal(responseURLs.includes('https://example.com/1.html'), false);
+  assert.not.ok(responseURLs.includes('https://example.com/1.html'));
   // (uri) => uri.includes('foobar')
-  assert.equal(responseURLs.includes('https://foobar.com/3.html'), false);
+  assert.not.ok(responseURLs.includes('https://foobar.com/3.html'));
   // (uri, elem) => elem.textContent.includes('Spinner')
-  assert.equal(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'), false);
+  assert.not.ok(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'));
 });
 
 mainSuite('should accept a single URL to prefetch()', async () => {
@@ -190,8 +190,8 @@ mainSuite('should accept a single URL to prefetch()', async () => {
   });
   await page.goto(`${server}/test-prefetch-single.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
+  assert.instance(responseURLs, Array);
+  assert.ok(responseURLs.includes(`${server}/2.html`));
 });
 
 mainSuite('should accept multiple URLs to prefetch()', async () => {
@@ -205,10 +205,10 @@ mainSuite('should accept multiple URLs to prefetch()', async () => {
   // don't care about first 3 URLs (markup)
   const ours = responseURLs.slice(3);
 
-  assert.equal(ours.length, 3);
-  assert.equal(ours.includes(`${server}/2.html`), true);
-  assert.equal(ours.includes(`${server}/3.html`), true);
-  assert.equal(ours.includes(`${server}/4.html`), true);
+  assert.is(ours.length, 3);
+  assert.ok(ours.includes(`${server}/2.html`));
+  assert.ok(ours.includes(`${server}/3.html`));
+  assert.ok(ours.includes(`${server}/4.html`));
 });
 
 mainSuite('should not prefetch() the same URL repeatedly', async () => {
@@ -222,8 +222,8 @@ mainSuite('should not prefetch() the same URL repeatedly', async () => {
   // don't care about first 3 URLs (markup)
   const ours = responseURLs.slice(3);
 
-  assert.equal(ours.length, 1);
-  assert.equal(ours.includes(`${server}/2.html`), true);
+  assert.is(ours.length, 1);
+  assert.ok(ours.includes(`${server}/2.html`));
 });
 
 // TODO Fix and enable the test later
@@ -237,7 +237,7 @@ mainSuite.skip('should not call the same URL repeatedly (shared)', async () => {
 
   // count occurrences of our link
   const target = responseURLs.filter(x => x === `${server}/2.html`);
-  assert.equal(target.length, 1);
+  assert.is(target.length, 1);
 });
 
 mainSuite('should not exceed the `limit` total', async () => {
@@ -251,8 +251,8 @@ mainSuite('should not exceed the `limit` total', async () => {
   // don't care about first 3 URLs (markup)
   const ours = responseURLs.slice(3);
 
-  assert.equal(ours.length, 1);
-  assert.equal(ours.includes(`${server}/1.html`), true);
+  assert.is(ours.length, 1);
+  assert.ok(ours.includes(`${server}/1.html`));
 });
 
 mainSuite('should respect the `throttle` concurrency', async () => {
@@ -278,12 +278,12 @@ mainSuite('should respect the `throttle` concurrency', async () => {
   // Only 2 should be done by now
   // Note: Parallel requests, w/ 50ms buffer
   await sleep(150);
-  assert.equal(URLs.length, 2);
+  assert.is(URLs.length, 2);
 
   // All should be done by now
   // Note: Parallel requests, w/ 50ms buffer
   await sleep(250);
-  assert.equal(URLs.length, 4);
+  assert.is(URLs.length, 4);
 });
 
 mainSuite('should prefetch using a custom function to build the URL', async () => {
@@ -297,10 +297,10 @@ mainSuite('should prefetch using a custom function to build the URL', async () =
 
   // don't care about first 3 URLs (markup)
   const ours = responseURLs.slice(3);
-  assert.equal(ours.includes(`https://example.com/?url=${server}/1.html`), true);
-  assert.equal(ours.includes(`https://example.com/?url=${server}/2.html`), true);
-  assert.equal(ours.includes(`https://example.com/?url=${server}/3.html`), true);
-  assert.equal(ours.includes(`https://example.com/?url=${server}/4.html`), true);
+  assert.ok(ours.includes(`https://example.com/?url=${server}/1.html`));
+  assert.ok(ours.includes(`https://example.com/?url=${server}/2.html`));
+  assert.ok(ours.includes(`https://example.com/?url=${server}/3.html`));
+  assert.ok(ours.includes(`https://example.com/?url=${server}/4.html`));
 });
 
 mainSuite('should delay prefetch for in-viewport links correctly (UMD)', async () => {
@@ -310,10 +310,10 @@ mainSuite('should delay prefetch for in-viewport links correctly (UMD)', async (
   });
   await page.goto(`${server}/test-delay.html`);
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
-  assert.equal(responseURLs.includes(`${server}/1.html`), true);
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
-  assert.equal(responseURLs.includes(`${server}/3.html`), true);
+  assert.instance(responseURLs, Array);
+  assert.ok(responseURLs.includes(`${server}/1.html`));
+  assert.ok(responseURLs.includes(`${server}/2.html`));
+  assert.ok(responseURLs.includes(`${server}/3.html`));
   // Scroll down and up
   await page.evaluate(_ => {
     window.scrollBy(0, window.innerHeight);
@@ -322,13 +322,13 @@ mainSuite('should delay prefetch for in-viewport links correctly (UMD)', async (
   await page.evaluate(_ => {
     window.scrollBy(0, -window.innerHeight);
   });
-  assert.equal(responseURLs.includes(`${server}/4.html`), false);
+  assert.not.ok(responseURLs.includes(`${server}/4.html`));
   // Scroll down and test
   await page.evaluate(_ => {
     window.scrollBy(0, window.innerHeight);
   });
   await sleep(200);
-  assert.equal(responseURLs.includes(`${server}/4.html`), true);
+  assert.ok(responseURLs.includes(`${server}/4.html`));
 });
 
 mainSuite('should consider threshold option before prefetching (UMD)', async () => {
@@ -342,15 +342,15 @@ mainSuite('should consider threshold option before prefetching (UMD)', async () 
     height: 800,
   });
   await sleep(1000);
-  assert.equal(Array.isArray(responseURLs), true);
-  assert.equal(responseURLs.includes(`${server}/1.html`), true);
-  assert.equal(responseURLs.includes(`${server}/2.html`), true);
+  assert.instance(responseURLs, Array);
+  assert.ok(responseURLs.includes(`${server}/1.html`));
+  assert.ok(responseURLs.includes(`${server}/2.html`));
   await page.evaluate(_ => {
     window.scrollBy(0, window.innerHeight);
   });
   await sleep(400);
-  assert.equal(responseURLs.includes(`${server}/3.html`), true);
-  assert.equal(responseURLs.includes(`${server}/4.html`), true);
+  assert.ok(responseURLs.includes(`${server}/3.html`));
+  assert.ok(responseURLs.includes(`${server}/4.html`));
 });
 
 mainSuite.run();
