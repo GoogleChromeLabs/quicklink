@@ -35,6 +35,7 @@ module.exports = function(eleventyConfig) {
             minifyURLs: false,
             removeAttributeQuotes: true,
             removeComments: true,
+            removeEmptyAttributes: false,
             removeOptionalAttributes: true,
             removeOptionalTags: true,
             removeRedundantAttributes: true,
