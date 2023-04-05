@@ -28,17 +28,14 @@
     onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="{{ '/styles/github-markdown.min.css' | url }}" as="style"
     onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="{{ 'https://cdn.jsdelivr.net/npm/highlightjs@9.16.2/styles/solarized-dark.min.css' | url }}" as="style"
-    onload="this.onload=null;this.rel='stylesheet'">
   <link rel="stylesheet" href="{{ '/styles/main.css' | url }}">
   <link rel="stylesheet" href="{{ '/styles/footer.css' | url }}">
   <link rel="stylesheet" href="{{ '/styles/copy-snippet.css' | url }}">
   <link rel="stylesheet" href="{{ '/styles/github-markdown.css' | url }}">
   {# TODO: opt for theme and tweak the background color by avoiding github markdown #}
   <noscript>
-    <link rel="stylesheet" href="{{ '/styles/github-markdown.min.css' | url }}"></noscript>
-  <noscript>
-    <link rel="stylesheet" href="{{ '/styles/solarized-dark.min.css' | url }}"></noscript>
+    <link rel="stylesheet" href="{{ '/styles/github-markdown.min.css' | url }}">
+  </noscript>
   <script>
     /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
     (function (w) {
