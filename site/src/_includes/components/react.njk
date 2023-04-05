@@ -5,7 +5,7 @@
 
 ### Installation
 
-First, install the packages with [node](https://nodejs.org) and [npm](https://npmjs.com):
+First, install the packages with [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/):
 {% endmarkdownConvert %}
 
 {% highlight "bash" %}
@@ -39,8 +39,7 @@ const options = {
   <Route path="/blog" exact component={withQuicklink(Blog, options)} />
   <Route path="/blog/:title" component={withQuicklink(Article, options)} />
   <Route path="/about" exact component={withQuicklink(About, options)} />
-</Suspense>
+</Suspense>;
 {% endhighlight %}
 
 {% endblock %}
-
