@@ -53,6 +53,7 @@ function checkConnection(conn) {
     if (conn.saveData) {
       return new Error('Save-Data is enabled');
     }
+
     if (/2g/.test(conn.effectiveType)) {
       return new Error('network conditions are poor');
     }
@@ -85,12 +86,11 @@ function checkConnection(conn) {
  * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
  * @return {Function}
  */
-export function listen(options) {
-  if (!options) options = {};
+export function listen(options = {}) {
   if (!window.IntersectionObserver) return;
 
-  const [toAdd, isDone] = throttle(options.throttle || 1/0);
-  const limit = options.limit || 1/0;
+  const [toAdd, isDone] = throttle(options.throttle || 1 / 0);
+  const limit = options.limit || 1 / 0;
   const threshold = options.threshold || 0;
 
   const allowed = options.origins || [location.hostname];
@@ -111,6 +111,7 @@ export function listen(options) {
       callback();
       return;
     }
+
     setTimeout(callback, delay);
   };
 
@@ -125,31 +126,31 @@ export function listen(options) {
         // Setting timeout
         setTimeoutIfDelay(() => {
           // Do not prefetch if not found in viewport
-          if (hrefsInViewport.indexOf(entry.href) === -1) return;
+          if (!hrefsInViewport.includes(entry.href)) return;
 
           observer.unobserve(entry);
 
           // prerender, if..
           // either it's the prerender + prefetch mode or it's prerender *only* mode
           // && no link has been prerendered before (no spec rules defined)
-          if (shouldPrerenderAndPrefetch || shouldOnlyPrerender) {
-            if (toPrerender.size < prerenderLimit) {
-              prerender(hrefFn ? hrefFn(entry) : entry.href).catch(err => {
-                if (options.onError) {
-                  options.onError(err);
-                } else {
-                  throw err;
-                }
-              });
-              return;
-            }
+          if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < prerenderLimit) {
+            prerender(hrefFn ? hrefFn(entry) : entry.href).catch(err => {
+              if (options.onError) {
+                options.onError(err);
+              } else {
+                throw err;
+              }
+            });
+
+            return;
           }
 
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
               prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
-                isDone(); if (options.onError) options.onError(err);
+                isDone();
+                if (options.onError) options.onError(err);
               });
             });
           }
@@ -169,18 +170,16 @@ export function listen(options) {
 
   timeoutFn(() => {
     // Find all links & Connect them to IO if allowed
-    let elementsToListen;
-    if (options.el && options.el.length && options.el.length > 0 && options.el[0].nodeName == 'A') {
-      elementsToListen = options.el;
-    } else {
-      elementsToListen = (options.el || document).querySelectorAll('a');
-    }
+    const elementsToListen = options.el && options.el.length && options.el.length > 0 && options.el[0].nodeName === 'A' ?
+      options.el :
+      (options.el || document).querySelectorAll('a');
+
     elementsToListen.forEach(link => {
       // If the anchor matches a permitted origin
       // ~> A `[]` or `true` means everything is allowed
       if (!allowed.length || allowed.includes(link.hostname)) {
         // If there are any filters, the link must not match any of them
-        isIgnored(link, ignores) || observer.observe(link);
+        if (!isIgnored(link, ignores)) observer.observe(link);
       }
     });
   }, {
@@ -199,13 +198,12 @@ export function listen(options) {
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
-* @param {Object} [conn] - navigator.connection (internal)
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, conn) {
+export function prefetch(url, isPriority) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
-    return Promise.reject(new Error('Cannot prefetch, '+chkConn.message));
+    return Promise.reject(new Error(`Cannot prefetch, ${chkConn.message}`));
   }
 
   if (toPrerender.size > 0 && !shouldPrerenderAndPrefetch) {
@@ -215,15 +213,15 @@ export function prefetch(url, isPriority, conn) {
   // Dev must supply own catch()
   return Promise.all(
       [].concat(url).map(str => {
-        if (!toPrefetch.has(str)) {
+        if (toPrefetch.has(str)) return [];
+
         // Add it now, regardless of its success
         // ~> so that we don't repeat broken links
-          toPrefetch.add(str);
+        toPrefetch.add(str);
 
-          return (isPriority ? priority : supported)(
-              new URL(str, location.href).toString(),
-          );
-        }
+        return (isPriority ? priority : supported)(
+            new URL(str, location.href).toString(),
+        );
       }),
   );
 }
@@ -231,13 +229,12 @@ export function prefetch(url, isPriority, conn) {
 /**
 * Prerender a given URL
 * @param {String} urls - the URL to fetch
-* @param {Object} [conn] - navigator.connection (internal)
 * @return {Object} a Promise
 */
-export function prerender(urls, conn) {
+export function prerender(urls) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
-    return Promise.reject(new Error('Cannot prerender, '+chkConn.message));
+    return Promise.reject(new Error(`Cannot prerender, ${chkConn.message}`));
   }
 
   // prerendering preconditions:
@@ -255,7 +252,7 @@ export function prerender(urls, conn) {
   // 3) whether it's a same origin url,
   for (const url of [].concat(urls)) {
     if (!isSameOrigin(url)) {
-      return Promise.reject(new Error('Only same origin URLs are allowed: ' + url));
+      return Promise.reject(new Error(`Only same origin URLs are allowed: ${url}`));
     }
 
     toPrerender.add(url);
@@ -267,5 +264,5 @@ export function prerender(urls, conn) {
   }
 
   const addSpecRules = addSpeculationRules(toPrerender);
-  return (addSpecRules === true) ? Promise.resolve() : Promise.reject(addSpecRules);
+  return addSpecRules === true ? Promise.resolve() : Promise.reject(addSpecRules);
 }

@@ -6,7 +6,7 @@ const host = 'http://127.0.0.1:8080';
 const server = `${host}/test`;
 const mainSuite = suite('quicklink tests');
 
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const puppeteerOptions = {
   headless: true,
@@ -103,10 +103,9 @@ mainSuite('should only prefetch links if allowed in origins list', async () => {
     responseURLs.push(resp.url());
   });
   await page.goto(`${server}/test-allow-origin.html`);
-
   await sleep(1000);
-
   assert.equal(Array.isArray(responseURLs), true);
+
   // => origins: ['github.githubassets.com']
   assert.equal(responseURLs.includes(`${server}/2.html`), false);
   assert.equal(responseURLs.includes('https://example.com/1.html'), true);
@@ -119,10 +118,9 @@ mainSuite('should prefetch all links when allowing all origins', async () => {
     responseURLs.push(resp.url());
   });
   await page.goto(`${server}/test-allow-origin-all.html`);
-
   await sleep(1000);
-
   assert.equal(Array.isArray(responseURLs), true);
+
   // => origins: true
   assert.equal(responseURLs.includes(`${server}/2.html`), true);
   assert.equal(responseURLs.includes('https://google.com/'), true);
@@ -137,9 +135,9 @@ mainSuite('should only prefetch links of same origin (default)', async () => {
     responseURLs.push(resp.url());
   });
   await page.goto(`${server}/test-same-origin.html`);
-
   await sleep(1000);
   assert.equal(Array.isArray(responseURLs), true);
+
   // => origins: [location.hostname] (default)
   assert.equal(responseURLs.includes(`${server}/2.html`), true);
   assert.equal(responseURLs.includes('https://example.com/1.html'), false);
@@ -152,9 +150,9 @@ mainSuite('should only prefetch links after ignore patterns allowed it', async (
     responseURLs.push(resp.url());
   });
   await page.goto(`${server}/test-ignore-basic.html`);
-
   await sleep(1000);
   assert.equal(Array.isArray(responseURLs), true);
+
   // => origins: [location.hostname] (default)
   // => ignores: /2.html/
   // via ignores
@@ -171,9 +169,9 @@ mainSuite('should only prefetch links after ignore patterns allowed it (multiple
     responseURLs.push(resp.url());
   });
   await page.goto(`${server}/test-ignore-multiple.html`);
-
   await sleep(1000);
   assert.equal(Array.isArray(responseURLs), true);
+
   // => origins: true (all)
   // => ignores: [...]
   assert.equal(responseURLs.includes(`${server}/2.html`), true);
@@ -265,9 +263,10 @@ mainSuite('should respect the `throttle` concurrency', async () => {
   await page.setRequestInterception(true);
 
   page.on('request', async req => {
-    if (/test\/\d+\.html$/i.test(req.url())) {
+    const url = req.url();
+    if (/test\/\d+\.html$/i.test(url)) {
       await sleep(100);
-      URLs.push(req.url());
+      URLs.push(url);
       return req.respond({status: 200});
     }
 
@@ -337,7 +336,6 @@ mainSuite('should consider threshold option before prefetching (UMD)', async () 
   page.on('response', resp => {
     responseURLs.push(resp.url());
   });
-
   await page.goto(`${server}/test-threshold.html`);
   await page.setViewport({
     width: 1000,
