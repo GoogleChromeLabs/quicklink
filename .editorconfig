@@ -12,6 +12,3 @@ trim_trailing_whitespace = true
 
 [*.md]
 trim_trailing_whitespace = false
-
-[api.njk]
-trim_trailing_whitespace = false

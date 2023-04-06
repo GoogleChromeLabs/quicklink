@@ -120,8 +120,8 @@ A "reset" function is returned, which will empty the active `IntersectionObserve
 
 #### options.prerender
 
-Type: `Boolean`  
-Default: `false`
+* Type: `Boolean`
+* Default: `false`
 
 Whether to switch from the default prefetching mode to the prerendering mode for the links inside the viewport.
 
@@ -129,43 +129,43 @@ Whether to switch from the default prefetching mode to the prerendering mode for
 
 #### options.delay
 
-Type: `Number`  
-Default: `0`
+* Type: `Number`
+* Default: `0`
 
 The _amount of time_ each link needs to stay inside the viewport before being prefetched, in milliseconds.
 
 #### options.el
 
-Type: `HTMLElement|NodeList<A>`  
-Default: `document.body`
+* Type: `HTMLElement|NodeList<A>`
+* Default: `document.body`
 
 The DOM element to observe for in-viewport links to prefetch or the NodeList of Anchor Elements.
 
 #### options.limit
 
-Type: `Number`  
-Default: `Infinity`
+* Type: `Number`
+* Default: `Infinity`
 
 The _total_ requests that can be prefetched while observing the `options.el` container.
 
 #### options.threshold
 
-Type: `Number`  
-Default: `0`
+* Type: `Number`
+* Default: `0`
 
 The _area percentage_ of each link that must have entered the viewport to be fetched, in its decimal form (e.g. 0.25 = 25%).
 
 #### options.throttle
 
-Type: `Number`  
-Default: `Infinity`
+* Type: `Number`
+* Default: `Infinity`
 
 The _concurrency limit_ for simultaneous requests while observing the `options.el` container.
 
 #### options.timeout
 
-Type: `Number`  
-Default: `2000`
+* Type: `Number`
+* Default: `2000`
 
 The `requestIdleCallback` timeout, in milliseconds.
 
@@ -173,18 +173,19 @@ The `requestIdleCallback` timeout, in milliseconds.
 
 #### options.timeoutFn
 
-Type: `Function`  
-Default: `requestIdleCallback`
+* Type: `Function`
+* Default: `requestIdleCallback`
 
-A function used for specifying a `timeout` delay.  
+A function used for specifying a `timeout` delay.
+
 This can be swapped out for a custom function like [networkIdleCallback](https://github.com/pastelsky/network-idle-callback) (see demos).
 
 By default, this uses [`requestIdleCallback`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback) or the embedded polyfill.
 
 #### options.priority
 
-Type: `Boolean`  
-Default: `false`
+* Type: `Boolean`
+* Default: `false`
 
 Whether or not the URLs within the `options.el` container should be treated as high priority.
 
@@ -192,18 +193,19 @@ When `true`, quicklink will attempt to use the `fetch()` API if supported (rathe
 
 #### options.origins
 
-Type: `Array<String>`  
-Default: `[location.hostname]`
+* Type: `Array<String>`
+* Default: `[location.hostname]`
 
-A static array of URL hostnames that are allowed to be prefetched.  
+A static array of URL hostnames that are allowed to be prefetched.
+
 Defaults to the same domain origin, which prevents _any_ cross-origin requests.
 
 **Important:** An empty array (`[]`) allows **_all origins_** to be prefetched.
 
 #### options.ignores
 
-Type: `RegExp` or `Function` or `Array`  
-Default: `[]`
+* Type: `RegExp` or `Function` or `Array`
+* Default: `[]`
 
 Determine if a URL should be prefetched.
 
@@ -215,16 +217,17 @@ When a `RegExp` tests positive, a `Function` returns `true`, or an `Array` conta
 
 #### options.onError
 
-Type: `Function`  
-Default: None
+* Type: `Function`
+* Default: None
 
-An optional error handler that will receive any errors from prefetched requests.  
+An optional error handler that will receive any errors from prefetched requests.
+
 By default, these errors are silently ignored.
 
 #### options.hrefFn
 
-Type: `Function`  
-Default: None
+* Type: `Function`
+* Default: None
 
 An optional function to generate the URL to prefetch. It receives an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) as the argument.
 
@@ -238,8 +241,8 @@ The `urls` provided are always passed through `Promise.all`, which means the res
 
 #### urls
 
-Type: `String` or `Array<String>`  
-Required: `true`
+* Type: `String` or `Array<String>`
+* Required: `true`
 
 One or many URLs to be prefetched.
 
@@ -247,10 +250,11 @@ One or many URLs to be prefetched.
 
 #### isPriority
 
-Type: `Boolean`  
-Default: `false`
+* Type: `Boolean`
+* Default: `false`
 
-Whether or not the URL(s) should be treated as "high priority" targets.  
+Whether or not the URL(s) should be treated as "high priority" targets.
+
 By default, calls to `prefetch()` are low priority.
 
 > **Note:** This behaves identically to `listen()`'s `priority` option.
@@ -263,8 +267,8 @@ Returns: `Promise`
 
 #### urls
 
-Type: `String` or `Array<String>`  
-Required: `true`
+* Type: `String` or `Array<String>`
+* Required: `true`
 
 One or many URLs to be prerendered.
 
@@ -449,7 +453,8 @@ Certain features have layered support:
 
 ## Using the prefetcher directly
 
-A `prefetch` method can be individually imported for use in other projects.  
+A `prefetch` method can be individually imported for use in other projects.
+
 This method includes the logic to respect Data Saver and 2G connections. It also issues requests thru `fetch()`, XHRs, or `link[rel=prefetch]` depending on (a) the `isPriority` value and (b) the current browser's support.
 
 After installing `quicklink` as a dependency, you can use it as follows:
