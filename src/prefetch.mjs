@@ -34,17 +34,17 @@ function hasPrefetch(link) {
  * @return {Object} a Promise
  */
 function viaDOM(url) {
-  return new Promise((res, rej, link) => {
-    link = document.createElement(`link`);
-    link.rel = `prefetch`;
+  return new Promise((resolve, reject, link) => {
+    link = document.createElement('link');
+    link.rel = 'prefetch';
     link.href = url;
 
-    link.onload = res;
-    link.onerror = rej;
+    link.onload = resolve;
+    link.onerror = reject;
 
     document.head.appendChild(link);
   });
-};
+}
 
 /**
  * Fetches a given URL using XMLHttpRequest
@@ -52,16 +52,21 @@ function viaDOM(url) {
  * @return {Object} a Promise
  */
 function viaXHR(url) {
-  return new Promise((res, rej, req) => {
-    req = new XMLHttpRequest();
+  return new Promise((resolve, reject, request) => {
+    request = new XMLHttpRequest();
 
-    req.open(`GET`, url, req.withCredentials=true);
+    request.open('GET', url, request.withCredentials = true);
 
-    req.onload = () => {
-      (req.status === 200) ? res() : rej();
+    request.onload = () => {
+      if (request.status === 200) {
+        resolve();
+      } else {
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject();
+      }
     };
 
-    req.send();
+    request.send();
   });
 }
 
@@ -79,7 +84,7 @@ export function priority(url) {
   //
   // As of 2018, fetch() is high-priority in Chrome
   // and medium-priority in Safari.
-  return window.fetch ? fetch(url, {credentials: `include`}) : viaXHR(url);
+  return window.fetch ? fetch(url, {credentials: 'include'}) : viaXHR(url);
 }
 
 export const supported = hasPrefetch() ? viaDOM : viaXHR;

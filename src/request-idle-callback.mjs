@@ -18,10 +18,10 @@
 const requestIdleCallback = window.requestIdleCallback ||
   function (cb) {
     const start = Date.now();
-    return setTimeout(function () {
+    return setTimeout(() => {
       cb({
         didTimeout: false,
-        timeRemaining: function () {
+        timeRemaining() {
           return Math.max(0, 50 - (Date.now() - start));
         },
       });

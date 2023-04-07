@@ -30,13 +30,13 @@ Most Quicklink users use the library to prefetch links on the same origin. Some 
 
 Modern browsers are shifting towards a double-keyed HTTP cache. This partitions the HTTP cache roughly by the top-frame-origin that a request is made from. This breaks cross-origin resource prefetching, whose goal is to prefetch cross-origin resources and store them in the HTTP cache for later re-use. This [limits cache timing attacks](https://github.com/xsleaks/xsleaks/wiki/Browser-Side-Channels#cache-and-error-events) but does limit cross-origin prefetching from being effective.
 
-Chrome [will](https://groups.google.com/a/chromium.org/g/blink-dev/c/bSMOY-evrV4/m/qT0gCByxBAAJ) allow cross-origin prefetched resources in the HTTP cache to be re-used for top-level navigations, which should be safe because by navigating, the user is explicitly sharing their interest with the destination site. 
+Chrome [will](https://groups.google.com/a/chromium.org/g/blink-dev/c/bSMOY-evrV4/m/qT0gCByxBAAJ) allow cross-origin prefetched resources in the HTTP cache to be re-used for top-level navigations, which should be safe because by navigating, the user is explicitly sharing their interest with the destination site.
 
-What this means for Quicklink is that the library will continue to work for same-origin navigations. If you choose to [control which origins can be prefetched](https://github.com/GoogleChromeLabs/quicklink#specify-a-custom-list-of-allowed-origins), these will be limited to prefetching same-origin use-cases only. As this is a browser-level limitation, it will impact any prefetching library. 
+What this means for Quicklink is that the library will continue to work for same-origin navigations. If you choose to [control which origins can be prefetched](https://github.com/GoogleChromeLabs/quicklink#specify-a-custom-list-of-allowed-origins), these will be limited to prefetching same-origin use-cases only. As this is a browser-level limitation, it will impact any prefetching library.
 
 ## Session Stitching
 
-Cross-origin prefetching (e.g a.com/foo.html prefetches b.com/bar.html) has a number of limitations. One such limitation is with session-stitching. b.com may expect a.com's navigation requests to include session information (e.g a temporary ID - e.g b.com/bar.html?hash=<>&timestamp=<>), where this information is used to customize the experience or log information to analytics.  
+Cross-origin prefetching (e.g a.com/foo.html prefetches b.com/bar.html) has a number of limitations. One such limitation is with session-stitching. b.com may expect a.com's navigation requests to include session information (e.g a temporary ID - e.g b.com/bar.html?hash=<>&timestamp=<>), where this information is used to customize the experience or log information to analytics.
 
 If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches.
 

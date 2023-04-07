@@ -1,5 +1,5 @@
 const markdownIt = require('markdown-it');
-const htmlminifier = require('html-minifier');
+const htmlminifier = require('html-minifier-terser');
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 
 module.exports = function(eleventyConfig) {
@@ -10,7 +10,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/styles");
   eleventyConfig.addPassthroughCopy("src/script.js");
   eleventyConfig.addPassthroughCopy("src/site.webmanifest");
-  eleventyConfig.addPassthroughCopy("src/browserconfig.xml");
 
   eleventyConfig.addNunjucksFilter("markdown", function(string) {
     const md = new markdownIt();
@@ -26,15 +25,22 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addTransform("htmlminifier", async function(content, outputPath) {
     if (outputPath.endsWith(".html")) {
         return htmlminifier.minify(content, {
+            collapseBooleanAttributes: true,
             collapseWhitespace: true,
+            conservativeCollapse: false,
+            decodeEntities: true,
             minifyCSS: true,
             minifyJS: true,
+            minifyURLs: false,
             removeAttributeQuotes: true,
             removeComments: true,
-            removeEmptyAttributes: true,
+            removeEmptyAttributes: false,
+            removeOptionalAttributes: true,
+            removeOptionalTags: true,
             removeRedundantAttributes: true,
             removeScriptTypeAttributes: true,
             removeStyleLinkTypeAttributes: true,
+            removeTagWhitespace: false,
             sortAttributes: true,
             sortClassName: true
         })

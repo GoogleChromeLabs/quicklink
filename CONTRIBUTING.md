@@ -38,7 +38,7 @@ Here's an example of how to debug the library by using one of these tests:
 
 1. Comment the following block of code at `test/test-basic-usage.html`:
 
-```javascript
+```js
 <script src="../dist/quicklink.umd.js"></script>
   <script>
     quicklink.listen();
@@ -48,24 +48,24 @@ Here's an example of how to debug the library by using one of these tests:
 2. Add the following snippet in its place, to import the module from its
    source file:
 
-```javascript
-<script type="module"> 
-    import { listen } from "../src/index.mjs"; 
-    listen(); 
+```js
+<script type="module">
+    import { listen } from '../src/index.mjs';
+    listen();
 </script>
 ```
 
 3. Open
    [src/index.mjs](https://github.com/GoogleChromeLabs/quicklink/blob/master/src/index.mjs)
-   for edit and replace the following line: 
-   
-```javascript
+   for edit and replace the following line:
+
+```js
 import throttle from 'throttles';
-``` 
+```
 
 By:
-   
-```javascript
+
+```js
 import throttle from '../node_modules/throttles/dist/index.mjs'
 ```
 

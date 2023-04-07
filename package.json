@@ -2,7 +2,10 @@
   "name": "quicklink",
   "version": "2.3.0",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time",
-  "repository": "https://github.com/GoogleChromeLabs/quicklink.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoogleChromeLabs/quicklink.git"
+  },
   "homepage": "https://getquick.link/",
   "bugs": {
     "url": "https://github.com/GoogleChromeLabs/quicklink/issues"
@@ -11,25 +14,25 @@
   "license": "Apache-2.0",
   "main": "dist/quicklink.js",
   "module": "dist/quicklink.mjs",
-  "jsnext:main": "dist/quicklink.mjs",
   "umd:main": "dist/quicklink.umd.js",
   "unpkg": "dist/quicklink.umd.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "lint": "eslint src/*.mjs test/*.js demos/*.js",
-    "lint-fix": "eslint src/*.mjs test/*.js --fix demos/*.js",
-    "start": "http-server .",
-    "test": "yarn run build-all && mocha test/bootstrap.js --recursive test",
+    "lint": "eslint \"{demos,src,test}/**/*.{js,mjs}\"",
+    "lint-fix": "npm run lint -- --fix",
+    "start": "sirv --dev --no-clear --host 127.0.0.1 --port 8080 --quiet",
+    "uvu": "uvu test",
+    "test": "npm-run-all build-all --parallel --race start uvu",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
     "build-plugin": "microbundle src/chunks.mjs --no-sourcemap --external none -o dist/react",
-    "build-all": "yarn run build && yarn run build-plugin && yarn run build-react-chunks",
-    "prepare": "yarn run -s build",
-    "build-react-chunks": "./node_modules/.bin/babel src/react-chunks.js --out-file dist/react/hoc.js",
-    "bundlesize": "bundlesize",
-    "changelog": "yarn conventional-changelog -i CHANGELOG.md -s -r 0",
-    "release": "cross-var yarn run build-all -s && cross-var git commit -am $npm_package_version && cross-var git tag $npm_package_version && git push && git push --tags"
+    "build-react-chunks": "babel src/react-chunks.js --out-file dist/react/hoc.js",
+    "build-all": "npm-run-all --parallel build build-plugin build-react-chunks",
+    "prepublishonly": "npm run build-all",
+    "size": "size-limit",
+    "changelog": "npm run conventional-changelog -i CHANGELOG.md -s -r 0",
+    "release": "cross-env-shell \"npm run build-all && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags\""
   },
   "keywords": [
     "prefetch",
@@ -41,35 +44,30 @@
   ],
   "dependencies": {
     "route-manifest": "^1.0.0",
-    "throttles": "^1.0.0"
+    "throttles": "^1.0.1"
   },
   "peerDependencies": {
     "react": "^16.8.0",
     "react-dom": "^16.8.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/preset-react": "^7.9.4",
-    "bundlesize": "^0.18.0",
-    "chai": "^4.2.0",
-    "conventional-changelog-cli": "^2.0.11",
-    "cross-var": "^1.1.0",
-    "eslint": "^6.7.1",
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-react": "^7.18.6",
+    "@size-limit/file": "^8.2.4",
+    "conventional-changelog-cli": "^2.2.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.37.0",
     "eslint-config-google": "^0.14.0",
-    "http-server": "^0.12.0",
-    "lodash": "^4.17.11",
-    "microbundle": "0.11.0",
-    "mocha": "^6.2.2",
-    "puppeteer": "^2.0.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  },
-  "bundlesize": [
-    {
-      "path": "./dist/*.js",
-      "maxSize": "2 kB"
-    }
-  ]
+    "eslint-plugin-react": "^7.32.2",
+    "microbundle": "0.15.1",
+    "npm-run-all": "^4.1.5",
+    "puppeteer": "^19.8.3",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "sirv-cli": "^2.0.2",
+    "size-limit": "^8.2.4",
+    "uvu": "^0.5.6"
+  }
 }
