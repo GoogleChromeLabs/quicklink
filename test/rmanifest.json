@@ -1,0 +1,52 @@
+{
+  "/about": [
+    {
+      "type": "style",
+      "href": "/test/static/css/about.00ec0d84.chunk.css"
+    },
+    {
+      "type": "script",
+      "href": "/test/static/js/about.921ebc84.chunk.js"
+    }
+  ],
+  "/blog": [
+    {
+      "type": "style",
+      "href": "/test/static/css/blog.2a8b6ab6.chunk.css"
+    },
+    {
+      "type": "script",
+      "href": "/test/static/js/blog.1dcce8a6.chunk.js"
+    }
+  ],
+  "/": [
+    {
+      "type": "style",
+      "href": "/test/static/css/home.6d953f22.chunk.css"
+    },
+    {
+      "type": "script",
+      "href": "/test/static/js/home.14835906.chunk.js"
+    },
+    {
+      "type": "image",
+      "href": "/test/static/media/video.b9b6e9e1.svg"
+    }
+  ],
+  "/blog/:title": [
+    {
+      "type": "style",
+      "href": "/test/static/css/article.cb6f97df.chunk.css"
+    },
+    {
+      "type": "script",
+      "href": "/test/static/js/article.cb6f97df.chunk.js"
+    }
+  ],
+  "*": [
+    {
+      "type": "script",
+      "href": "/test/static/js/6.7f61b1a1.chunk.js"
+    }
+  ]
+}

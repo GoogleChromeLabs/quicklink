@@ -1,6 +1,6 @@
 // This script is a localized version of the upstream
 // https://github.com/pastelsky/network-idle-callback
-// which fixes isssues with browser importing of the
+// which fixes issues with browser importing of the
 // above dependency. It is hopefully temporary.
 
 const DOMContentLoad = new Promise(resolve => {

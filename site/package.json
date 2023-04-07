@@ -1,0 +1,19 @@
+{
+  "name": "eleventy-quicklink-website",
+  "description": "",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "eleventy",
+    "start": "eleventy --serve",
+    "deploy": "firebase deploy --project=quicklink-6a87b",
+    "test": "npm run build"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^4.2.0",
+    "html-minifier-terser": "^7.1.0",
+    "markdown-it": "^13.0.1"
+  }
+}

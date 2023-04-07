@@ -1,0 +1,115 @@
+---
+title: Quicklink
+layout: layouts/base.njk
+description: Faster subsequent page-loads by prefetching in-viewport links during idle time.
+---
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% markdownConvert %}
+
+## Demos
+
+This page contains some demo sites that use Quicklink to improve navigation, grouped by architecture: **Multi Page Apps** / **Single Page Apps**.
+
+If you like the library, and want to try them on your site, check out the **Installation** section of the [home page](/).
+
+#### Multi Page Apps
+
+In this demo you’ll compare an ecommerce site with and without Quicklink to see how navigation is improved thanks to the library.
+
+The following waterfall shows a typical navigation for a site without Quicklink (top) vs. the same site using the library (bottom):
+
+{% endmarkdownConvert %}
+
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/wpt-visual-comparison.png" height="320" width="615">
+
+{% markdownConvert %}
+
+To try the demo:
+
+1. Open the [unoptimized site](https://mini-ecomm.glitch.me/) in Chrome.
+1. Open **DevTools** and go to the **Network panel** to simulate a **Fast 3G** Connection.
+1. Pick **Galaxy S5** as a simulated device.
+1. Make sure **Disable cache** is not checked.
+1. Reload the page.
+
+{% endmarkdownConvert %}
+
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/devtools-unoptimized.png" height="130" width="600">
+
+{% markdownConvert %}
+
+Now, measure performance on the same site, that uses Quicklink:
+
+1. Open the [optimized site](https://mini-ecomm-quicklink.glitch.me/) in Chrome.
+1. Open **DevTools** and go to the **Network panel** to simulate a **Fast 3G** Connection.
+1. Pick **Galaxy S5** as a simulated device.
+1. Make sure **Disable cache** is not checked.
+1. Reload the page.
+
+Prefetched links can be identified in the **Network** panel by having `quicklink` as the **Initiator** and **Lowest** as the **Priority**:
+
+{% endmarkdownConvert %}
+
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/devtools-optimized-1.png" height="130" width="600">
+
+{% markdownConvert %}
+
+To measure the impact of `quicklink` on navigations:
+
+1. Clear the **Network** trace.
+1. Click on a list item.
+1. Take a look at the **Network** panel.
+
+{% endmarkdownConvert %}
+
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/devtools-optimized-2.png" height="130" width="600">
+
+{% markdownConvert %}
+
+In the **Size** column of the **Network** panel the trace shows that the product page was retrieved from the **prefetch cache** and now takes **3ms** to load: a **97% improvement** compared to the unoptimized version.
+
+Here is a comparison video:
+
+{% endmarkdownConvert %}
+
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/wpt-video-comparison.gif" height="320" width="450">
+
+{% markdownConvert %}
+
+### Single Page Apps
+
+Quicklink 2.0 includes support for React-based single-page-apps. This has been covered to the detail in this [guide](https://web.dev/quicklink/).
+
+To try the demo:
+
+1. Open the [optimized site](https://create-react-app-quicklink.glitch.me/) in Chrome.
+1. Open DevTools and go to the **Network** panel to simulate a **Fast 3G** Connection.
+1. Pick **Galaxy S5** as a simulated device.
+1. Make sure **Disable cache** is not checked.
+1. Reload the page.
+
+When the home page loads the chunks for that route are loaded. After that, `quicklink` prefetches the route's chunks for the in-viewport links:
+
+{% endmarkdownConvert %}
+
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/spa-devtools-optimized-1.png" height="204" width="570">
+
+{% markdownConvert %}
+
+Next:
+
+1. Clear the **Network** log again.
+1. Make sure **Disable** cache is not checked.
+1. Click the Blog link to navigate to that page.
+
+{% endmarkdownConvert %}
+
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/spa-devtools-optimized-2.png" height="76" width="643">
+
+{% markdownConvert %}
+
+The Size column indicates that these chunks were retrieved from the "prefetch cache", instead of the network. Loading these chunks without a Quicklink takes approximately 580ms. Using the library it takes 2ms, which represents a 99% reduction!
+
+{% endmarkdownConvert %}
+{% endblock %}

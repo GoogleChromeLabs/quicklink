@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Basic demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../test/main.css">
+</head>
+
+<body>
+  <div class="screen">
+    <h1>Basic demo</h1>
+    <p>
+      <a href="2.html">Link 1</a>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+  </div>
+  <script src="../../dist/quicklink.umd.js"></script>
+  <script>
+    quicklink.listen({
+      el: document.querySelector('div.screen'),
+      // hrefFn will prevent quicklink to prefetch the "href" attribute URL
+      // and the returned value will be prefetched as a result.
+      hrefFn(element) {
+        return element.href.replace('html', 'json');
+      }
+    });
+  </script>
+
+  <script>
+    // Simple SPA-like page transition for demo purposes
+    const container = document.querySelector('div.screen');
+    const link = container.querySelector('a');
+    const title = container.querySelector('h1');
+    const paragraph = container.querySelector('p');
+
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      const href = event.target.href.replace('html', 'json');
+      fetch(href)
+        .then(response => response.json())
+        .then(data => {
+          title.innerHTML = document.title = data.title;
+          paragraph.innerHTML = data.description;
+        });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+{% extends "layouts/normal-section-wrapper.njk" %}
+{% block section %}
+{% sectionTitle "Usage" %}
+{{ "Once initialized, `quicklink` will automatically prefetch URLs for links that are in-viewport during idle time." | markdown | safe }}
+
+{{ "Quickstart:" | markdown | safe }}
+
+{% highlight "html" %}
+<!-- Include quicklink from dist -->
+<script src="dist/quicklink.umd.js"></script>
+<!-- Initialize (you can do this whenever you want) -->
+<script>
+quicklink.listen();
+</script>
+{% endhighlight %}
+
+{{ "For example, you can initialize after the `load` event fires:" | markdown | safe }}
+{% highlight "html" %}
+<script>
+window.addEventListener('load', () => {
+  quicklink.listen();
+});
+</script>
+{% endhighlight %}
+
+{{ "ES Module import:" | markdown | safe }}
+{% highlight "js" %}
+import quicklink from "quicklink/dist/quicklink.mjs";
+quicklink.listen();
+{% endhighlight %}
+
+{{ "The above options are best for multi-page sites. Single-page apps have a few options available for using quicklink with a router:" | markdown | safe }}
+{{ "* Call `quicklink.listen()` once a navigation to a new route has completed" | markdown | safe }}
+{{ "* Call `quicklink.listen()` against a specific DOM element / component" | markdown | safe }}
+{{ "* Call `quicklink.prefetch()` with a custom set of URLs to prefetch" | markdown | safe }}
+{% endblock %}
