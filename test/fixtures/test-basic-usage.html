@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Prefetch: Static URL list</title>
+  <title>Prefetch: Basic Usage</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="main.css">
 </head>
@@ -16,9 +16,9 @@
     <a href="main.css">CSS</a>
   </section>
   <a href="4.html" style="position:absolute;margin-top:900px;">Link 4</a>
-  <script src="../dist/quicklink.umd.js"></script>
+  <script src="../../dist/quicklink.umd.js"></script>
   <script>
-    quicklink.prefetch(['2.html', '3.html', '4.html']);
+    quicklink.listen();
   </script>
 </body>
 
