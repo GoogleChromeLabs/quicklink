@@ -4,7 +4,7 @@
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time.",
   "logo": "/assets/images/logos/quicklink.svg",
   "quicklinkGithubURL": "https://github.com/GoogleChromeLabs/quicklink/",
-  "quicklinkVersion": "2.1.0",
+  "quicklinkVersion": "2.3.0",
   "quicklinkSizeLimit": "1KB",
   "bottomResource": {
     "caption": "View source on GitHub"
@@ -41,6 +41,11 @@
       "title": "drupal",
       "logoFileName": "drupal.svg",
       "url": "https://www.drupal.org/project/quicklink/"
+    },
+    {
+      "title": "magento",
+      "logoFileName": "magento.svg",
+      "url": "https://marketplace.magento.com/rafaelcg-magento2-quicklink.html"
     },
     {
       "title": "react",

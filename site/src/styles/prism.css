@@ -1,18 +1,22 @@
 /**
- * Shades of Purple Theme for Prism.js
- *
- * @author Ahmad Awais <https://twitter.com/MrAhmadAwais/>
- * @support Follow/tweet at https://twitter.com/MrAhmadAwais/
+ * okaidia theme for JavaScript, CSS and HTML
+ * Loosely based on Monokai textmate theme by http://www.monokai.nl/
+ * @author ocodia
  */
 
-code[class*='language-'],
-pre[class*='language-'] {
-	color: #9efeff;
-	direction: ltr;
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #f8f8f2;
+	background: none;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-size: 1em;
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
 
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
@@ -22,185 +26,98 @@ pre[class*='language-'] {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
-
-	font-family: 'Operator Mono', 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-	font-weight: 400;
-	font-size: 17px;
-	line-height: 25px;
-	letter-spacing: 0.5px;
-	text-shadow: 0 1px #222245;
 }
 
-pre[class*='language-']::-moz-selection,
-pre[class*='language-'] ::-moz-selection,
-code[class*='language-']::-moz-selection,
-code[class*='language-'] ::-moz-selection,
-pre[class*='language-']::selection,
-pre[class*='language-'] ::selection,
-code[class*='language-']::selection,
-code[class*='language-'] ::selection {
-	color: inherit;
-	background: #a599e9;
-}
-
-/* Code blocks. */
-pre[class*='language-'] {
-	padding: 2em;
-	margin: 0.5em 0;
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
 	overflow: auto;
-}
-
-:not(pre) > code[class*='language-'],
-pre[class*='language-'] {
-	background: #1e1e3f;
-}
-
-/* Inline code */
-:not(pre) > code[class*='language-'] {
-	padding: 0.1em;
 	border-radius: 0.3em;
 }
 
-.token {
-	font-weight: 400;
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #272822;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
 }
 
 .token.comment,
 .token.prolog,
+.token.doctype,
 .token.cdata {
-	color: #b362ff;
-}
-
-.token.delimiter,
-.token.keyword,
-.token.selector,
-.token.important,
-.token.atrule {
-	color: #ff9d00;
-}
-
-.token.operator,
-.token.attr-name {
-	color: rgb(255, 180, 84);
+	color: #8292a2;
 }
 
 .token.punctuation {
-	color: #ffffff;
+	color: #f8f8f2;
 }
 
-.token.boolean {
-	color: rgb(255, 98, 140);
-}
-
-.token.tag,
-.token.tag .punctuation,
-.token.doctype,
-.token.builtin {
-	color: rgb(255, 157, 0);
-}
-
-.token.entity,
-.token.symbol {
-	color: #6897bb;
-}
-
-.token.number {
-	color: #ff628c;
+.token.namespace {
+	opacity: .7;
 }
 
 .token.property,
+.token.tag,
 .token.constant,
-.token.variable {
-	color: #ff628c;
-}
-
-.token.string,
-.token.char {
-	color: #a5ff90;
-}
-
-.token.attr-value,
-.token.attr-value .punctuation {
-	color: #a5c261;
-}
-
-.token.attr-value .punctuation:first-child {
-	color: #a9b7c6;
-}
-
-.token.url {
-	color: #287bde;
-	text-decoration: underline;
-}
-
-.token.function {
-	color: rgb(250, 208, 0);
-}
-
-.token.regex {
-	background: #364135;
-}
-
-.token.bold {
-	font-weight: bold;
-}
-
-.token.italic {
-	font-style: italic;
-}
-
-.token.inserted {
-	background: #00ff00;
-}
-
+.token.symbol,
 .token.deleted {
-	background: #ff000d;
+	color: #f92672;
 }
 
-code.language-css .token.property,
-code.language-css .token.property + .token.punctuation {
-	color: #a9b7c6;
+.token.boolean,
+.token.number {
+	color: #ae81ff;
 }
 
-code.language-css .token.id {
-	color: #ffc66d;
-}
-
-code.language-css .token.selector > .token.class,
-code.language-css .token.selector > .token.attribute,
-code.language-css .token.selector > .token.pseudo-class,
-code.language-css .token.selector > .token.pseudo-element {
-	color: #ffc66d;
-}
-
-.token.class-name {
-	color: #fb94ff;
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #a6e22e;
 }
 
 .token.operator,
 .token.entity,
 .token.url,
 .language-css .token.string,
-.style .token.string {
-	background: none;
+.style .token.string,
+.token.variable {
+	color: #f8f8f2;
 }
 
-pre .line-highlight,
-pre .line-highlight.line-highlight,
-pre > code.line-highlight {
-	margin-top: 36px;
-	background: linear-gradient(to right, rgba(179, 98, 255, 0.17), transparent);
+.token.atrule,
+.token.attr-value,
+.token.function,
+.token.class-name {
+	color: #e6db74;
 }
 
-pre .line-highlight:before,
-pre > code.line-highlight:before,
-pre .line-highlight[data-end]:after,
-pre > code.line-highlight[data-end]:after {
-	content: '';
+.token.keyword {
+	color: #66d9ef;
 }
 
-/* edits */
+.token.regex,
+.token.important {
+	color: #fd971f;
+}
 
-pre.language-html, pre.language-js, pre.language-bash, pre.language-css {
-	font-size: 15px;
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
 }

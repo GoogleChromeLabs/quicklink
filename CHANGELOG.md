@@ -1,3 +1,24 @@
+## 2.3.0 (2022-08-05)
+
+* 2.3.0 ([6189deb](https://github.com/GoogleChromeLabs/quicklink/commit/6189deb))
+* Add support for same-site prerendering with Speculation Rules API (#258) ([3d26f40](https://github.com/GoogleChromeLabs/quicklink/commit/3d26f40)), closes [#258](https://github.com/GoogleChromeLabs/quicklink/issues/258)
+* Create node.js.yml ([2f69b42](https://github.com/GoogleChromeLabs/quicklink/commit/2f69b42))
+* Fix Markdown (#250) ([13e2f82](https://github.com/GoogleChromeLabs/quicklink/commit/13e2f82)), closes [#250](https://github.com/GoogleChromeLabs/quicklink/issues/250)
+* Update node.js.yml ([312dbbb](https://github.com/GoogleChromeLabs/quicklink/commit/312dbbb))
+* chore: Modify repository default languages (#264) ([5a0d396](https://github.com/GoogleChromeLabs/quicklink/commit/5a0d396)), closes [#264](https://github.com/GoogleChromeLabs/quicklink/issues/264)
+
+## 2.2.0 (2021-06-18)
+
+* [release] additions to changelog ([6ac410c](https://github.com/GoogleChromeLabs/quicklink/commit/6ac410c))
+* [release] bump core to 2.2.0 ([418eb50](https://github.com/GoogleChromeLabs/quicklink/commit/418eb50))
+* [release] bump site to 2.2.0 ([22a055c](https://github.com/GoogleChromeLabs/quicklink/commit/22a055c))
+* [release] update changelog for 2.2.0 ([bb1a648](https://github.com/GoogleChromeLabs/quicklink/commit/bb1a648))
+* [site] reorder logos ([09907bb](https://github.com/GoogleChromeLabs/quicklink/commit/09907bb))
+* [site] update version ([7babbda](https://github.com/GoogleChromeLabs/quicklink/commit/7babbda))
+* Add Magento Quicklink module (Readme + Site) (#216) ([c77e057](https://github.com/GoogleChromeLabs/quicklink/commit/c77e057)), closes [#216](https://github.com/GoogleChromeLabs/quicklink/issues/216)
+* Added `threshold` option to allow users select the % of link areas that entered the viewport before  ([d3746e1](https://github.com/GoogleChromeLabs/quicklink/commit/d3746e1)), closes [#214](https://github.com/GoogleChromeLabs/quicklink/issues/214)
+* Instructions to debug Quicklink ([2b3dc21](https://github.com/GoogleChromeLabs/quicklink/commit/2b3dc21))
+
 ## 2.1.0 (2021-02-07)
 
 * [docs] Add React SPA demos to repo and site (#179) ([179cb56](https://github.com/GoogleChromeLabs/quicklink/commit/179cb56)), closes [#179](https://github.com/GoogleChromeLabs/quicklink/issues/179)
@@ -12,6 +33,7 @@
 * [docs] refactor usage docs syntax highlighting ([25367f4](https://github.com/GoogleChromeLabs/quicklink/commit/25367f4))
 * [docs] remainder of syntax highlighting fixes ([cf32a85](https://github.com/GoogleChromeLabs/quicklink/commit/cf32a85))
 * [docs] remove highlightjs ([7ff8c8f](https://github.com/GoogleChromeLabs/quicklink/commit/7ff8c8f))
+* [docs] Update CHANGELOG ([c4a4726](https://github.com/GoogleChromeLabs/quicklink/commit/c4a4726))
 * [docs] various style theme improvements ([06786fb](https://github.com/GoogleChromeLabs/quicklink/commit/06786fb))
 * [feat] (options): Add a `hrefFn` option to build the URL to prefetch. (#201) ([ee072d4](https://github.com/GoogleChromeLabs/quicklink/commit/ee072d4)), closes [#201](https://github.com/GoogleChromeLabs/quicklink/issues/201)
 * [feat] `delay` option to reduce impact on CDNs and servers [alternative without data-attributes] (#2 ([5cdf569](https://github.com/GoogleChromeLabs/quicklink/commit/5cdf569)), closes [#217](https://github.com/GoogleChromeLabs/quicklink/issues/217)
@@ -20,21 +42,18 @@
 * [infra] bump version to 2.1.0 ([81232e8](https://github.com/GoogleChromeLabs/quicklink/commit/81232e8))
 * Added Ray-Ban and Oakley from Luxxotica to trustedByLogos section (#202) ([b4494b0](https://github.com/GoogleChromeLabs/quicklink/commit/b4494b0)), closes [#202](https://github.com/GoogleChromeLabs/quicklink/issues/202)
 * Correct typo, duplicate "passing" (#185) ([932f655](https://github.com/GoogleChromeLabs/quicklink/commit/932f655)), closes [#185](https://github.com/GoogleChromeLabs/quicklink/issues/185)
+* Fix issues typo in 'network-idle.js' (#218) ([534e7b3](https://github.com/GoogleChromeLabs/quicklink/commit/534e7b3)), closes [#218](https://github.com/GoogleChromeLabs/quicklink/issues/218)
 * New demo page (#205) ([5205d62](https://github.com/GoogleChromeLabs/quicklink/commit/5205d62)), closes [#205](https://github.com/GoogleChromeLabs/quicklink/issues/205)
 * update homepage url in package.json (#184) ([172275b](https://github.com/GoogleChromeLabs/quicklink/commit/172275b)), closes [#184](https://github.com/GoogleChromeLabs/quicklink/issues/184)
 * Updating broken link ([224df77](https://github.com/GoogleChromeLabs/quicklink/commit/224df77))
 * Fix: Cannot read property 'then' of undefined (#188) ([a8872b8](https://github.com/GoogleChromeLabs/quicklink/commit/a8872b8)), closes [#188](https://github.com/GoogleChromeLabs/quicklink/issues/188)
 * chore(deps): bump http-proxy from 1.18.0 to 1.18.1 (#200) ([0aa5157](https://github.com/GoogleChromeLabs/quicklink/commit/0aa5157)), closes [#200](https://github.com/GoogleChromeLabs/quicklink/issues/200)
 
-
-
 ## 2.0.0 (2020-05-07)
 
 * [infra] Add site updates for 2.0.0 (#178) ([8aa512b](https://github.com/GoogleChromeLabs/quicklink/commit/8aa512b)), closes [#178](https://github.com/GoogleChromeLabs/quicklink/issues/178)
 * [infra] Bump versions to 2.0.0 ([08d9a39](https://github.com/GoogleChromeLabs/quicklink/commit/08d9a39))
 * 2.0.0 ([735caf6](https://github.com/GoogleChromeLabs/quicklink/commit/735caf6))
-
-
 
 ## 2.0.0-beta (2020-04-24)
 
@@ -61,17 +80,13 @@
 * Updates to initial site (#144) ([3f796f6](https://github.com/GoogleChromeLabs/quicklink/commit/3f796f6)), closes [#144](https://github.com/GoogleChromeLabs/quicklink/issues/144)
 * chore(deps): bump acorn from 6.4.0 to 6.4.1 (#167) ([8b62949](https://github.com/GoogleChromeLabs/quicklink/commit/8b62949)), closes [#167](https://github.com/GoogleChromeLabs/quicklink/issues/167)
 
-
-
 ## 2.0.0-alpha (2019-09-25)
 
 * (docs) update to remove TODOs from README ([8cd1183](https://github.com/GoogleChromeLabs/quicklink/commit/8cd1183))
 * Update docs with ad-related considerations (#122) ([7ac672f](https://github.com/GoogleChromeLabs/quicklink/commit/7ac672f)), closes [#122](https://github.com/GoogleChromeLabs/quicklink/issues/122)
 * Major: Rework exports; Add `throttle` and `limit` options (#120) ([4044de0](https://github.com/GoogleChromeLabs/quicklink/commit/4044de0)), closes [#120](https://github.com/GoogleChromeLabs/quicklink/issues/120) [#1](https://github.com/GoogleChromeLabs/quicklink/issues/1)
 
-
-
-## <small>1.0.1 (2019-08-17)</small>
+## 1.0.1 (2019-08-17)
 
 * (demo) Introduce new demos for basic + workbox usage ([9eb7fa0](https://github.com/GoogleChromeLabs/quicklink/commit/9eb7fa0))
 * (demos) Add new demos to README ([85729aa](https://github.com/GoogleChromeLabs/quicklink/commit/85729aa))
@@ -100,7 +115,7 @@
 * Use latest version of polyfill.io JS (#92) ([b15c8ba](https://github.com/GoogleChromeLabs/quicklink/commit/b15c8ba)), closes [#92](https://github.com/GoogleChromeLabs/quicklink/issues/92)
 * fix: Attempt to address build issues (Travis) ([9755280](https://github.com/GoogleChromeLabs/quicklink/commit/9755280))
 * fix: stop observing links once prefetched; ([ce0011c](https://github.com/GoogleChromeLabs/quicklink/commit/ce0011c))
-* fix(README): use UMD file for <script> tags ([e735eb7](https://github.com/GoogleChromeLabs/quicklink/commit/e735eb7))
+* fix(README): use UMD file for `<script>` tags ([e735eb7](https://github.com/GoogleChromeLabs/quicklink/commit/e735eb7))
 * docs(browser-support): add note for IE9-10 users (#67) ([aa40490](https://github.com/GoogleChromeLabs/quicklink/commit/aa40490)), closes [#67](https://github.com/GoogleChromeLabs/quicklink/issues/67)
 * docs(README): add simplified Chinese version for README.md (#36) ([a3e0221](https://github.com/GoogleChromeLabs/quicklink/commit/a3e0221)), closes [#36](https://github.com/GoogleChromeLabs/quicklink/issues/36)
 * docs(README): add URL fragments note about ignores (#52, #49) ([c28c002](https://github.com/GoogleChromeLabs/quicklink/commit/c28c002)), closes [#52](https://github.com/GoogleChromeLabs/quicklink/issues/52) [#49](https://github.com/GoogleChromeLabs/quicklink/issues/49)
@@ -110,8 +125,6 @@
 * ci: update Yarn with the recommended official commands ([1a92452](https://github.com/GoogleChromeLabs/quicklink/commit/1a92452))
 * ci: use Yarn for all scripts ([4477ec6](https://github.com/GoogleChromeLabs/quicklink/commit/4477ec6))
 * chore(release): add conventional-changelog-cli & changelog ([532b985](https://github.com/GoogleChromeLabs/quicklink/commit/532b985))
-
-
 
 ## 1.0.0 (2018-12-14)
 
@@ -145,9 +158,7 @@
 * golf: only use `document.head` for append; ([189984a](https://github.com/GoogleChromeLabs/quicklink/commit/189984a))
 * golf: save `navigator.connection` to var; ([5f95309](https://github.com/GoogleChromeLabs/quicklink/commit/5f95309))
 
-
-
-## <small>0.1.2 (2018-12-12)</small>
+## 0.1.2 (2018-12-12)
 
 * release(package.json): bump release ([de41a3c](https://github.com/GoogleChromeLabs/quicklink/commit/de41a3c))
 * Fix wrong operator precedence: negation vs 'in' ([c2864b0](https://github.com/GoogleChromeLabs/quicklink/commit/c2864b0))
@@ -156,15 +167,11 @@
 * docs(README.md): minor clean-up of demo text ([4c03801](https://github.com/GoogleChromeLabs/quicklink/commit/4c03801))
 * docs(readme): correct a small typo ([93814e2](https://github.com/GoogleChromeLabs/quicklink/commit/93814e2))
 
-
-
-## <small>0.1.1 (2018-12-12)</small>
+## 0.1.1 (2018-12-12)
 
 * release(package.json): bump version ([25b7cc7](https://github.com/GoogleChromeLabs/quicklink/commit/25b7cc7))
 * Readme: Fix Guessjs website link ([0a32e19](https://github.com/GoogleChromeLabs/quicklink/commit/0a32e19))
 * fix: amend incorrect `querySelector` call ([e330066](https://github.com/GoogleChromeLabs/quicklink/commit/e330066))
-
-
 
 ## 0.1.0 (2018-12-11)
 
@@ -210,9 +217,7 @@
 * golf: use ternary within prefetch functions; ([be441dc](https://github.com/GoogleChromeLabs/quicklink/commit/be441dc))
 * golf(breaking): use Boolean for `priority` option; ([e478a47](https://github.com/GoogleChromeLabs/quicklink/commit/e478a47))
 
-
-
-## <small>0.0.3 (2018-12-05)</small>
+## 0.0.3 (2018-12-05)
 
 * release(package.json) bump to 0.0.3 ([2d46f53](https://github.com/GoogleChromeLabs/quicklink/commit/2d46f53))
 * Docs(README): add browser support and typo fix ([d2e18ad](https://github.com/GoogleChromeLabs/quicklink/commit/d2e18ad))
@@ -230,9 +235,7 @@
 * core(index.mjs): add support for timeoutFn ([524b72e](https://github.com/GoogleChromeLabs/quicklink/commit/524b72e))
 * infra(package.json): server->start, add demos to linting ([783a1b5](https://github.com/GoogleChromeLabs/quicklink/commit/783a1b5))
 
-
-
-## <small>0.0.2 (2018-11-27)</small>
+## 0.0.2 (2018-11-27)
 
 * 0.0.1 ([cddf434](https://github.com/GoogleChromeLabs/quicklink/commit/cddf434))
 * 0.0.2 ([eb5c15e](https://github.com/GoogleChromeLabs/quicklink/commit/eb5c15e))
@@ -250,9 +253,7 @@
 * feat(tests): improve test coverage ([3ee52bd](https://github.com/GoogleChromeLabs/quicklink/commit/3ee52bd))
 * feat(tests): move /demo to tests directory ([9d8ff74](https://github.com/GoogleChromeLabs/quicklink/commit/9d8ff74))
 
-
-
-## <small>0.0.1 (2018-11-24)</small>
+## 0.0.1 (2018-11-24)
 
 * (tidy) clean-up demo directory ([dc6bc58](https://github.com/GoogleChromeLabs/quicklink/commit/dc6bc58))
 * (tidy) index.mjs: JSDoc comments ([e0d0afe](https://github.com/GoogleChromeLabs/quicklink/commit/e0d0afe))
@@ -279,6 +280,3 @@
 * docs(package.json): get consistent with description ([c2f00ed](https://github.com/GoogleChromeLabs/quicklink/commit/c2f00ed))
 * docs(README): add how it works, usage and recipes. ([0a26a65](https://github.com/GoogleChromeLabs/quicklink/commit/0a26a65))
 * fix(src): Add license headers ([adf645e](https://github.com/GoogleChromeLabs/quicklink/commit/adf645e))
-
-
-

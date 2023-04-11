@@ -9,16 +9,16 @@
     {% include "layouts/footer.njk" %}
     <div class="back-to-top hidden">&uarr;</div>
   </main>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/{{ site.quicklinkVersion }}/quicklink.umd.js"></script>
   <script>
     window.addEventListener('load', () => {
       quicklink.listen();
     });
   </script>
-  <link rel="stylesheet" href="{{ '/styles/prism.css' | url }}"/>
+  <link rel="stylesheet" href="{{ '/styles/prism.css' | url }}">
   <script defer src="https://buttons.github.io/buttons.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153597376-1"></script>
   <script>
@@ -28,7 +28,7 @@
     gtag('config', 'GA_MEASUREMENT_ID', { 'transport_type': 'beacon' });
     gtag('config', 'UA-153597376-1');
   </script>
-  <script type="text/javascript" src="{{ '/script.js' | url }}" defer></script>
+  <script src="{{ '/script.js' | url }}" defer></script>
 </body>
 
 </html>

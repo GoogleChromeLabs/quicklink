@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Prefetch: Chunk URL list</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+  <a href="/">Home</a>
+  <a href="/blog">Blog</a>
+  <a href="/about">About</a>
+  <section id="stuff">
+    <a href="main.css">CSS</a>
+  </section>
+  <a href="4.html" style="position:absolute;margin-top:900px;">Link 4</a>
+  <script src="../../dist/react/quicklink.umd.js"></script>
+  <script src="../node_modules/route-manifest/dist/rmanifest.min.js"></script>
+  <script>
+    const __defaultAccessor = mix => {
+      return (mix && mix.href) || mix || '';
+    };
+
+    const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) => {
+      const { files } = rmanifest(window._rmanifest_, entry.pathname);
+      const chunkURLs = files.map(accessor).filter(Boolean);
+      if (chunkURLs.length) {
+        console.log('[prefetchChunks] chunkURLs => ', chunkURLs);
+        prefetchHandler(chunkURLs);
+      } else {
+        // also prefetch regular links in-viewport
+        console.log('[prefetchChunks] regularURL => ', entry.href);
+        prefetchHandler(entry.href);
+      }
+    };
+
+    const listenAfterFetchingRmanifest = async () => {
+      if (!window._rmanifest_) {
+        await fetch('/test/rmanifest.json')
+          .then(response => response.json())
+          .then(data => {
+            // attach route manifest to global
+            window._rmanifest_ = data;
+          });
+      }
+
+      quicklink.listen({
+        prefetchChunks,
+        origins: []
+      });
+    };
+
+    listenAfterFetchingRmanifest();
+  </script>
+</body>
+
+</html>
