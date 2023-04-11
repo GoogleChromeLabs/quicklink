@@ -22,6 +22,7 @@
   "scripts": {
     "lint": "eslint \"{demos,src,test}/**/*.{js,mjs}\"",
     "lint-fix": "npm run lint -- --fix",
+    "fix": "npm run lint -- --fix",
     "start": "sirv --dev --no-clear --host 127.0.0.1 --port 8080 --quiet",
     "uvu": "uvu test",
     "test": "npm-run-all build-all --parallel --race start uvu",
