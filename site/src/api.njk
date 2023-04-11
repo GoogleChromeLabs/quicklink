@@ -335,7 +335,8 @@ Certain features have layered support:
 
 ## Using the prefetcher directly
 
-A `prefetch` method can be individually imported for use in other projects.  
+A `prefetch` method can be individually imported for use in other projects.
+
 This method includes the logic to respect Data Saver and 2G connections. It also issues requests thru `fetch()`, XHRs, or `link[rel=prefetch]` depending on (a) the `isPriority` value and (b) the current browser's support.
 
 After installing `quicklink` as a dependency, you can use it as follows:
