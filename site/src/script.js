@@ -28,7 +28,7 @@ window.addEventListener('load', () => {
       }
     }
 
-    window.addEventListener('scroll', trackScroll, { passive: true });
+    window.addEventListener('scroll', trackScroll, {passive: true});
     goTopBtn.addEventListener('click', backToTop);
   };
 
@@ -42,8 +42,8 @@ window.addEventListener('load', () => {
 
     e.clearSelection();
     e.trigger.blur();
-    const notifyCopiedSnippet = document.querySelector(".notify-copied-snippet");
-    notifyCopiedSnippet.classList.add("notify-copied-snippet--displayed");
+    const notifyCopiedSnippet = document.querySelector('.notify-copied-snippet');
+    notifyCopiedSnippet.classList.add('notify-copied-snippet--displayed');
   });
 
   clipboard.on('error', function (e) {
