@@ -23,7 +23,7 @@
     "lint": "eslint \"{demos,src,test}/**/*.{js,mjs}\"",
     "lint-fix": "npm run lint -- --fix",
     "fix": "npm run lint -- --fix",
-    "start": "sirv --dev --no-clear --host 127.0.0.1 --port 8080 --quiet",
+    "start": "sirv --dev --no-clear --no-logs --host 127.0.0.1 --port 8080",
     "uvu": "uvu test",
     "test": "npm-run-all build-all --parallel --race start uvu",
     "build": "microbundle src/index.mjs --no-sourcemap --external none",
