@@ -279,7 +279,7 @@ One or many URLs to be prerendered.
 `quicklink`:
 
 - Includes a very small fallback for [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
-- Requires `IntersectionObserver` to be supported (see [CanIUse](https://caniuse.com/#feat=intersectionobserver)). We recommend conditionally polyfilling this feature with a service like Polyfill.io:
+- Requires `IntersectionObserver` to be supported (see [Can I Use](https://caniuse.com/intersectionobserver)). We recommend conditionally polyfilling this feature with a service like Polyfill.io:
 
 ```html
 <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
@@ -448,7 +448,7 @@ The prefetching provided by `quicklink` can be viewed as a [progressive enhancem
 
 Certain features have layered support:
 
-- The [Network Information API](https://wicg.github.io/netinfo/), which is used to check if the user has a slow effective connection type (via `navigator.connection.effectiveType`) is only available in [Chrome 61+ and Opera 57+](https://caniuse.com/#feat=netinfo)
+- The [Network Information API](https://wicg.github.io/netinfo/), which is used to check if the user has a slow effective connection type (via `navigator.connection.effectiveType`) is only available in [Chrome 61+ and Opera 57+](https://caniuse.com/netinfo)
 - If opting for `{priority: true}` and the [Fetch API](https://fetch.spec.whatwg.org/) isn't available, XHR will be used instead.
 
 ## Using the prefetcher directly
@@ -491,9 +491,9 @@ Please note: this is by no means an exhaustive benchmark of the pros and cons of
 
 ### Session Stitching
 
-Cross-origin prefetching (e.g a.com/foo.html prefetches b.com/bar.html) has a number of limitations. One such limitation is with session-stitching. b.com may expect a.com's navigation requests to include session information (e.g a temporary ID - e.g b.com/bar.html?hash=<>&timestamp=<>), where this information is used to customize the experience or log information to analytics. If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches.
+Cross-origin prefetching (e.g `a.com/foo.html` prefetches `b.com/bar.html`) has a number of limitations. One such limitation is with session-stitching. `b.com may` expect `a.com`'s navigation requests to include session information (e.g a temporary ID - e.g `b.com/bar.html?hash=<>&timestamp=<>`), where this information is used to customize the experience or log information to analytics. If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches.
 
-To workaround this problem, you can consider passing along session information via the [ping attribute](https://caniuse.com/#feat=ping) (separately) so the origin can stitch a session together asynchronously.
+To workaround this problem, you can consider passing along session information via the [ping attribute](https://caniuse.com/ping) (separately) so the origin can stitch a session together asynchronously.
 
 ### Ad-related considerations
 
@@ -503,7 +503,7 @@ Ads appear on sites mostly in two ways:
 
 - **Inside iframes:** By default, most ad-servers render ads within iframes. In these cases, those ad-links won't be prefetched by Quicklink, unless a developer explicitly passes in the URL of an ads iframe. The reason is that the library look-up for in-viewport elements is restricted to those of the top-level origin.
 
-- **Outside iframes:**: In cases when the site shows same-origin ads, displayed in the top-level document (e.g. by hosting the ads themselves and by displaying the ads in the page directly), the developer needs to explicitly tell Quicklink to avoid prefetching these links. This can be achieved by passing the URL or subpath of the ad-link, or the element containing it to the [custom ignore patterns list](https://github.com/GoogleChromeLabs/quicklink#custom-ignore-patterns).
+- **Outside iframes:**: In cases when the site shows same-origin ads, displayed in the top-level document (e.g. by hosting the ads themselves and by displaying the ads in the page directly), the developer needs to explicitly tell Quicklink to avoid prefetching these links. This can be achieved by passing the URL or subpath of the ad-link, or the element containing it to the [custom ignore patterns list](#custom-ignore-patterns).
 
 ## Related projects
 
