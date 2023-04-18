@@ -491,7 +491,7 @@ Please note: this is by no means an exhaustive benchmark of the pros and cons of
 
 ### Session Stitching
 
-Cross-origin prefetching (e.g `a.com/foo.html` prefetches `b.com/bar.html`) has a number of limitations. One such limitation is with session-stitching. `b.com may` expect `a.com`'s navigation requests to include session information (e.g a temporary ID - e.g `b.com/bar.html?hash=<>&timestamp=<>`), where this information is used to customize the experience or log information to analytics. If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches.
+Cross-origin prefetching (e.g `a.com/foo.html` prefetches `b.com/bar.html`) has a number of limitations. One such limitation is with session-stitching. `b.com` may expect `a.com`'s navigation requests to include session information (e.g a temporary ID - e.g `b.com/bar.html?hash=<>&timestamp=<>`), where this information is used to customize the experience or log information to analytics. If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches.
 
 To workaround this problem, you can consider passing along session information via the [ping attribute](https://caniuse.com/ping) (separately) so the origin can stitch a session together asynchronously.
 
