@@ -511,7 +511,7 @@ Ads appear on sites mostly in two ways:
 - Want a more data-driven approach? See [Guess.js](https://guess-js.github.io). It uses analytics and machine-learning to prefetch resources based on how users navigate your site. It also has plugins for [Webpack](https://www.npmjs.com/package/guess-webpack) and [Gatsby](https://www.gatsbyjs.org/docs/optimizing-site-performance-with-guessjs/).
 - WordPress users can now get quicklink as a [WordPress Plugin from the plugin repository](https://wordpress.org/plugins/quicklink/).
 - Drupal users can install the [Quicklink Drupal module](https://www.drupal.org/project/quicklink).
-- Magento 2 users can install the [Quicklink Magento 2 module](https://marketplace.magento.com/rafaelcg-magento2-quicklink.html).
+- Magento 2 users can install the [rafaelcg-magento2-quicklink](https://marketplace.magento.com/rafaelcg-magento2-quicklink.html) or [rangerz/magento2-module-quicklink](https://github.com/rangerz/magento2-module-quicklink).
 - Want less aggressive prefetching? [instant.page](https://instant.page/) prefetches on mouseover and touchstart, right before a click.
 
 ## License
