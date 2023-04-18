@@ -36,8 +36,6 @@ function isIgnored(node, filter) {
     (filter.test || filter).call(filter, node.href, node);
 }
 
-// TODO Fix me
-// eslint-disable-next-line valid-jsdoc
 /**
  * Prefetch an array of URLs if the user's effective
  * connection type and data-saver preferences suggests
@@ -55,6 +53,7 @@ function isIgnored(node, filter) {
  * @param {Function} [options.timeoutFn] - Custom timeout function
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.prefetchChunks] - Function to prefetch chunks for route URLs (with route manifest for URL mapping)
+ * @return {undefined}
  */
 export function listen(options = {}) {
   if (!window.IntersectionObserver) return;
@@ -70,9 +69,9 @@ export function listen(options = {}) {
   const {prefetchChunks} = options;
 
   const prefetchHandler = urls => {
-    prefetch(urls, options.priority).then(isDone).catch(err => {
+    prefetch(urls, options.priority).then(isDone).catch(error => {
       isDone();
-      if (options.onError) options.onError(err);
+      if (options.onError) options.onError(error);
     });
   };
 

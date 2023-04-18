@@ -134,11 +134,11 @@ export function listen(options = {}) {
           // either it's the prerender + prefetch mode or it's prerender *only* mode
           // && no link has been prerendered before (no spec rules defined)
           if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < prerenderLimit) {
-            prerender(hrefFn ? hrefFn(entry) : entry.href).catch(err => {
+            prerender(hrefFn ? hrefFn(entry) : entry.href).catch(error => {
               if (options.onError) {
-                options.onError(err);
+                options.onError(error);
               } else {
-                throw err;
+                throw error;
               }
             });
 
@@ -148,10 +148,12 @@ export function listen(options = {}) {
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
-              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority).then(isDone).catch(err => {
-                isDone();
-                if (options.onError) options.onError(err);
-              });
+              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority)
+                  .then(isDone)
+                  .catch(error => {
+                    isDone();
+                    if (options.onError) options.onError(error);
+                  });
             });
           }
         }, delay);
@@ -170,7 +172,10 @@ export function listen(options = {}) {
 
   timeoutFn(() => {
     // Find all links & Connect them to IO if allowed
-    const elementsToListen = options.el && options.el.length && options.el.length > 0 && options.el[0].nodeName === 'A' ?
+    const elementsToListen = options.el &&
+    options.el.length &&
+    options.el.length > 0 &&
+    options.el[0].nodeName === 'A' ?
       options.el :
       (options.el || document).querySelectorAll('a');
 
