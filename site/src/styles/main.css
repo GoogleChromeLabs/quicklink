@@ -309,7 +309,7 @@ main.page-main .heading em {
   .page-header-content {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     min-width: 200px;
     max-width: 980px;
     margin: 0 auto;
