@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "eleventy",
-    "start": "eleventy --serve",
+    "build": "rimraf build && cross-env NODE_ENV=production eleventy",
+    "start": "rimraf build && cross-env NODE_ENV=development eleventy --serve",
     "deploy": "firebase deploy --project=quicklink-6a87b",
     "test": "npm run build"
   },
@@ -13,7 +13,9 @@
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "cross-env": "^7.0.3",
     "html-minifier-terser": "^7.2.0",
-    "markdown-it": "^13.0.1"
+    "markdown-it": "^13.0.1",
+    "rimraf": "^5.0.0"
   }
 }
