@@ -130,7 +130,7 @@ export function listen(options = {}) {
 
           // prerender, if..
           // either it's the prerender + prefetch mode or it's prerender *only* mode
-          // Prerendering limit is following options.limit. UA may impose arbitraty numeric limit 
+          // Prerendering limit is following options.limit. UA may impose arbitraty numeric limit
           if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit) {
             prerender(hrefFn ? hrefFn(entry) : entry.href).catch(error => {
               if (options.onError) {
