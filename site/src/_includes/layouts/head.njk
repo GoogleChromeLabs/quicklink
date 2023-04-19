@@ -3,18 +3,19 @@
   <title>{{ title + " | " + site.title if title else site.title }}</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="{{ description }}">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="https://getquick.link">
+
+  {% set socialImagePath = site.url + site.socialImage -%}
   <meta name="og:title" content="{{ title }}">
-  <meta name="twitter:title" content="{{ title }}">
-  <meta name="twitter:description" content="{{ description }}">
   <meta name="og:description" content="{{ description }}">
-  <meta name="twitter:image"
-    content="https://camo.githubusercontent.com/d9e978c30d6e62fa13b4aea5af2560eebb67e20f/68747470733a2f2f692e696d6775722e636f6d2f4e56525a4c48762e706e67">
-  <meta name="og:image"
-    content="https://camo.githubusercontent.com/d9e978c30d6e62fa13b4aea5af2560eebb67e20f/68747470733a2f2f692e696d6775722e636f6d2f4e56525a4c48762e706e67">
   <meta name="og:url" content="https://getquick.link">
   <meta name="og:type" content="website">
+  <meta name="og:image" content="{{ socialImagePath }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="https://getquick.link">
+  <meta name="twitter:title" content="{{ title }}">
+  <meta name="twitter:description" content="{{ description }}">
+  <meta name="twitter:image" content="{{ socialImagePath }}">
+
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
