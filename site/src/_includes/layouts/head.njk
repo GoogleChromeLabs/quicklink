@@ -1,17 +1,16 @@
 <head>
   <meta charset="utf-8">
   <title>{{ title + " | " + site.title if title else site.title }}</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ description }}">
 
   {% set socialImagePath = site.url + site.socialImage -%}
   <meta name="og:title" content="{{ title }}">
   <meta name="og:description" content="{{ description }}">
-  <meta name="og:url" content="https://getquick.link">
+  <meta name="og:url" content="{{ site.url + page.url }}">
   <meta name="og:type" content="website">
   <meta name="og:image" content="{{ socialImagePath }}">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="https://getquick.link">
   <meta name="twitter:title" content="{{ title }}">
   <meta name="twitter:description" content="{{ description }}">
   <meta name="twitter:image" content="{{ socialImagePath }}">
