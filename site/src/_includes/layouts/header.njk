@@ -10,7 +10,9 @@
       <ul>
         {% for sitePage in site.pages %}
           <li>
-            <a href="{{ sitePage.route | url }}" {% if page.url == sitePage.route %}class="active"{% endif %}><strong class="primary-font-color">{{ sitePage.caption }}<strong></a>
+            <a href="{{ sitePage.route | url }}" {% if page.url == sitePage.route %}class="active"{% endif %}>
+              <strong class="primary-font-color">{{ sitePage.caption }}</strong>
+            </a>
           </li>
         {% endfor %}
       </ul>
