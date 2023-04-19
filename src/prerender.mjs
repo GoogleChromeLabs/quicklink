@@ -16,14 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 **/
-/**
- * Checks if the given string is a same origin url
- * @param {string} str - the URL to check
- * @return {Boolean} true for same origin url
- */
-export function isSameOrigin(str) {
-  return window.location.origin === (new URL(str, window.location.href)).origin;
-}
 
 /**
  * Add a given set of urls to the speculation rules
@@ -49,12 +41,4 @@ export function addSpeculationRules(urlsToPrerender) {
  */
 export function hasSpecRulesSupport() {
   return HTMLScriptElement.supports('speculationrules');
-}
-
-/**
- * Check whether Spec Rules is already defined in the document
- * @return {Boolean} whether Spec Rules exists/already defined
- */
-export function isSpecRulesExists() {
-  return document.querySelector('script[type="speculationrules"]');
 }
