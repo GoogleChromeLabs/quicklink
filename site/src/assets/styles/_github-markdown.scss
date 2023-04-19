@@ -1,4 +1,4 @@
-/* stylelint-disable declaration-no-important */
+// stylelint-disable declaration-no-important
 
 .markdown-body {
   box-sizing: border-box;
@@ -6,11 +6,9 @@
   max-width: 980px;
   margin: 0 auto;
   padding: 45px;
-
-  /* TODO: !important use does not look pefect, the github font looks better */
+  // TODO: !important use does not look pefect, the github font looks better
   font-family: Arial, Helvetica, sans-serif !important;
-
-  /* TODO: opt for font color */
+  // TODO: opt for font color
   color: hsl(226deg, 52%, 27%) !important;
 }
 
@@ -19,7 +17,7 @@ h2,
 h3,
 h4,
 h5 {
-  /* Google Sans is for headlines only per Google guidelines */
+  // Google Sans is for headlines only per Google guidelines
   font-family: Arial, Helvetica, sans-serif !important;
 }
 

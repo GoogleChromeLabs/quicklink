@@ -162,7 +162,7 @@ main.page-main {
   transition: transform .3s ease, opacity .3s ease;
 }
 
-/* no bullet list */
+// no bullet list
 .page-main ul.no-bullet {
   list-style-type: none;
   padding-left: 0;
@@ -172,7 +172,7 @@ main.page-main {
   margin-right: 1rem;
 }
 
-/* grid */
+// grid
 .flex-grid {
   display: flex;
 }
@@ -199,9 +199,8 @@ main.page-main {
 }
 
 .highlighted-section__text {
-  /* TODO: opt for bg color */
-
-  /* background-color: #d8217d; */
+  // TODO: opt for bg color
+  // background-color: #d8217d;
   background-color: #283646;
   color: #fff;
 }
@@ -214,9 +213,9 @@ main.page-main {
   border: 0;
 }
 
-/* heading */
+// heading
 .primary-font-color {
-  /* TODO: opt for font color */
+  // TODO: opt for font color
   color: hsl(226deg, 52%, 27%);
 }
 

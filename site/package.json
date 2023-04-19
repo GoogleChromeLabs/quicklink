@@ -15,9 +15,13 @@
     "@11ty/eleventy": "^2.0.1",
     "@11ty/eleventy-navigation": "^0.3.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "autoprefixer": "^10.4.15",
     "cross-env": "^7.0.3",
+    "eleventy-plugin-rev": "^1.1.1",
+    "eleventy-sass": "^2.2.3",
     "html-minifier-terser": "^7.2.0",
     "markdown-it": "^13.0.1",
+    "postcss": "^8.4.27",
     "rimraf": "^5.0.1",
     "stylelint": "^15.10.2",
     "stylelint-config-twbs-bootstrap": "^11.0.1"

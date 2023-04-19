@@ -7,10 +7,9 @@
 }
 
 .snippet-for-copy {
-  /* border: 1px solid hsla(0, 0%, 0%, .15); */
+  // border: 1px solid hsla(0, 0%, 0%, .15);
   border-radius: 1px;
-
-  /* background: hsla(0, 0%, 0%, .075); */
+  // background: hsla(0, 0%, 0%, .075);
   margin: 10px 0;
   font-size: .95em;
 }
@@ -41,7 +40,7 @@
   --light-opacity: 1;
   --shadow-opacity: .05;
   --shadow-blur-radius: 1px;
-  --box-shadow: inset 0 1px 0 hsla(0deg, 0%, 100%, var(--light-opacity)), 0 1px var(--shadow-blur-radius) hsla(0deg, 0%, 0%, var(--shadow-opacity)); /* An intermediate variable is needed for Safari */
+  --box-shadow: inset 0 1px 0 hsla(0deg, 0%, 100%, var(--light-opacity)), 0 1px var(--shadow-blur-radius) hsla(0deg, 0%, 0%, var(--shadow-opacity)); // An intermediate variable is needed for Safari
   box-shadow: var(--box-shadow);
   cursor: pointer;
   font-size: 16px;
