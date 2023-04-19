@@ -28,7 +28,7 @@ ul {
 .page-header__title {
   display: flex;
   justify-content: flex-start;
-  align-items: flex-end;
+  align-items: center;
   padding: 7px;
 }
 
@@ -44,12 +44,8 @@ ul {
 }
 
 .page-header__logo-image {
-  background-image: url("/assets/images/logos/quicklink.svg");
   width: 160px;
-  height: 60.2px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+  height: auto;
   margin-right: 6px;
 }
 
@@ -279,7 +275,6 @@ main.page-main .heading em {
 
   .page-header__logo-image {
     width: 200px;
-    height: 75.23px;
   }
 
   .small-github {
@@ -327,7 +322,6 @@ main.page-main .heading em {
 
   .page-header__logo-image {
     width: 222px;
-    height: 84px;
   }
 
   .page-header nav {
