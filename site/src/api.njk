@@ -179,7 +179,7 @@ One or many URLs to be prerendered.
 `quicklink`:
 
 - Includes a very small fallback for [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
-- Requires `IntersectionObserver` to be supported (see [CanIUse](https://caniuse.com/#feat=intersectionobserver)). We recommend conditionally polyfilling this feature with a service like Polyfill.io:
+- Requires `IntersectionObserver` to be supported (see [CanIUse](https://caniuse.com/intersectionobserver)). We recommend conditionally polyfilling this feature with a service like Polyfill.io:
 
 {% endmarkdownConvert %}
 {% highlight "html" %}
@@ -330,7 +330,7 @@ The prefetching provided by `quicklink` can be viewed as a [progressive enhancem
 
 Certain features have layered support:
 
-* The [Network Information API](https://wicg.github.io/netinfo/), which is used to check if the user has a slow effective connection type (via `navigator.connection.effectiveType`) is only available in [Chrome 61+ and Opera 57+](https://caniuse.com/#feat=netinfo)
+* The [Network Information API](https://wicg.github.io/netinfo/), which is used to check if the user has a slow effective connection type (via `navigator.connection.effectiveType`) is only available in [Chrome 61+ and Opera 57+](https://caniuse.com/netinfo)
 * If opting for `{priority: true}` and the [Fetch API](https://fetch.spec.whatwg.org/) isn't available, XHR will be used instead.
 
 ## Using the prefetcher directly

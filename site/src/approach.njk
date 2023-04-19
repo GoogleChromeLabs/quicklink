@@ -40,7 +40,7 @@ Cross-origin prefetching (e.g `a.com/foo.html` prefetches `b.com/bar.html`) has 
 
 If session-stitching requires a timestamp in the URL, what is prefetched and stored in the HTTP cache may not be the same as the one the user ultimately navigates to. This introduces a challenge as it can result in double prefetches.
 
-To workaround this problem, you can consider passing along session information via the [ping attribute](https://caniuse.com/#feat=ping) (separately) so the origin can stitch a session together asynchronously.
+To workaround this problem, you can consider passing along session information via the [ping attribute](https://caniuse.com/ping) (separately) so the origin can stitch a session together asynchronously.
 
 ## Ad-related considerations
 
