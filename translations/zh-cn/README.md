@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/NVRZLHv.png" width="640" alt="quicklink">
+  <img src="https://i.imgur.com/NVRZLHv.png" width="640" alt="quicklink" alt="chain">
   <br>
   <a href="https://www.npmjs.org/package/quicklink"><img src="https://img.shields.io/npm/v/quicklink.svg?style=flat" alt="npm"></a>
   <a href="https://unpkg.com/quicklink"><img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size"></a>
