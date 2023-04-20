@@ -7,8 +7,8 @@
   <a href="https://unpkg.com/quicklink">
     <img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size">
   </a>
-  <a href="https://github.com/GoogleChromeLabs/quicklink/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amaster">
-    <img src="https://img.shields.io/github/actions/workflow/status/GoogleChromeLabs/quicklink/ci.yml?branch=master&label=ci&logo=github" alt="ci">
+  <a href="https://github.com/GoogleChromeLabs/quicklink/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amain">
+    <img src="https://img.shields.io/github/actions/workflow/status/GoogleChromeLabs/quicklink/ci.yml?branch=main&label=ci&logo=github" alt="ci">
   </a>
 </p>
 
@@ -472,9 +472,9 @@ After installing `quicklink` as a dependency, you can use it as follows:
 
 ### Glitch demos
 
-- [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news)
-- [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news-workbox)
-- [Using Quicklink to prefetch API calls instead of `href` attribute](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/hrefFn)
+- [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/main/demos/news)
+- [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/main/demos/news-workbox)
+- [Using Quicklink to prefetch API calls instead of `href` attribute](https://github.com/GoogleChromeLabs/quicklink/tree/main/demos/hrefFn)
 - [Using Quicklink to prerender a specific page](https://uskay-prerender2.glitch.me/next.html)
 
 ### Research
