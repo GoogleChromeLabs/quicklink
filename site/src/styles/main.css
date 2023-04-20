@@ -151,7 +151,7 @@ main.page-main {
   cursor: pointer;
   border-radius: 50%;
   transform: translate3d(0, 0, 0);
-  transition: all .3s ease;
+  transition: transform .3s ease;
 }
 
 .back-to-top:hover {
@@ -162,7 +162,7 @@ main.page-main {
   opacity: 0;
   pointer-events: none;
   transform: translate3d(300%, 0, 0);
-  transition: all .3s ease;
+  transition: transform .3s ease, opacity .3s ease;
 }
 
 /* no bullet list */
@@ -309,7 +309,7 @@ main.page-main .heading em {
   .page-header-content {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     min-width: 200px;
     max-width: 980px;
     margin: 0 auto;

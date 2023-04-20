@@ -3,11 +3,11 @@ name: "CodeQL"
 on:
   push:
     branches:
-      - master
+      - main
       - "!dependabot/**"
   pull_request:
     branches:
-      - master
+      - main
       - "!dependabot/**"
   schedule:
     - cron: "0 0 * * 0"
