@@ -37,8 +37,8 @@ export function addSpeculationRules(urlsToPrerender) {
   specScript.text = `{"prerender":[{"source": "list","urls": ["${Array.from(urlsToPrerender).join('","')}"]}]}`;
   try {
     document.head.appendChild(specScript);
-  } catch (e) {
-    return e;
+  } catch (error) {
+    return error;
   }
 
   return true;
