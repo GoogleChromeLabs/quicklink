@@ -34,7 +34,10 @@ window.addEventListener('load', () => {
 
   initGoToTopBtn();
 
-  const clipboard = new ClipboardJS('#copy-snippet-button');
+  const clipboard = new ClipboardJS('#copy-snippet-button', {
+    text: trigger => trigger.parentNode.previousElementSibling.textContent.trim(),
+  });
+
   clipboard.on('success', event => {
     console.info('[clipboard success] Action:', event.action);
     console.info('[clipboard success] Text:', event.text);
