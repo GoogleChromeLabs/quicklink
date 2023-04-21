@@ -7,8 +7,8 @@
   <a href="https://unpkg.com/quicklink">
     <img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size">
   </a>
-  <a href="https://github.com/GoogleChromeLabs/quicklink/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amaster">
-    <img src="https://img.shields.io/github/actions/workflow/status/GoogleChromeLabs/quicklink/ci.yml?branch=master&label=ci&logo=github" alt="ci">
+  <a href="https://github.com/GoogleChromeLabs/quicklink/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amain">
+    <img src="https://img.shields.io/github/actions/workflow/status/GoogleChromeLabs/quicklink/ci.yml?branch=main&label=ci&logo=github" alt="ci">
   </a>
 </p>
 
@@ -69,7 +69,7 @@ For example, you can initialize after the `load` event fires:
 ES Module import:
 
 ```js
-import { listen, prefetch } from 'quicklink';
+import {listen, prefetch} from 'quicklink';
 ```
 
 ## Single page apps (React)
@@ -96,7 +96,7 @@ Wrap your routes with the `withQuicklink()` HOC.
 Example:
 
 ```jsx
-import { withQuicklink } from 'quicklink/dist/react/hoc.js';
+import {withQuicklink} from 'quicklink/dist/react/hoc.js';
 
 const options = {
   origins: [],
@@ -285,7 +285,7 @@ One or many URLs to be prerendered.
 <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
 ```
 
-Alternatively, see the [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
+Alternatively, see the [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer).
 
 ## Recipes
 
@@ -381,7 +381,7 @@ quicklink.listen({
 
 Enables all cross-origin requests to be made.
 
-> **Note:** You may run into [CORB](https://chromium.googlesource.com/chromium/src/+/master/services/network/cross_origin_read_blocking_explainer.md) and [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issues!
+> **Note:** You may run into [CORB](https://chromium.googlesource.com/chromium/src/+/main/services/network/cross_origin_read_blocking_explainer.md) and [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issues!
 
 ```js
 quicklink.listen({
@@ -443,7 +443,7 @@ quicklink.listen({
 The prefetching provided by `quicklink` can be viewed as a [progressive enhancement](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/). Cross-browser support is as follows:
 
 - Without polyfills: Chrome, Safari ≥ 12.1, Firefox, Edge, Opera, Android Browser, Samsung Internet.
-- With [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill) ~6KB gzipped/minified: Safari ≤ 12.0, IE11
+- With [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer) ~6KB gzipped/minified: Safari ≤ 12.0, IE11
 - With the above and a [Set()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) and [Array.from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from) polyfill: IE9 and IE10. [Core.js](https://github.com/zloirock/core-js) provides both `Set()` and `Array.from()` shims. Projects like [es6-shim](https://github.com/paulmillr/es6-shim/blob/master/README.md) are an alternative you can consider.
 
 Certain features have layered support:
@@ -461,7 +461,7 @@ After installing `quicklink` as a dependency, you can use it as follows:
 
 ```html
 <script type="module">
-  import { prefetch } from 'quicklink';
+  import {prefetch} from 'quicklink';
   prefetch(['1.html', '2.html']).catch(err => {
     // Handle own errors
   });
@@ -472,9 +472,9 @@ After installing `quicklink` as a dependency, you can use it as follows:
 
 ### Glitch demos
 
-- [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news)
-- [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/news-workbox)
-- [Using Quicklink to prefetch API calls instead of `href` attribute](https://github.com/GoogleChromeLabs/quicklink/tree/master/demos/hrefFn)
+- [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/main/demos/news)
+- [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/main/demos/news-workbox)
+- [Using Quicklink to prefetch API calls instead of `href` attribute](https://github.com/GoogleChromeLabs/quicklink/tree/main/demos/hrefFn)
 - [Using Quicklink to prerender a specific page](https://uskay-prerender2.glitch.me/next.html)
 
 ### Research
@@ -516,4 +516,4 @@ Ads appear on sites mostly in two ways:
 
 ## License
 
-Licensed under the Apache-2.0 license.
+Licensed under the [Apache-2.0 license](LICENSE).

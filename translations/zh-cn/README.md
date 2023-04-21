@@ -1,10 +1,15 @@
 <p align="center">
-  <img src="https://i.imgur.com/NVRZLHv.png" width="640" alt="quicklink">
+  <img src="https://raw.githubusercontent.com/GoogleChromeLabs/quicklink/HEAD/assets/images/logos/banner-white-bg.png" alt="" width="640">
   <br>
-  <a href="https://www.npmjs.org/package/quicklink"><img src="https://img.shields.io/npm/v/quicklink.svg?style=flat" alt="npm"></a>
-  <a href="https://unpkg.com/quicklink"><img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size"></a>
-  <a href="https://www.npmjs.com/package/quicklink"><img src="https://img.shields.io/npm/dt/quicklink.svg" alt="downloads" ></a>
-  <a href="https://travis-ci.org/GoogleChromeLabs/quicklink"><img src="https://travis-ci.org/GoogleChromeLabs/quicklink.svg?branch=master" alt="travis"></a>
+  <a href="https://www.npmjs.com/package/quicklink">
+    <img src="https://img.shields.io/npm/v/quicklink?style=flat&logo=npm&logoColor=fff" alt="npm">
+  </a>
+  <a href="https://unpkg.com/quicklink">
+    <img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size">
+  </a>
+  <a href="https://github.com/GoogleChromeLabs/quicklink/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amain">
+    <img src="https://img.shields.io/github/actions/workflow/status/GoogleChromeLabs/quicklink/ci.yml?branch=main&label=ci&logo=github" alt="ci">
+  </a>
 </p>
 
 # quicklink
@@ -45,7 +50,7 @@ npm install --save quicklink
 <script src="dist/quicklink.js"></script>
 <!-- 初始化（你可以随时进行） -->
 <script>
-quicklink();
+  quicklink();
 </script>
 ```
 
@@ -53,9 +58,9 @@ quicklink();
 
 ```html
 <script>
-window.addEventListener('load', () =>{
-   quicklink();
-});
+  window.addEventListener('load', () => {
+    quicklink();
+  });
 </script>
 ```
 
@@ -100,7 +105,7 @@ quicklink();
 <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
 ```
 
-或者，请参见 [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill)。
+或者，请参见 [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer)。
 
 ## 方法
 
@@ -110,7 +115,7 @@ quicklink();
 
 ```js
 quicklink({
-  timeout: 4000
+  timeout: 4000,
 });
 ```
 
@@ -121,7 +126,7 @@ quicklink({
 ```js
 const elem = document.getElementById('carousel');
 quicklink({
-  el: elem
+  el: elem,
 });
 ```
 
@@ -131,7 +136,7 @@ quicklink({
 
 ```js
 quicklink({
-   urls: ['2.html','3.html', '4.js']
+  urls: ['2.html', '3.html', '4.js'],
 });
 ```
 
@@ -159,7 +164,7 @@ quicklink({
     'other-website.com',
     'example.com',
     // ...
-  ]
+  ],
 });
 ```
 
@@ -167,13 +172,13 @@ quicklink({
 
 允许所有跨域请求。
 
-> **注意**：可能会导致 [CORB](https://chromium.googlesource.com/chromium/src/+/master/services/network/cross_origin_read_blocking_explainer.md) 以及 [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) 问题！
+> **注意**：可能会导致 [CORB](https://chromium.googlesource.com/chromium/src/+/main/services/network/cross_origin_read_blocking_explainer.md) 以及 [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) 问题！
 
 ```js
 quicklink({
   origins: true,
   // 或者
-  origins: []
+  origins: [],
 });
 ```
 
@@ -193,8 +198,8 @@ quicklink({
   ignores: [
     /\/api\/?/,
     uri => uri.includes('.zip'),
-    (uri, elem) => elem.hasAttribute('noprefetch')
-  ]
+    (uri, elem) => elem.hasAttribute('noprefetch'),
+  ],
 });
 ```
 
@@ -204,11 +209,11 @@ quicklink({
 
 ```js
 quicklink({
-    ignores: [
-        uri => uri.includes('#')
-        // 或者使用正则表达式： /#(.+)/
-        // 或者使用元素匹配: (uri, elem) => !!elem.hash
-    ]
+  ignores: [
+    uri => uri.includes('#'),
+    // 或者使用正则表达式： /#(.+)/
+    // 或者使用元素匹配: (uri, elem) => !!elem.hash
+  ],
 });
 ```
 
@@ -217,7 +222,7 @@ quicklink({
 quicklink 提供的预获取是[渐进增强](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/)的，跨浏览器支持如下：
 
 - 不使用 polyfills：Chrome，Firefox，Edge，Opera，Android Browser，Samsung Internet 支持。
-- 使用 [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill)（gzipped/minified 后大约 6KB）：Safari，IE9+ 支持。
+- 使用 [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer)（gzipped/minified 后大约 6KB）：Safari，IE9+ 支持。
 
 部分功能支持分层实现：
 
@@ -231,11 +236,11 @@ quicklink 提供的预获取是[渐进增强](https://www.smashingmagazine.com/2
 
 ```html
 <script type="module">
-import prefetch from '../src/prefetch.mjs';
+  import prefetch from '../src/prefetch.mjs';
 
-const urls = ['1.html', '2.html'];
-const promises = urls.map(url => prefetch(url));
-Promise.all(promises);
+  const urls = ['1.html', '2.html'];
+  const promises = urls.map(url => prefetch(url));
+  Promise.all(promises);
 </script>
 ```
 
