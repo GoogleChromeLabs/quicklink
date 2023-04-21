@@ -49,7 +49,7 @@ Here's an example of how to debug the library by using one of these tests:
 
     ```js
     <script type="module">
-      import { listen } from '../../src/index.mjs';
+      import {listen} from '../../src/index.mjs';
       listen();
     </script>
     ```

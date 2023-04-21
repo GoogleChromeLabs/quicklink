@@ -69,7 +69,7 @@ For example, you can initialize after the `load` event fires:
 ES Module import:
 
 ```js
-import { listen, prefetch } from 'quicklink';
+import {listen, prefetch} from 'quicklink';
 ```
 
 ## Single page apps (React)
@@ -96,7 +96,7 @@ Wrap your routes with the `withQuicklink()` HOC.
 Example:
 
 ```jsx
-import { withQuicklink } from 'quicklink/dist/react/hoc.js';
+import {withQuicklink} from 'quicklink/dist/react/hoc.js';
 
 const options = {
   origins: [],
@@ -468,7 +468,7 @@ After installing `quicklink` as a dependency, you can use it as follows:
 
 ```html
 <script type="module">
-  import { prefetch } from 'quicklink';
+  import {prefetch} from 'quicklink';
   prefetch(['1.html', '2.html']).catch(err => {
     // Handle own errors
   });
@@ -523,4 +523,4 @@ Ads appear on sites mostly in two ways:
 
 ## License
 
-Licensed under the Apache-2.0 license.
+Licensed under the [Apache-2.0 license](LICENSE).
