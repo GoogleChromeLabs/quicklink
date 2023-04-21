@@ -11,7 +11,7 @@
       <ul>
         {%- for entry in navPages %}
           <li>
-            <a href="{{ entry.url | url }}"{% if page.url === entry.url %} class="active"{% endif %}>
+            <a href="{{ entry.url | url }}"{% if page.url === entry.url %} class="active" aria-current="page"{% endif %}>
               <strong class="primary-font-color">{{ entry.title }}</strong>
             </a>
           </li>
