@@ -10,28 +10,6 @@
   "bottomResource": {
     "caption": "View source on GitHub"
   },
-  "pages": [
-    {
-      "caption": "Home",
-      "route": "/"
-    },
-    {
-      "caption": "API",
-      "route": "/api/"
-    },
-    {
-      "caption": "Approach",
-      "route": "/approach/"
-    },
-    {
-      "caption": "Demo",
-      "route": "/demo/"
-    },
-    {
-      "caption": "Measure",
-      "route": "/measure/"
-    }
-  ],
   "useWithFrameworks": [
     {
       "title": "wordpress",
