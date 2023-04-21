@@ -516,4 +516,4 @@ Ads appear on sites mostly in two ways:
 
 ## License
 
-Licensed under the Apache-2.0 license.
+Licensed under the [Apache-2.0 license](LICENSE).
