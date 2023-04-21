@@ -7,7 +7,7 @@
     "build": "rimraf build && cross-env NODE_ENV=production eleventy",
     "start": "rimraf build && cross-env NODE_ENV=development eleventy --serve",
     "deploy": "firebase deploy --project=quicklink-6a87b",
-    "lint": "stylelint src/styles",
+    "lint": "stylelint src/assets/styles",
     "test": "npm run lint && npm run build"
   },
   "license": "Apache-2.0",

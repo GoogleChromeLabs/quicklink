@@ -37,7 +37,6 @@ module.exports = eleventyConfig => {
   eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.addPassthroughCopy('src/assets');
-  eleventyConfig.addPassthroughCopy('src/styles');
   eleventyConfig.addPassthroughCopy('src/script.js');
   eleventyConfig.addPassthroughCopy('src/site.webmanifest');
 
