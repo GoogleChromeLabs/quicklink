@@ -1,10 +1,15 @@
 <p align="center">
-  <img src="https://i.imgur.com/NVRZLHv.png" width="640" alt="quicklink" alt="chain">
+  <img src="https://raw.githubusercontent.com/GoogleChromeLabs/quicklink/HEAD/assets/images/logos/banner-white-bg.png" alt="" width="640">
   <br>
-  <a href="https://www.npmjs.org/package/quicklink"><img src="https://img.shields.io/npm/v/quicklink.svg?style=flat" alt="npm"></a>
-  <a href="https://unpkg.com/quicklink"><img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size"></a>
-  <a href="https://www.npmjs.com/package/quicklink"><img src="https://img.shields.io/npm/dt/quicklink.svg" alt="downloads" ></a>
-  <a href="https://travis-ci.org/GoogleChromeLabs/quicklink"><img src="https://travis-ci.org/GoogleChromeLabs/quicklink.svg?branch=master" alt="travis"></a>
+  <a href="https://www.npmjs.com/package/quicklink">
+    <img src="https://img.shields.io/npm/v/quicklink?style=flat&logo=npm&logoColor=fff" alt="npm">
+  </a>
+  <a href="https://unpkg.com/quicklink">
+    <img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size">
+  </a>
+  <a href="https://github.com/GoogleChromeLabs/quicklink/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amain">
+    <img src="https://img.shields.io/github/actions/workflow/status/GoogleChromeLabs/quicklink/ci.yml?branch=main&label=ci&logo=github" alt="ci">
+  </a>
 </p>
 
 # quicklink
@@ -100,7 +105,7 @@ quicklink();
 <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
 ```
 
-或者，请参见 [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill)。
+或者，请参见 [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer)。
 
 ## 方法
 
@@ -167,7 +172,7 @@ quicklink({
 
 允许所有跨域请求。
 
-> **注意**：可能会导致 [CORB](https://chromium.googlesource.com/chromium/src/+/master/services/network/cross_origin_read_blocking_explainer.md) 以及 [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) 问题！
+> **注意**：可能会导致 [CORB](https://chromium.googlesource.com/chromium/src/+/main/services/network/cross_origin_read_blocking_explainer.md) 以及 [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) 问题！
 
 ```js
 quicklink({
@@ -217,7 +222,7 @@ quicklink({
 quicklink 提供的预获取是[渐进增强](https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/)的，跨浏览器支持如下：
 
 - 不使用 polyfills：Chrome，Firefox，Edge，Opera，Android Browser，Samsung Internet 支持。
-- 使用 [Intersection Observer polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill)（gzipped/minified 后大约 6KB）：Safari，IE9+ 支持。
+- 使用 [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer)（gzipped/minified 后大约 6KB）：Safari，IE9+ 支持。
 
 部分功能支持分层实现：
 

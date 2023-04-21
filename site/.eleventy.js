@@ -12,7 +12,7 @@ const htmlminifierConfig = {
   collapseBooleanAttributes: true,
   collapseWhitespace: true,
   conservativeCollapse: false,
-  decodeEntities: true,
+  decodeEntities: false,
   minifyCSS: true,
   minifyJS: true,
   minifyURLs: false,
