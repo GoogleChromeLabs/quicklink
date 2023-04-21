@@ -12,16 +12,17 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-p, ul {
+p,
+ul {
   margin: 0 0 16px;
   font-style: normal;
 }
 
 .page-header {
   text-align: center;
-  background: #ffffff;
+  background: #fff;
   padding-top: 1rem;
-  box-shadow: 0 0px 6px rgba(57,73,76,0.35);
+  box-shadow: 0 0 6px rgba(57, 73, 76, .35);
 }
 
 .page-header__title {
@@ -64,17 +65,17 @@ p, ul {
 }
 
 .page-header__navigation a::before {
-  content: '';
+  content: "";
   position: absolute;
   z-index: -1;
   top: 0;
   bottom: 0;
-  left: -0.5em;
-  right: -0.5em;
+  left: -.5em;
+  right: -.5em;
   background-color: #46aee8;
   transform-origin: 50% 100%;
   transform: scaleY(0);
-  transition: transform 0.15s ease-in-out;
+  transition: transform .15s ease-in-out;
 }
 
 .page-header__navigation a:hover::before {
@@ -88,7 +89,7 @@ p, ul {
 
 .page-header__navigation a.active::before {
   transform: scaleY(1);
-  opacity: 0.5;
+  opacity: .5;
   transform-origin: 50% 100%;
 }
 
@@ -99,7 +100,7 @@ p, ul {
 
 .page-header__navigation li {
   display: inline;
-  margin: 6px 0px 0px 15px;
+  margin: 6px 0 0 15px;
 }
 
 .page-header__navigation li:last-child {
@@ -114,7 +115,7 @@ main.page-main {
 }
 
 .page-main > h1 {
-  color: white;
+  color: #fff;
 }
 
 .page-main > ul {
@@ -146,7 +147,7 @@ main.page-main {
   height: 30px;
   text-align: center;
   line-height: 30px;
-  background: white;
+  background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
   cursor: pointer;
   border-radius: 50%;
@@ -203,6 +204,7 @@ main.page-main {
 
 .highlighted-section__text {
   /* TODO: opt for bg color */
+
   /* background-color: #d8217d; */
   background-color: #283646;
   color: #fff;
@@ -219,7 +221,7 @@ main.page-main {
 /* heading */
 .primary-font-color {
   /* TODO: opt for font color */
-  color: hsl(226, 52%, 27%);
+  color: hsl(226deg, 52%, 27%);
 }
 
 .secondary-font-color {
@@ -255,15 +257,15 @@ main.page-main .heading em {
 
 .article-image {
   margin: 20px auto;
-  display:block;
-  max-width:100%;
-  height:auto;
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 @media (min-width: 600px) {
   main.page-main .heading {
     font-size: 2.1em;
-    margin: 24px 0 18px 0;
+    margin: 24px 0 18px;
   }
 
   .page-header__navigation a {
@@ -280,11 +282,11 @@ main.page-main .heading em {
     height: 75.23px;
   }
 
-  .small-github { 
+  .small-github {
     display: none;
   }
 
-  .large-github { 
+  .large-github {
     display: block;
   }
 }
@@ -296,7 +298,7 @@ main.page-main .heading em {
 
   main.page-main {
     background-color: rgb(255, 255, 255);
-    box-shadow: 0 1px 6px rgba(57,73,76,0.35);
+    box-shadow: 0 1px 6px rgba(57, 73, 76, .35);
     margin-top: 3.2rem;
     margin-bottom: 3.2rem;
     padding-bottom: 1rem;
@@ -339,7 +341,7 @@ main.page-main .heading em {
   .normal-section {
     padding: 0 24px;
   }
-  
+
   .highlighted-section {
     padding: 16px 24px;
     margin: 16px 0;
