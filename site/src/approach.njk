@@ -14,7 +14,7 @@ sections:
 
 ## How it works
 
-![Shows what prefetch is](/assets/images/graphs/what-is-prefetch-svgomg.svg)
+![](/assets/images/graphs/what-is-prefetch-svgomg.svg)
 
 Quicklink attempts to make navigations to subsequent pages load faster. It:
 
@@ -23,7 +23,7 @@ Quicklink attempts to make navigations to subsequent pages load faster. It:
 * **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)
 * **Prefetches URLs to the links** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
 
-![Shows how quicklink uses prefetch](/assets/images/graphs/prefetch-quicklink-svgomg.svg)
+![](/assets/images/graphs/prefetch-quicklink-svgomg.svg)
 
 ## Future: Double-keyed HTTP Cache
 
