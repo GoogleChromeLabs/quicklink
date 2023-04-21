@@ -7,7 +7,8 @@
     "build": "rimraf build && cross-env NODE_ENV=production eleventy",
     "start": "rimraf build && cross-env NODE_ENV=development eleventy --serve",
     "deploy": "firebase deploy --project=quicklink-6a87b",
-    "test": "npm run build"
+    "lint": "stylelint src/styles",
+    "test": "npm run lint && npm run build"
   },
   "license": "Apache-2.0",
   "devDependencies": {
@@ -16,6 +17,8 @@
     "cross-env": "^7.0.3",
     "html-minifier-terser": "^7.2.0",
     "markdown-it": "^13.0.1",
-    "rimraf": "^5.0.0"
+    "rimraf": "^5.0.0",
+    "stylelint": "^15.5.0",
+    "stylelint-config-twbs-bootstrap": "^9.0.1"
   }
 }

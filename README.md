@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/GoogleChromeLabs/quicklink/HEAD/assets/images/logos/banner-white-bg.png" width="640">
+  <img src="https://raw.githubusercontent.com/GoogleChromeLabs/quicklink/HEAD/assets/images/logos/banner-white-bg.png" alt="" width="640">
   <br>
   <a href="https://www.npmjs.com/package/quicklink">
     <img src="https://img.shields.io/npm/v/quicklink?style=flat&logo=npm&logoColor=fff" alt="npm">
@@ -69,7 +69,7 @@ For example, you can initialize after the `load` event fires:
 ES Module import:
 
 ```js
-import { listen, prefetch } from 'quicklink';
+import {listen, prefetch} from 'quicklink';
 ```
 
 ## Single page apps (React)
@@ -96,7 +96,7 @@ Wrap your routes with the `withQuicklink()` HOC.
 Example:
 
 ```jsx
-import { withQuicklink } from 'quicklink/dist/react/hoc.js';
+import {withQuicklink} from 'quicklink/dist/react/hoc.js';
 
 const options = {
   origins: [],
@@ -461,7 +461,7 @@ After installing `quicklink` as a dependency, you can use it as follows:
 
 ```html
 <script type="module">
-  import { prefetch } from 'quicklink';
+  import {prefetch} from 'quicklink';
   prefetch(['1.html', '2.html']).catch(err => {
     // Handle own errors
   });

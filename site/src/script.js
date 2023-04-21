@@ -30,7 +30,7 @@ window.addEventListener('load', () => {
 
     window.addEventListener('scroll', trackScroll, {passive: true});
     goTopBtn.addEventListener('click', backToTop);
-  };
+  }
 
   initGoToTopBtn();
 
