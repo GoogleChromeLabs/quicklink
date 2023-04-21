@@ -50,7 +50,7 @@ npm install --save quicklink
 <script src="dist/quicklink.js"></script>
 <!-- 初始化（你可以随时进行） -->
 <script>
-quicklink();
+  quicklink();
 </script>
 ```
 
@@ -58,9 +58,9 @@ quicklink();
 
 ```html
 <script>
-window.addEventListener('load', () =>{
-   quicklink();
-});
+  window.addEventListener('load', () => {
+    quicklink();
+  });
 </script>
 ```
 
@@ -115,7 +115,7 @@ quicklink();
 
 ```js
 quicklink({
-  timeout: 4000
+  timeout: 4000,
 });
 ```
 
@@ -126,7 +126,7 @@ quicklink({
 ```js
 const elem = document.getElementById('carousel');
 quicklink({
-  el: elem
+  el: elem,
 });
 ```
 
@@ -136,7 +136,7 @@ quicklink({
 
 ```js
 quicklink({
-   urls: ['2.html','3.html', '4.js']
+  urls: ['2.html', '3.html', '4.js'],
 });
 ```
 
@@ -164,7 +164,7 @@ quicklink({
     'other-website.com',
     'example.com',
     // ...
-  ]
+  ],
 });
 ```
 
@@ -178,7 +178,7 @@ quicklink({
 quicklink({
   origins: true,
   // 或者
-  origins: []
+  origins: [],
 });
 ```
 
@@ -198,8 +198,8 @@ quicklink({
   ignores: [
     /\/api\/?/,
     uri => uri.includes('.zip'),
-    (uri, elem) => elem.hasAttribute('noprefetch')
-  ]
+    (uri, elem) => elem.hasAttribute('noprefetch'),
+  ],
 });
 ```
 
@@ -209,11 +209,11 @@ quicklink({
 
 ```js
 quicklink({
-    ignores: [
-        uri => uri.includes('#')
-        // 或者使用正则表达式： /#(.+)/
-        // 或者使用元素匹配: (uri, elem) => !!elem.hash
-    ]
+  ignores: [
+    uri => uri.includes('#'),
+    // 或者使用正则表达式： /#(.+)/
+    // 或者使用元素匹配: (uri, elem) => !!elem.hash
+  ],
 });
 ```
 
@@ -236,11 +236,11 @@ quicklink 提供的预获取是[渐进增强](https://www.smashingmagazine.com/2
 
 ```html
 <script type="module">
-import prefetch from '../src/prefetch.mjs';
+  import prefetch from '../src/prefetch.mjs';
 
-const urls = ['1.html', '2.html'];
-const promises = urls.map(url => prefetch(url));
-Promise.all(promises);
+  const urls = ['1.html', '2.html'];
+  const promises = urls.map(url => prefetch(url));
+  Promise.all(promises);
 </script>
 ```
 

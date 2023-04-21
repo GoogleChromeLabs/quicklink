@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-**/
+ **/
+
 import throttle from 'throttles';
 import {priority, supported} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
@@ -69,10 +70,12 @@ export function listen(options = {}) {
   const {prefetchChunks} = options;
 
   const prefetchHandler = urls => {
-    prefetch(urls, options.priority).then(isDone).catch(error => {
-      isDone();
-      if (options.onError) options.onError(error);
-    });
+    prefetch(urls, options.priority)
+        .then(isDone)
+        .catch(error => {
+          isDone();
+          if (options.onError) options.onError(error);
+        });
   };
 
   const observer = new IntersectionObserver(entries => {
@@ -82,7 +85,9 @@ export function listen(options = {}) {
         // Do not prefetch if will match/exceed limit
         if (toPrefetch.size < limit) {
           toAdd(() => {
-            prefetchChunks ? prefetchChunks(entry, prefetchHandler) : prefetchHandler(entry.href);
+            prefetchChunks ?
+              prefetchChunks(entry, prefetchHandler) :
+              prefetchHandler(entry.href);
           });
         }
       }
@@ -112,11 +117,11 @@ export function listen(options = {}) {
 }
 
 /**
-* Prefetch a given URL with an optional preferred fetch priority
-* @param {String} url - the URL to fetch
-* @param {Boolean} [isPriority] - if is "high" priority
-* @return {Object} a Promise
-*/
+ * Prefetch a given URL with an optional preferred fetch priority
+ * @param {String} url - the URL to fetch
+ * @param {Boolean} [isPriority] - if is "high" priority
+ * @return {Object} a Promise
+ */
 export function prefetch(url, isPriority) {
   const {connection} = navigator;
 

@@ -57,13 +57,13 @@ module.exports = {
   },
   overrides: [
     {
-      'files': [
+      files: [
         'site/**',
       ],
-      'parserOptions': {
-        'sourceType': 'script',
+      parserOptions: {
+        sourceType: 'script',
       },
-      'rules': {
+      rules: {
         'require-jsdoc': 'off',
       },
     },
