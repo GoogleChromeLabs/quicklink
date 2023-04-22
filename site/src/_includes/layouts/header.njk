@@ -7,14 +7,15 @@
       <h3 class="page-header__subtitle">{{ site.subtitle }}</h3>
     </div>
     <nav class="page-header__navigation">
+      {%- set navPages = collections.all | eleventyNavigation %}
       <ul>
-        {% for sitePage in site.pages %}
+        {%- for entry in navPages %}
           <li>
-            <a href="{{ sitePage.route | url }}" {% if page.url == sitePage.route %}class="active"{% endif %}>
-              <strong class="primary-font-color">{{ sitePage.caption }}</strong>
+            <a href="{{ entry.url | url }}"{% if page.url === entry.url %} class="active" aria-current="page"{% endif %}>
+              <strong class="primary-font-color">{{ entry.title }}</strong>
             </a>
           </li>
-        {% endfor %}
+        {%- endfor %}
       </ul>
     </nav>
   </div>

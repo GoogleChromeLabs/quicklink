@@ -2,9 +2,10 @@
 
 'use strict';
 
+const navigationPlugin = require('@11ty/eleventy-navigation');
+const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const markdownIt = require('markdown-it');
 const htmlminifier = require('html-minifier-terser');
-const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
@@ -30,6 +31,7 @@ const htmlminifierConfig = {
 };
 
 module.exports = eleventyConfig => {
+  eleventyConfig.addPlugin(navigationPlugin);
   eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.addPassthroughCopy('src/assets');
