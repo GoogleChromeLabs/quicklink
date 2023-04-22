@@ -103,10 +103,10 @@ const options = {
 };
 
 <Suspense fallback={<div>Loading...</div>}>
-  <Route path="/" exact component={withQuicklink(Home, options)} />
-  <Route path="/blog" exact component={withQuicklink(Blog, options)} />
-  <Route path="/blog/:title" component={withQuicklink(Article, options)} />
-  <Route path="/about" exact component={withQuicklink(About, options)} />
+  <Route path='/' exact component={withQuicklink(Home, options)} />
+  <Route path='/blog' exact component={withQuicklink(Blog, options)} />
+  <Route path='/blog/:title' component={withQuicklink(Article, options)} />
+  <Route path='/about' exact component={withQuicklink(About, options)} />
 </Suspense>;
 ```
 

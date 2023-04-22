@@ -25,8 +25,8 @@
 
 {{ "ES Module import:" | markdown | safe }}
 {% highlight "js" %}
-import quicklink from "quicklink/dist/quicklink.mjs";
-quicklink.listen();
+import {listen} from 'quicklink/dist/quicklink.mjs';
+listen();
 {% endhighlight %}
 
 {{ "The above options are best for multi-page sites. Single-page apps have a few options available for using quicklink with a router:" | markdown | safe }}
