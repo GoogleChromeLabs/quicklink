@@ -6,14 +6,15 @@ const host = 'http://127.0.0.1:8080';
 const server = `${host}/test/fixtures`;
 const mainSuite = suite('quicklink tests');
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = ms => new Promise(resolve => {
+  setTimeout(resolve, ms);
+});
 
 const puppeteerOptions = {
   headless: true,
   slowMo: 100,
   timeout: 20000,
 };
-
 
 mainSuite.before(async context => {
   context.browser = await puppeteer.launch(puppeteerOptions);
