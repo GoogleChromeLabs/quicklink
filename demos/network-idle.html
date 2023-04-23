@@ -31,8 +31,8 @@
   <a href="../test/fixtures/4.html" style="position:absolute;margin-top:900px;">Link 4</a>
   <script src="network-idle.js"></script>
   <script type="module">
-    import quicklink from "../dist/quicklink.mjs";
-    quicklink.listen({ timeoutFn: networkIdleCallback });
+    import {listen} from "../dist/quicklink.mjs";
+    listen({ timeoutFn: networkIdleCallback });
   </script>
 </body>
 
