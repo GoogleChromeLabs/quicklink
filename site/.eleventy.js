@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 /* eslint-disable new-cap */
 
 'use strict';

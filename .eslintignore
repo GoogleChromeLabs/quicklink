@@ -2,3 +2,5 @@
 **/dist/
 **/build/
 **/vendor/
+# explicitly include dot js files
+!.*.js
