@@ -1,4 +1,6 @@
 window.addEventListener('load', () => {
+  'use strict';
+
   function initGoToTopBtn() {
     const goTopBtn = document.querySelector('.back-to-top');
 
