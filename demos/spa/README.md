@@ -5,8 +5,8 @@ To integrate your React SPA with Quicklink, follow the steps [here](https://gith
 
 ## Glitch Source
 
-* [Link to Glitch App](https://create-react-app-quicklink.glitch.me/)
-* [Link to Project on Glitch](https://glitch.com/~create-react-app-quicklink)
+- [Link to Glitch App](https://create-react-app-quicklink.glitch.me/)
+- [Link to Project on Glitch](https://glitch.com/~create-react-app-quicklink)
 
 ## Installation
 
