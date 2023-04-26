@@ -88,7 +88,7 @@ function checkConnection(conn) {
  * @return {Function}
  */
 export function listen(options = {}) {
-  if (!window.IntersectionObserver) return;
+  if (!window.IntersectionObserver || !('isIntersecting' in IntersectionObserverEntry.prototype)) return;
 
   const [toAdd, isDone] = throttle(options.throttle || 1 / 0);
   const limit = options.limit || 1 / 0;
