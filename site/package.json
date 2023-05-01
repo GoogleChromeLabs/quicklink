@@ -20,6 +20,6 @@
     "markdown-it": "^13.0.1",
     "rimraf": "^5.0.0",
     "stylelint": "^15.6.0",
-    "stylelint-config-twbs-bootstrap": "^9.0.1"
+    "stylelint-config-twbs-bootstrap": "^10.0.0"
   }
 }
