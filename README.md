@@ -213,10 +213,10 @@ An optional function to generate the URL to prefetch. It receives an [Element](h
 
 #### options.minConnectionType
 
-Type: ` 'slow-2g' | '2g' | '3g' | '4g' | 'none'` <br>
-Default: '3g'
+* Type: `'slow-2g' | '2g' | '3g' | '4g' | 'none'`
+* Default: '3g'
 
-An optional string that limits the minimum connection to prefetch
+An optional string that limits the minimum connection to prefetch.
 
 ### quicklink.prefetch(urls, isPriority)
 Returns: `Promise`
