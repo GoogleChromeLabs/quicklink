@@ -4,8 +4,8 @@ A demo showing how to use Quicklink on a simple multi-page website.
 
 ## Glitch Source
 
-* [Link to Glitch App](https://anton-karlovskiy-quicklink-news.glitch.me)
-* [Link to Project on Glitch](https://glitch.com/~anton-karlovskiy-quicklink-news)
+- [Link to Glitch App](https://anton-karlovskiy-quicklink-news.glitch.me)
+- [Link to Project on Glitch](https://glitch.com/~anton-karlovskiy-quicklink-news)
 
 ## Installation
 

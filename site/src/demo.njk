@@ -2,6 +2,9 @@
 title: Demo
 layout: layouts/base.njk
 description: Faster subsequent page-loads by prefetching in-viewport links during idle time.
+eleventyNavigation:
+  key: Demo
+  order: 3
 ---
 
 {% extends "layouts/normal-section-wrapper.njk" %}
@@ -22,7 +25,7 @@ The following waterfall shows a typical navigation for a site without Quicklink 
 
 {% endmarkdownConvert %}
 
-<img loading="lazy" class="article-image" src="/assets/images/screenshots/wpt-visual-comparison.png" height="320" width="615">
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/wpt-visual-comparison.png" height="320" width="615" alt="Image shows that use of quicklink improves navigation for a site by 1 second">
 
 {% markdownConvert %}
 
@@ -36,7 +39,7 @@ To try the demo:
 
 {% endmarkdownConvert %}
 
-<img loading="lazy" class="article-image" src="/assets/images/screenshots/devtools-unoptimized.png" height="130" width="600">
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/devtools-unoptimized.png" height="130" width="600" alt="Image shows chrome dev tools inspection for site not using quicklink">
 
 {% markdownConvert %}
 
@@ -52,7 +55,7 @@ Prefetched links can be identified in the **Network** panel by having `quicklink
 
 {% endmarkdownConvert %}
 
-<img loading="lazy" class="article-image" src="/assets/images/screenshots/devtools-optimized-1.png" height="130" width="600">
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/devtools-optimized-1.png" height="130" width="600" alt="Image shows chrome dev tools inspection for site using quicklink">
 
 {% markdownConvert %}
 
@@ -64,7 +67,7 @@ To measure the impact of `quicklink` on navigations:
 
 {% endmarkdownConvert %}
 
-<img loading="lazy" class="article-image" src="/assets/images/screenshots/devtools-optimized-2.png" height="130" width="600">
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/devtools-optimized-2.png" height="130" width="600" alt="Image shows the site using quicklink along with prefetch cache improves data fetching time by 97 percent">
 
 {% markdownConvert %}
 
@@ -74,7 +77,7 @@ Here is a comparison video:
 
 {% endmarkdownConvert %}
 
-<img loading="lazy" class="article-image" src="/assets/images/screenshots/wpt-video-comparison.gif" height="320" width="450">
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/wpt-video-comparison.gif" height="320" width="450" alt="The gif shows comparison between same site being loaded with quicklink takes 1 second less than unoptimised version">
 
 {% markdownConvert %}
 
@@ -94,7 +97,7 @@ When the home page loads the chunks for that route are loaded. After that, `quic
 
 {% endmarkdownConvert %}
 
-<img loading="lazy" class="article-image" src="/assets/images/screenshots/spa-devtools-optimized-1.png" height="204" width="570">
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/spa-devtools-optimized-1.png" height="204" width="570" alt="Image shows that data for loading links available on the page being viewed are loaded beforehand by quicklink">
 
 {% markdownConvert %}
 
@@ -106,7 +109,7 @@ Next:
 
 {% endmarkdownConvert %}
 
-<img loading="lazy" class="article-image" src="/assets/images/screenshots/spa-devtools-optimized-2.png" height="76" width="643">
+<img loading="lazy" class="article-image" src="/assets/images/screenshots/spa-devtools-optimized-2.png" height="76" width="643" alt="Image shows that quicklink takes only 2 milliseconds to load a site using prefetch cache">
 
 {% markdownConvert %}
 

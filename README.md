@@ -103,10 +103,10 @@ const options = {
 };
 
 <Suspense fallback={<div>Loading...</div>}>
-  <Route path="/" exact component={withQuicklink(Home, options)} />
-  <Route path="/blog" exact component={withQuicklink(Blog, options)} />
-  <Route path="/blog/:title" component={withQuicklink(Article, options)} />
-  <Route path="/about" exact component={withQuicklink(About, options)} />
+  <Route path='/' exact component={withQuicklink(Home, options)} />
+  <Route path='/blog' exact component={withQuicklink(Blog, options)} />
+  <Route path='/blog/:title' component={withQuicklink(Article, options)} />
+  <Route path='/about' exact component={withQuicklink(About, options)} />
 </Suspense>;
 ```
 
@@ -120,8 +120,8 @@ A "reset" function is returned, which will empty the active `IntersectionObserve
 
 #### options.prerender
 
-* Type: `Boolean`
-* Default: `false`
+- Type: `Boolean`
+- Default: `false`
 
 Whether to switch from the default prefetching mode to the prerendering mode for the links inside the viewport.
 
@@ -136,43 +136,43 @@ Whether to activate both the prefetching and prerendering mode at the same time.
 
 #### options.delay
 
-* Type: `Number`
-* Default: `0`
+- Type: `Number`
+- Default: `0`
 
 The _amount of time_ each link needs to stay inside the viewport before being prefetched, in milliseconds.
 
 #### options.el
 
-* Type: `HTMLElement|NodeList<A>`
-* Default: `document.body`
+- Type: `HTMLElement|NodeList<A>`
+- Default: `document.body`
 
 The DOM element to observe for in-viewport links to prefetch or the NodeList of Anchor Elements.
 
 #### options.limit
 
-* Type: `Number`
-* Default: `Infinity`
+- Type: `Number`
+- Default: `Infinity`
 
 The _total_ requests that can be prefetched or prerendered while observing the `options.el` container.
 
 #### options.threshold
 
-* Type: `Number`
-* Default: `0`
+- Type: `Number`
+- Default: `0`
 
 The _area percentage_ of each link that must have entered the viewport to be fetched, in its decimal form (e.g. 0.25 = 25%).
 
 #### options.throttle
 
-* Type: `Number`
-* Default: `Infinity`
+- Type: `Number`
+- Default: `Infinity`
 
 The _concurrency limit_ for simultaneous requests while observing the `options.el` container.
 
 #### options.timeout
 
-* Type: `Number`
-* Default: `2000`
+- Type: `Number`
+- Default: `2000`
 
 The `requestIdleCallback` timeout, in milliseconds.
 
@@ -180,8 +180,8 @@ The `requestIdleCallback` timeout, in milliseconds.
 
 #### options.timeoutFn
 
-* Type: `Function`
-* Default: `requestIdleCallback`
+- Type: `Function`
+- Default: `requestIdleCallback`
 
 A function used for specifying a `timeout` delay.
 
@@ -191,8 +191,8 @@ By default, this uses [`requestIdleCallback`](https://developer.mozilla.org/en-U
 
 #### options.priority
 
-* Type: `Boolean`
-* Default: `false`
+- Type: `Boolean`
+- Default: `false`
 
 Whether or not the URLs within the `options.el` container should be treated as high priority.
 
@@ -200,8 +200,8 @@ When `true`, quicklink will attempt to use the `fetch()` API if supported (rathe
 
 #### options.origins
 
-* Type: `Array<String>`
-* Default: `[location.hostname]`
+- Type: `Array<String>`
+- Default: `[location.hostname]`
 
 A static array of URL hostnames that are allowed to be prefetched.
 
@@ -211,8 +211,8 @@ Defaults to the same domain origin, which prevents _any_ cross-origin requests.
 
 #### options.ignores
 
-* Type: `RegExp` or `Function` or `Array`
-* Default: `[]`
+- Type: `RegExp` or `Function` or `Array`
+- Default: `[]`
 
 Determine if a URL should be prefetched.
 
@@ -224,8 +224,8 @@ When a `RegExp` tests positive, a `Function` returns `true`, or an `Array` conta
 
 #### options.onError
 
-* Type: `Function`
-* Default: None
+- Type: `Function`
+- Default: None
 
 An optional error handler that will receive any errors from prefetched requests.
 
@@ -233,8 +233,8 @@ By default, these errors are silently ignored.
 
 #### options.hrefFn
 
-* Type: `Function`
-* Default: None
+- Type: `Function`
+- Default: None
 
 An optional function to generate the URL to prefetch. It receives an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) as the argument.
 
@@ -248,8 +248,8 @@ The `urls` provided are always passed through `Promise.all`, which means the res
 
 #### urls
 
-* Type: `String` or `Array<String>`
-* Required: `true`
+- Type: `String` or `Array<String>`
+- Required: `true`
 
 One or many URLs to be prefetched.
 
@@ -257,8 +257,8 @@ One or many URLs to be prefetched.
 
 #### isPriority
 
-* Type: `Boolean`
-* Default: `false`
+- Type: `Boolean`
+- Default: `false`
 
 Whether or not the URL(s) should be treated as "high priority" targets.
 
@@ -274,8 +274,8 @@ Returns: `Promise`
 
 #### urls
 
-* Type: `String` or `Array<String>`
-* Required: `true`
+- Type: `String` or `Array<String>`
+- Required: `true`
 
 One or many URLs to be prerendered.
 
@@ -361,7 +361,7 @@ Defaults to low-priority (`rel=prefetch` or XHR). For high-priority (`priority: 
 > **Note:** This runs `prefetch(..., true)` with URLs found within the `options.el` container.
 
 ```js
-quicklink.listen({ priority: true });
+quicklink.listen({priority: true});
 ```
 
 ### Specify a custom list of allowed origins
@@ -469,7 +469,7 @@ After installing `quicklink` as a dependency, you can use it as follows:
 ```html
 <script type="module">
   import {prefetch} from 'quicklink';
-  prefetch(['1.html', '2.html']).catch(err => {
+  prefetch(['1.html', '2.html']).catch(error => {
     // Handle own errors
   });
 </script>

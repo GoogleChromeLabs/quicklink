@@ -1,4 +1,6 @@
 window.addEventListener('load', () => {
+  'use strict';
+
   function initGoToTopBtn() {
     const goTopBtn = document.querySelector('.back-to-top');
 
@@ -34,20 +36,23 @@ window.addEventListener('load', () => {
 
   initGoToTopBtn();
 
-  const clipboard = new ClipboardJS('#copy-snippet-button');
-  clipboard.on('success', function (e) {
-    console.info('[clipboard success] Action:', e.action);
-    console.info('[clipboard success] Text:', e.text);
-    console.info('[clipboard success] Trigger:', e.trigger);
+  const clipboard = new ClipboardJS('#copy-snippet-button', {
+    text: trigger => trigger.parentNode.previousElementSibling.textContent.trim(),
+  });
 
-    e.clearSelection();
-    e.trigger.blur();
+  clipboard.on('success', event => {
+    console.info('[clipboard success] Action:', event.action);
+    console.info('[clipboard success] Text:', event.text);
+    console.info('[clipboard success] Trigger:', event.trigger);
+
+    event.clearSelection();
+    event.trigger.blur();
     const notifyCopiedSnippet = document.querySelector('.notify-copied-snippet');
     notifyCopiedSnippet.classList.add('notify-copied-snippet--displayed');
   });
 
-  clipboard.on('error', function (e) {
-    console.error('[clipboard error] Action:', e.action);
-    console.error('[clipboard error] Trigger:', e.trigger);
+  clipboard.on('error', event => {
+    console.error('[clipboard error] Action:', event.action);
+    console.error('[clipboard error] Trigger:', event.trigger);
   });
 });

@@ -3,34 +3,14 @@
   "subtitle": "Instant next-page navigations",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time.",
   "logo": "/assets/images/logos/quicklink.svg",
-  "quicklinkGithubURL": "https://github.com/GoogleChromeLabs/quicklink/",
+  "socialImage": "/assets/images/og-image.png",
+  "url": "https://getquick.link",
+  "quicklinkGithubURL": "https://github.com/GoogleChromeLabs/quicklink",
   "quicklinkVersion": "2.3.0",
   "quicklinkSizeLimit": "1KB",
   "bottomResource": {
     "caption": "View source on GitHub"
   },
-  "pages": [
-    {
-      "caption": "Home",
-      "route": "/"
-    },
-    {
-      "caption": "API",
-      "route": "/api/"
-    },
-    {
-      "caption": "Approach",
-      "route": "/approach/"
-    },
-    {
-      "caption": "Demo",
-      "route": "/demo/"
-    },
-    {
-      "caption": "Measure",
-      "route": "/measure/"
-    }
-  ],
   "useWithFrameworks": [
     {
       "title": "wordpress",

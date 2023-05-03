@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   env: {
     browser: true,
@@ -5,8 +7,8 @@ module.exports = {
     node: true,
   },
   parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 9,
+    sourceType: 'script',
+    ecmaVersion: 2017,
   },
   extends: [
     'google',
@@ -45,6 +47,7 @@ module.exports = {
       },
     ],
     'prefer-template': 'error',
+    'strict': 'error',
     'spaced-comment': [
       'error',
       'always',
@@ -58,13 +61,25 @@ module.exports = {
   overrides: [
     {
       files: [
+        'src/**',
+      ],
+      parserOptions: {
+        sourceType: 'module',
+      },
+    },
+    {
+      files: [
         'site/**',
       ],
+      env: {
+        node: false,
+      },
       parserOptions: {
         sourceType: 'script',
       },
       rules: {
         'require-jsdoc': 'off',
+        'strict': 'error',
       },
     },
   ],
