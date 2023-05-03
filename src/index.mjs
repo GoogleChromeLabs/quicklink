@@ -95,7 +95,7 @@ function checkConnection(conn, minConnectionType) {
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
  *                                      If it's not a valid function, then it will use the entry href.
- * @param { 'slow-2g' | '2g' | '3g' | '4g' } [options.minConnectionType ] - The minimum of internet connection nedded to prefetch and prerender
+ * @param { 'slow-2g' | '2g' | '3g' | '4g' } [options.minConnectionType ] - The minimum of internet connection needed to prefetch and prerender
  * @param {Boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
  * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
  * @return {Function}
@@ -217,7 +217,7 @@ export function listen(options = {}) {
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
-* @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection nedded to prefetch and prerender
+* @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection needed to prefetch and prerender
 * @return {Object} a Promise
 */
 export function prefetch(url, isPriority, minConnectionType) {
@@ -250,7 +250,7 @@ export function prefetch(url, isPriority, minConnectionType) {
 /**
 * Prerender a given URL
 * @param {String} urls - the URL to fetch
-* @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection nedded to prefetch and prerender
+* @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection needed to prefetch and prerender
 * @return {Object} a Promise
 */
 export function prerender(urls, minConnectionType) {
