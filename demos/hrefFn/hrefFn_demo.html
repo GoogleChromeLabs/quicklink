@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Basic demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" media="screen" href="../../test/main.css" />
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+  <link rel="stylesheet" href="../../test/fixtures/main.css">
 </head>
+
 <body>
   <div class="screen">
     <h1>Basic demo</h1>
@@ -28,30 +27,31 @@
       el: document.querySelector('div.screen'),
       // hrefFn will prevent quicklink to prefetch the "href" attribute URL
       // and the returned value will be prefetched as a result.
-      hrefFn: function(element) {
-        return element.href.replace('html','json');
+      hrefFn(element) {
+        return element.href.replace('html', 'json');
       }
     });
   </script>
 
   <script>
     // Simple SPA-like page transition for demo purposes
-    var container = document.querySelector('div.screen'),
-      link = container.querySelector('a'),
-      title = container.querySelector('h1'),
-      paragraph = container.querySelector('p');
+    const container = document.querySelector('div.screen');
+    const link = container.querySelector('a');
+    const title = container.querySelector('h1');
+    const paragraph = container.querySelector('p');
 
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      var href = e.target.href.replace('html','json');
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      const href = event.target.href.replace('html', 'json');
       fetch(href)
-      .then(response => response.json())
-      .then(data => {
-        title.innerHTML = document.title = data.title;
-        paragraph.innerHTML = data.description;
-      });
-    }); 
+        .then(response => response.json())
+        .then(data => {
+          title.innerHTML = document.title = data.title;
+          paragraph.innerHTML = data.description;
+        });
+    });
   </script>
 </body>
+
 </html>

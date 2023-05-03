@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>network-idle-callback demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" media="screen" href="../test/main.css">
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+  <link rel="stylesheet" href="../test/fixtures/main.css">
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('./sw.js').then(function (registration) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((registration) => {
           console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function (err) {
-          console.log('ServiceWorker registration failed: ', err);
+        }, (error) => {
+          console.log('ServiceWorker registration failed: ', error);
         });
       });
     }
@@ -24,17 +22,17 @@
 <body>
   <p>This demo uses <a href="https://github.com/pastelsky/network-idle-callback">network-idle-callback</a> to only
     prefetch when network activity goes idle in the current tab.</p>
-  <a href="../test/1.html">Link 1</a>
-  <a href="../test/2.html">Link 2</a>
-  <a href="../test/3.html">Link 3</a>
+  <a href="../test/fixtures/1.html">Link 1</a>
+  <a href="../test/fixtures/2.html">Link 2</a>
+  <a href="../test/fixtures/3.html">Link 3</a>
   <section id="stuff">
-    <a href="../test/main.css">CSS</a>
+    <a href="../test/fixtures/main.css">CSS</a>
   </section>
-  <a href="../test/4.html" style="position:absolute;margin-top:900px;">Link 4</a>
+  <a href="../test/fixtures/4.html" style="position:absolute;margin-top:900px;">Link 4</a>
   <script src="network-idle.js"></script>
   <script type="module">
-    import quicklink from "../dist/quicklink.mjs";
-    quicklink.listen({ timeoutFn: networkIdleCallback });
+    import {listen} from "../dist/quicklink.mjs";
+    listen({timeoutFn: networkIdleCallback});
   </script>
 </body>
 

@@ -1,15 +1,17 @@
 {% extends "layouts/normal-section-wrapper.njk" %}
 {% block section %}
 <div class="copy-snippet-widget">
-  <div class="tertiary-font-color"><strong>Place this snippet in your head or just before your close body tag:<strong></div>
+  <div class="tertiary-font-color">
+    <strong>Place this snippet in your head or just before your close body tag:</strong>
+  </div>
 
   <div class="snippet-for-copy">
   {% highlight "html" %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/{{ site.quicklinkVersion }}/quicklink.umd.js"></script>
 <script>
-window.addEventListener('load', () => {
-  quicklink.listen();
-});
+  window.addEventListener('load', () => {
+    quicklink.listen();
+  });
 </script>
   {% endhighlight %}
   </div>
@@ -18,6 +20,8 @@ window.addEventListener('load', () => {
     <button id="copy-snippet-button" type="button" class="button button--copy-snippet" data-clipboard-target=".snippet-for-copy">Copy snippet</button>
   </div>
 
-  <div class="primary-font-color notify-copied-snippet"><strong>Copied. Now place it just before &lt;/body&gt; on your pages.</strong></div>
+  <div class="primary-font-color notify-copied-snippet">
+    <strong>Copied. Now place it just before &lt;/body&gt; on your pages.</strong>
+  </div>
 </div>
 {% endblock %}

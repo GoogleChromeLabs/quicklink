@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2019-2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ **/
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import rmanifest from 'route-manifest';
-import { listen } from './quicklink';
+import {listen} from './quicklink.js';
 
-const useIntersect = ({ root = null, rootMargin, threshold = 0 } = {}) => {
+const useIntersect = ({root = null, rootMargin, threshold = 0} = {}) => {
   const [entry, updateEntry] = useState({});
   const [node, setNode] = useState(null);
   const observer = useRef(null);
@@ -26,15 +26,15 @@ const useIntersect = ({ root = null, rootMargin, threshold = 0 } = {}) => {
   useEffect(() => {
     if (observer.current) observer.current.disconnect();
     observer.current = new window.IntersectionObserver(
-      ([entry]) => updateEntry(entry),
-      {
-        root,
-        rootMargin,
-        threshold
-      }
+        ([entry]) => updateEntry(entry),
+        {
+          root,
+          rootMargin,
+          threshold,
+        },
     );
 
-    const { current: currentObserver } = observer;
+    const {current: currentObserver} = observer;
     if (node) currentObserver.observe(node);
 
     return () => currentObserver.disconnect();
@@ -48,7 +48,7 @@ const __defaultAccessor = mix => {
 };
 
 const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) => {
-  const { files } = rmanifest(window.__rmanifest, entry.pathname);
+  const {files} = rmanifest(window.__rmanifest, entry.pathname);
   const chunkURLs = files.map(accessor).filter(Boolean);
   if (chunkURLs.length) {
     prefetchHandler(chunkURLs);
@@ -59,26 +59,27 @@ const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) =>
 };
 
 const withQuicklink = (Component, options = {}) => {
+  // eslint-disable-next-line react/display-name
   return props => {
-		const [ref, entry] = useIntersect({root: document.body.parentElement});
-    const intersectionRatio = entry.intersectionRatio;
-    
-		useEffect(() => {
+    const [ref, entry] = useIntersect({root: document.body.parentElement});
+    const {intersectionRatio} = entry;
+
+    useEffect(() => {
       options.prefetchChunks = prefetchChunks;
 
       if (intersectionRatio > 0) {
         listen(options);
       }
-    }, [intersectionRatio]);    
-		
-		return (
-			<div ref={ref}>
+    }, [intersectionRatio]);
+
+    return (
+      <div ref={ref}>
         <Component {...props} />
-			</div>
-		);
-	};
+      </div>
+    );
+  };
 };
 
 export {
-  withQuicklink
+  withQuicklink,
 };

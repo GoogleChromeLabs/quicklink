@@ -15,7 +15,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-**/
+ **/
+
 /**
  * Checks if the given string is a same origin url
  * @param {string} str - the URL to check
@@ -27,19 +28,19 @@ export function isSameOrigin(str) {
 
 /**
  * Add a given set of urls to the speculation rules
- * @param {Set} toPrerender - the URLs to add to speculation rules
+ * @param {Set} urlsToPrerender - the URLs to add to speculation rules
  * @return {Boolean|Object}  boolean or Error Object
  */
 export function addSpeculationRules(urlsToPrerender) {
-  let specScript = document.createElement('script');
+  const specScript = document.createElement('script');
   specScript.type = 'speculationrules';
-  specScript.text = '{"prerender":[{"source": "list","urls": ["'+Array.from(urlsToPrerender).join('","')+'"]}]}';  
+  specScript.text = `{"prerender":[{"source": "list","urls": ["${Array.from(urlsToPrerender).join('","')}"]}]}`;
   try {
     document.head.appendChild(specScript);
-  }catch(e) {
-    return e;
+  } catch (error) {
+    return error;
   }
-  
+
   return true;
 }
 

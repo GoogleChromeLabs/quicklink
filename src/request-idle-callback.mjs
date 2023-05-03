@@ -12,16 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-**/
+ **/
 
 // RIC and shim for browsers setTimeout() without it
 const requestIdleCallback = window.requestIdleCallback ||
   function (cb) {
     const start = Date.now();
-    return setTimeout(function () {
+    return setTimeout(() => {
       cb({
         didTimeout: false,
-        timeRemaining: function () {
+        timeRemaining() {
           return Math.max(0, 50 - (Date.now() - start));
         },
       });

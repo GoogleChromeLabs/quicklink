@@ -12,9 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-**/
+ **/
+
 import throttle from 'throttles';
-import { priority, supported } from './prefetch.mjs';
+import {priority, supported} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
 // Cache of URLs we've prefetched
@@ -31,9 +32,9 @@ const toPrefetch = new Set();
  * @return {Boolean}          If true, then it should be ignored
  */
 function isIgnored(node, filter) {
-  return Array.isArray(filter)
-    ? filter.some(x => isIgnored(node, x))
-    : (filter.test || filter).call(filter, node.href, node);
+  return Array.isArray(filter) ?
+    filter.some(x => isIgnored(node, x)) :
+    (filter.test || filter).call(filter, node.href, node);
 }
 
 /**
@@ -53,25 +54,28 @@ function isIgnored(node, filter) {
  * @param {Function} [options.timeoutFn] - Custom timeout function
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.prefetchChunks] - Function to prefetch chunks for route URLs (with route manifest for URL mapping)
+ * @return {undefined}
  */
-export function listen(options) {
-  if (!options) options = {};
+export function listen(options = {}) {
   if (!window.IntersectionObserver) return;
 
-  const [toAdd, isDone] = throttle(options.throttle || 1/0);
-  const limit = options.limit || 1/0;
+  const [toAdd, isDone] = throttle(options.throttle || 1 / 0);
+  const limit = options.limit || 1 / 0;
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
-  const prefetchChunks = options.prefetchChunks;
+  const {prefetchChunks} = options;
 
   const prefetchHandler = urls => {
-    prefetch(urls, options.priority).then(isDone).catch(err => {
-      isDone(); if (options.onError) options.onError(err);
-    });
+    prefetch(urls, options.priority)
+        .then(isDone)
+        .catch(error => {
+          isDone();
+          if (options.onError) options.onError(error);
+        });
   };
 
   const observer = new IntersectionObserver(entries => {
@@ -81,7 +85,9 @@ export function listen(options) {
         // Do not prefetch if will match/exceed limit
         if (toPrefetch.size < limit) {
           toAdd(() => {
-            prefetchChunks ? prefetchChunks(entry, prefetchHandler) : prefetchHandler(entry.href);
+            prefetchChunks ?
+              prefetchChunks(entry, prefetchHandler) :
+              prefetchHandler(entry.href);
           });
         }
       }
@@ -95,11 +101,11 @@ export function listen(options) {
       // ~> A `[]` or `true` means everything is allowed
       if (!allowed.length || allowed.includes(link.hostname)) {
         // If there are any filters, the link must not match any of them
-        isIgnored(link, ignores) || observer.observe(link);
+        if (!isIgnored(link, ignores)) observer.observe(link);
       }
     });
   }, {
-    timeout: options.timeout || 2000
+    timeout: options.timeout || 2000,
   });
 
   return function () {
@@ -110,37 +116,38 @@ export function listen(options) {
   };
 }
 
-
 /**
-* Prefetch a given URL with an optional preferred fetch priority
-* @param {String} url - the URL to fetch
-* @param {Boolean} [isPriority] - if is "high" priority
-* @param {Object} [conn] - navigator.connection (internal)
-* @return {Object} a Promise
-*/
-export function prefetch(url, isPriority, conn) {
-  if (conn = navigator.connection) {
+ * Prefetch a given URL with an optional preferred fetch priority
+ * @param {String} url - the URL to fetch
+ * @param {Boolean} [isPriority] - if is "high" priority
+ * @return {Object} a Promise
+ */
+export function prefetch(url, isPriority) {
+  const {connection} = navigator;
+
+  if (connection) {
     // Don't prefetch if using 2G or if Save-Data is enabled.
-    if (conn.saveData) {
+    if (connection.saveData) {
       return Promise.reject(new Error('Cannot prefetch, Save-Data is enabled'));
     }
-    if (/2g/.test(conn.effectiveType)) {
+
+    if (/2g/.test(connection.effectiveType)) {
       return Promise.reject(new Error('Cannot prefetch, network conditions are poor'));
     }
   }
 
   // Dev must supply own catch()
   return Promise.all(
-    [].concat(url).map(str => {
-      if (!toPrefetch.has(str)) {
+      [].concat(url).map(str => {
+        if (toPrefetch.has(str)) return [];
+
         // Add it now, regardless of its success
         // ~> so that we don't repeat broken links
         toPrefetch.add(str);
 
         return (isPriority ? priority : supported)(
-          new URL(str, location.href).toString()
+            new URL(str, location.href).toString(),
         );
-      }
-    })
+      }),
   );
 }

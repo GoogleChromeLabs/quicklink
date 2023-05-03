@@ -5,7 +5,7 @@
 
 ### Installation
 
-First, install the packages with [node](https://nodejs.org) and [npm](https://npmjs.com):
+First, install the packages with [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/):
 {% endmarkdownConvert %}
 
 {% highlight "bash" %}
@@ -21,26 +21,25 @@ This will generate a map of routes and chunks called `rmanifest.json`. It can be
 
 ### Usage
 
-Import `quicklink` React HOC where want to add prefetching functionality. 
+Import `quicklink` React HOC where want to add prefetching functionality.
 Wrap your routes with the `withQuicklink()` HOC.
 
 Example:
 {% endmarkdownConvert %}
 
-{% highlight "js" %}
-import { withQuicklink } from 'quicklink/dist/react/hoc.js';
+{% highlight "jsx" %}
+import {withQuicklink} from 'quicklink/dist/react/hoc.js';
 
 const options = {
-  origins: []
+  origins: [],
 };
 
 <Suspense fallback={<div>Loading...</div>}>
-  <Route path="/" exact component={withQuicklink(Home, options)} />
-  <Route path="/blog" exact component={withQuicklink(Blog, options)} />
-  <Route path="/blog/:title" component={withQuicklink(Article, options)} />
-  <Route path="/about" exact component={withQuicklink(About, options)} />
-</Suspense>
+  <Route path='/' exact component={withQuicklink(Home, options)} />
+  <Route path='/blog' exact component={withQuicklink(Blog, options)} />
+  <Route path='/blog/:title' component={withQuicklink(Article, options)} />
+  <Route path='/about' exact component={withQuicklink(About, options)} />
+</Suspense>;
 {% endhighlight %}
 
 {% endblock %}
-

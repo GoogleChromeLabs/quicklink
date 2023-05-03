@@ -2,17 +2,24 @@
   "name": "eleventy-quicklink-website",
   "description": "",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "build": "npx @11ty/eleventy",
-    "start": "npx @11ty/eleventy --serve",
-    "deploy": "firebase deploy --project=quicklink-6a87b"
-  },
-  "devDependencies": {
-    "@11ty/eleventy": "^0.8.3"
+    "build": "rimraf build && cross-env NODE_ENV=production eleventy",
+    "start": "rimraf build && cross-env NODE_ENV=development eleventy --serve",
+    "deploy": "firebase deploy --project=quicklink-6a87b",
+    "lint": "stylelint src/assets/styles",
+    "test": "npm run lint && npm run build"
   },
   "license": "Apache-2.0",
-  "dependencies": {
-    "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.1",
-    "html-minifier": "^4.0.0"
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-navigation": "^0.3.5",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "cross-env": "^7.0.3",
+    "html-minifier-terser": "^7.2.0",
+    "markdown-it": "^13.0.1",
+    "rimraf": "^5.0.0",
+    "stylelint": "^15.6.0",
+    "stylelint-config-twbs-bootstrap": "^10.0.0"
   }
 }

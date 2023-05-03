@@ -3,6 +3,8 @@
 // which fixes issues with browser importing of the
 // above dependency. It is hopefully temporary.
 
+'use strict';
+
 const DOMContentLoad = new Promise(resolve => {
   document.addEventListener('DOMContentLoaded', resolve);
 });
