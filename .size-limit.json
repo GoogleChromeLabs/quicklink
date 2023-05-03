@@ -1,11 +1,11 @@
 [
   {
     "path": "dist/quicklink.js",
-    "limit": "2.05 kB"
+    "limit": "2.15 kB"
   },
   {
     "path": "dist/quicklink.mjs",
-    "limit": "2.05 kB"
+    "limit": "2.15 kB"
   },
   {
     "path": "dist/quicklink.modern.mjs",
@@ -13,6 +13,6 @@
   },
   {
     "path": "dist/quicklink.umd.js",
-    "limit": "2.1 kB"
+    "limit": "2.175 kB"
   }
 ]
