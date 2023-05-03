@@ -114,7 +114,7 @@ export function listen(options = {}) {
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
-  const minConnectionType = options.minConnectionType || '2g';
+  const minConnectionType = options.minConnectionType || '3g';
   const shouldOnlyPrerender = options.prerender || false;
   shouldPrerenderAndPrefetch = options.prerenderAndPrefetch || false;
 
