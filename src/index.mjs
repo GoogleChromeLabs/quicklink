@@ -49,30 +49,30 @@ function isIgnored(node, filter) {
  * @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection nedded to prefetch and prerender
  * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
  */
-function checkConnection (conn, minConnectionType) {
-	const connDictionary = {
-		'slow-2g': 0,
-		'2g': 1,
-		'3g': 2,
-		'4g': 3
-	};
+function checkConnection(conn, minConnectionType) {
+  const connDictionary = {
+    'slow-2g': 0,
+    '2g': 1,
+    '3g': 2,
+    '4g': 3,
+  };
 
-	if (conn) {
-		// Don't pre* if using 2G or if Save-Data is enabled.
-		if (conn.saveData) {
-			return new Error('Save-Data is enabled');
-		}
+  if (conn) {
+    // Don't pre* if using 2G or if Save-Data is enabled.
+    if (conn.saveData) {
+      return new Error('Save-Data is enabled');
+    }
 
-		if (connDictionary[minConnectionType] === undefined) {
-			return new Error('select a valid type of minConnectionType');
-		}
+    if (connDictionary[minConnectionType] === undefined) {
+      return new Error('select a valid type of minConnectionType');
+    }
 
     if (connDictionary[minConnectionType] > connDictionary[conn.effectiveType]) {
-			return new Error('network conditions are poor');
-		}
-	}
+      return new Error('network conditions are poor');
+    }
+  }
 
-	return true;
+  return true;
 }
 
 /**
@@ -94,7 +94,7 @@ function checkConnection (conn, minConnectionType) {
  * @param {Function} [options.timeoutFn] - Custom timeout function
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
- *                                             If it's not a valid function, then it will use the entry href.
+ *                                      If it's not a valid function, then it will use the entry href.
  * @param { 'slow-2g' | '2g' | '3g' | '4g' } [options.minConnectionType ] - The minimum of internet connection nedded to prefetch and prerender
  * @param {Boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
  * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
@@ -114,7 +114,7 @@ export function listen(options = {}) {
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
-	const minConnectionType = options.minConnectionType || '3g'
+  const minConnectionType = options.minConnectionType || '3g';
   const shouldOnlyPrerender = options.prerender || false;
   shouldPrerenderAndPrefetch = options.prerenderAndPrefetch || false;
 
