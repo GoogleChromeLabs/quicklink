@@ -17,7 +17,7 @@
 import throttle from 'throttles';
 import {priority, supported} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
-import {isSameOrigin, addSpeculationRules, hasSpecRulesSupport, isSpecRulesExists} from './prerender.mjs';
+import {addSpeculationRules, hasSpecRulesSupport} from './prerender.mjs';
 
 // Cache of URLs we've prefetched
 // Its `size` is compared against `opts.limit` value.
@@ -118,8 +118,6 @@ export function listen(options = {}) {
   const shouldOnlyPrerender = options.prerender || false;
   shouldPrerenderAndPrefetch = options.prerenderAndPrefetch || false;
 
-  const prerenderLimit = 1;
-
   const setTimeoutIfDelay = (callback, delay) => {
     if (!delay) {
       callback();
@@ -146,8 +144,8 @@ export function listen(options = {}) {
 
           // prerender, if..
           // either it's the prerender + prefetch mode or it's prerender *only* mode
-          // && no link has been prerendered before (no spec rules defined)
-          if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < prerenderLimit) {
+          // Prerendering limit is following options.limit. UA may impose arbitraty numeric limit
+          if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit) {
             prerender(hrefFn ? hrefFn(entry) : entry.href, minConnectionType).catch(error => {
               if (options.onError) {
                 options.onError(error);
@@ -262,22 +260,13 @@ export function prerender(urls, minConnectionType) {
 
   // prerendering preconditions:
   // 1) whether UA supports spec rules.. If not, fallback to prefetch
+  // Note: Prerendering supports same-site cross origin with opt-in header
   if (!hasSpecRulesSupport()) {
     prefetch(urls);
     return Promise.reject(new Error('This browser does not support the speculation rules API. Falling back to prefetch.'));
   }
 
-  // 2) whether spec rules is already defined (and with this we also covered when we have created spec rules before)
-  if (isSpecRulesExists()) {
-    return Promise.reject(new Error('Speculation Rules is already defined and cannot be altered.'));
-  }
-
-  // 3) whether it's a same origin url,
   for (const url of [].concat(urls)) {
-    if (!isSameOrigin(url)) {
-      return Promise.reject(new Error(`Only same origin URLs are allowed: ${url}`));
-    }
-
     toPrerender.add(url);
   }
 

@@ -8,8 +8,12 @@
     "limit": "2.15 kB"
   },
   {
+    "path": "dist/quicklink.mjs",
+    "limit": "2 kB"
+  },
+  {
     "path": "dist/quicklink.modern.mjs",
-    "limit": "1.75 kB"
+    "limit": "1.6 kB"
   },
   {
     "path": "dist/quicklink.umd.js",

@@ -31,6 +31,13 @@ Whether to switch from the default prefetching mode to the prerendering mode for
 
 > **Note:** The prerendering mode (when this option is set to true) will fallback to the prefetching mode if the browser does not support prerender.
 
+#### options.prerenderAndPrefetch
+
+* Type: `Boolean`
+* Default: `false`
+
+Whether to activate both the prefetching and prerendering mode at the same time.
+
 #### options.delay
 
 - Type: `Number`
@@ -50,7 +57,7 @@ The DOM element to observe for in-viewport links to prefetch or the NodeList of 
 - Type: `Number`
 - Default: `Infinity`
 
-The _total_ requests that can be prefetched while observing the `options.el` container.
+The _total_ requests that can be prefetched or prerendered while observing the `options.el` container.
 
 #### options.threshold
 
@@ -176,7 +183,7 @@ Returns: `Promise`
 
 One or many URLs to be prerendered.
 
-> **Note:** As prerendering using Speculative Rules API only supports same-origin at this point, only same-origin urls are accepted. Any non same-origin urls will return a rejected Promise.
+> **Note:** Speculative Rules API supports same-site cross origin Prerendering with [opt-in header](https://bit.ly/ss-cross-origin-pre).
 
 ## Polyfills
 
