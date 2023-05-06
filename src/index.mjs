@@ -46,7 +46,7 @@ function isIgnored(node, filter) {
 /**
  * Checks network conditions
  * @param  {NetworkInformation}  conn    The connection information to be checked
- * @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection nedded to prefetch and prerender
+ * @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection needed to prefetch and prerender
  * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
  */
 function checkConnection(conn, minConnectionType = '2g') {
