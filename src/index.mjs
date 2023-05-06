@@ -49,7 +49,7 @@ function isIgnored(node, filter) {
  * @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection nedded to prefetch and prerender
  * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
  */
-function checkConnection(conn, minConnectionType = 2) {
+function checkConnection(conn, minConnectionType = '2g') {
   const connDictionary = {
     'slow-2g': 0,
     '2g': 1,
