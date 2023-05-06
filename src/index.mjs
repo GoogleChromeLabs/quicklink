@@ -49,7 +49,7 @@ function isIgnored(node, filter) {
  * @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection nedded to prefetch and prerender
  * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
  */
-function checkConnection(conn, minConnectionType) {
+function checkConnection(conn, minConnectionType = 2) {
   const connDictionary = {
     'slow-2g': 0,
     '2g': 1,
@@ -114,7 +114,7 @@ export function listen(options = {}) {
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
-  const minConnectionType = options.minConnectionType || '3g';
+  const minConnectionType = options.minConnectionType || '2g';
   const shouldOnlyPrerender = options.prerender || false;
   shouldPrerenderAndPrefetch = options.prerenderAndPrefetch || false;
 
