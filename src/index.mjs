@@ -46,7 +46,7 @@ function isIgnored(node, filter) {
 /**
  * Checks network conditions
  * @param  {NetworkInformation}  conn    The connection information to be checked
- * @param { 'slow-2g' | '2g' | '3g' | '4g' } minConnectionType  The minimum of internet connection needed to prefetch and prerender
+ * @param  {'slow-2g'|'2g'|'3g'|'4g'} minConnectionType  The minimum of internet connection needed to prefetch and prerender
  * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
  */
 function checkConnection(conn, minConnectionType = '2g') {
@@ -95,7 +95,7 @@ function checkConnection(conn, minConnectionType = '2g') {
  * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
  *                                      If it's not a valid function, then it will use the entry href.
- * @param { 'slow-2g' | '2g' | '3g' | '4g' } [options.minConnectionType ] - The minimum of internet connection needed to prefetch and prerender
+ * @param {'slow-2g'|'2g'|'3g'|'4g'} [options.minConnectionType] -The minimum of internet connection needed to prefetch
  * @param {Boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
  * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
  * @return {Function}
