@@ -3,6 +3,7 @@
   <title>{{ title + " | " + site.title if title else site.title }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ description }}">
+  <meta name="generator" content="{{ eleventy.generator }}">
 
   {% include "layouts/favicons.njk" -%}
   {% include "layouts/social.njk" -%}
