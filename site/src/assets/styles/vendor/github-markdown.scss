@@ -1,6 +1,6 @@
 .markdown-body .octicon {
   display: inline-block;
-  fill: currentColor;
+  fill: currentcolor;
   vertical-align: text-bottom;
 }
 
@@ -45,11 +45,9 @@
 }
 
 .markdown-body {
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   color: #24292e;
-  line-height: 1.5;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
@@ -111,7 +109,7 @@
   color: #fafbfc;
 }
 
-.markdown-body .pl-c2:before {
+.markdown-body .pl-c2::before {
   content: "^M";
 }
 
@@ -203,7 +201,7 @@
 
 .markdown-body h1 {
   font-size: 2em;
-  margin: 0.67em 0;
+  margin: .67em 0;
 }
 
 .markdown-body img {
@@ -269,12 +267,12 @@
   overflow: hidden;
 }
 
-.markdown-body hr:before {
+.markdown-body hr::before {
   content: "";
   display: table;
 }
 
-.markdown-body hr:after {
+.markdown-body hr::after {
   clear: both;
   content: "";
   display: table;
@@ -377,7 +375,7 @@
 
 .markdown-body code,
 .markdown-body pre {
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 12px;
 }
 
@@ -388,7 +386,6 @@
 
 .markdown-body input::-webkit-inner-spin-button,
 .markdown-body input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
   appearance: none;
   margin: 0;
 }
@@ -485,12 +482,12 @@
   font-weight: 600 !important;
 }
 
-.markdown-body:before {
+.markdown-body::before {
   content: "";
   display: table;
 }
 
-.markdown-body:after {
+.markdown-body::after {
   clear: both;
   content: "";
   display: table;
@@ -523,13 +520,13 @@
 .markdown-body hr {
   background-color: #e1e4e8;
   border: 0;
-  height: 0.25em;
+  height: .25em;
   margin: 24px 0;
   padding: 0;
 }
 
 .markdown-body blockquote {
-  border-left: 0.25em solid #dfe2e5;
+  border-left: .25em solid #dfe2e5;
   color: #6a737d;
   padding: 0 1em;
 }
@@ -575,7 +572,7 @@
 .markdown-body h1,
 .markdown-body h2 {
   border-bottom: 1px solid #eaecef;
-  padding-bottom: 0.3em;
+  padding-bottom: .3em;
 }
 
 .markdown-body h2 {
@@ -591,12 +588,12 @@
 }
 
 .markdown-body h5 {
-  font-size: 0.875em;
+  font-size: .875em;
 }
 
 .markdown-body h6 {
   color: #6a737d;
-  font-size: 0.85em;
+  font-size: .85em;
 }
 
 .markdown-body ol,
@@ -621,7 +618,7 @@
 }
 
 .markdown-body li + li {
-  margin-top: 0.25em;
+  margin-top: .3em;
 }
 
 .markdown-body dl {
@@ -681,11 +678,11 @@
 }
 
 .markdown-body code {
-  background-color: rgba(27, 31, 35, 0.05);
+  background-color: rgba(27, 31, 35, .05);
   border-radius: 3px;
   font-size: 85%;
   margin: 0;
-  padding: 0.2em 0.4em;
+  padding: .2em .4em;
 }
 
 .markdown-body pre {
@@ -736,7 +733,7 @@
 .markdown-body .commit-tease-sha {
   color: #444d56;
   display: inline-block;
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 90%;
 }
 
@@ -753,18 +750,15 @@
 }
 
 .markdown-body .blob-num {
-  color: rgba(27, 31, 35, 0.3);
+  color: rgba(27, 31, 35, .3);
   cursor: pointer;
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 12px;
   line-height: 20px;
   min-width: 50px;
   padding-left: 10px;
   padding-right: 10px;
   text-align: right;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
   user-select: none;
   vertical-align: top;
   white-space: nowrap;
@@ -772,10 +766,10 @@
 }
 
 .markdown-body .blob-num:hover {
-  color: rgba(27, 31, 35, 0.6);
+  color: rgba(27, 31, 35, .6);
 }
 
-.markdown-body .blob-num:before {
+.markdown-body .blob-num::before {
   content: attr(data-line-number);
 }
 
@@ -789,7 +783,7 @@
 
 .markdown-body .blob-code-inner {
   color: #24292e;
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 12px;
   overflow: visible;
   white-space: pre;
@@ -810,7 +804,7 @@
   box-shadow: inset 0 -1px 0 #c6cbd1;
   color: #444d56;
   display: inline-block;
-  font: 11px SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font: 11px SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
   line-height: 10px;
   padding: 3px 5px;
   vertical-align: middle;
@@ -823,62 +817,50 @@
 }
 
 .markdown-body .tab-size[data-tab-size="1"] {
-  -moz-tab-size: 1;
   tab-size: 1;
 }
 
 .markdown-body .tab-size[data-tab-size="2"] {
-  -moz-tab-size: 2;
   tab-size: 2;
 }
 
 .markdown-body .tab-size[data-tab-size="3"] {
-  -moz-tab-size: 3;
   tab-size: 3;
 }
 
 .markdown-body .tab-size[data-tab-size="4"] {
-  -moz-tab-size: 4;
   tab-size: 4;
 }
 
 .markdown-body .tab-size[data-tab-size="5"] {
-  -moz-tab-size: 5;
   tab-size: 5;
 }
 
 .markdown-body .tab-size[data-tab-size="6"] {
-  -moz-tab-size: 6;
   tab-size: 6;
 }
 
 .markdown-body .tab-size[data-tab-size="7"] {
-  -moz-tab-size: 7;
   tab-size: 7;
 }
 
 .markdown-body .tab-size[data-tab-size="8"] {
-  -moz-tab-size: 8;
   tab-size: 8;
 }
 
 .markdown-body .tab-size[data-tab-size="9"] {
-  -moz-tab-size: 9;
   tab-size: 9;
 }
 
 .markdown-body .tab-size[data-tab-size="10"] {
-  -moz-tab-size: 10;
   tab-size: 10;
 }
 
 .markdown-body .tab-size[data-tab-size="11"] {
-  -moz-tab-size: 11;
   tab-size: 11;
 }
 
 .markdown-body .tab-size[data-tab-size="12"] {
-  -moz-tab-size: 12;
   tab-size: 12;
 }
 
@@ -891,7 +873,7 @@
 }
 
 .markdown-body .task-list-item input {
-  margin: 0 0.2em 0.25em -1.6em;
+  margin: 0 .2em .25em -1.6em;
   vertical-align: middle;
 }
 
