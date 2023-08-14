@@ -1,5 +1,7 @@
 // stylelint-disable declaration-no-important
 
+@import "vendor/github-markdown";
+
 .markdown-body {
   box-sizing: border-box;
   min-width: 200px;
