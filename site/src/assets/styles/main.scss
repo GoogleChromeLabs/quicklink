@@ -28,7 +28,7 @@ ul {
 .page-header__title {
   display: flex;
   justify-content: flex-start;
-  align-items: flex-end;
+  align-items: center;
   padding: 7px;
 }
 
@@ -44,12 +44,8 @@ ul {
 }
 
 .page-header__logo-image {
-  background-image: url("/assets/images/logos/quicklink.svg");
   width: 160px;
-  height: 60.2px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+  height: auto;
   margin-right: 6px;
 }
 
@@ -166,7 +162,7 @@ main.page-main {
   transition: transform .3s ease, opacity .3s ease;
 }
 
-/* no bullet list */
+// no bullet list
 .page-main ul.no-bullet {
   list-style-type: none;
   padding-left: 0;
@@ -176,7 +172,7 @@ main.page-main {
   margin-right: 1rem;
 }
 
-/* grid */
+// grid
 .flex-grid {
   display: flex;
 }
@@ -203,9 +199,8 @@ main.page-main {
 }
 
 .highlighted-section__text {
-  /* TODO: opt for bg color */
-
-  /* background-color: #d8217d; */
+  // TODO: opt for bg color
+  // background-color: #d8217d;
   background-color: #283646;
   color: #fff;
 }
@@ -218,9 +213,9 @@ main.page-main {
   border: 0;
 }
 
-/* heading */
+// heading
 .primary-font-color {
-  /* TODO: opt for font color */
+  // TODO: opt for font color
   color: hsl(226deg, 52%, 27%);
 }
 
@@ -279,7 +274,6 @@ main.page-main .heading em {
 
   .page-header__logo-image {
     width: 200px;
-    height: 75.23px;
   }
 
   .small-github {
@@ -327,7 +321,6 @@ main.page-main .heading em {
 
   .page-header__logo-image {
     width: 222px;
-    height: 84px;
   }
 
   .page-header nav {
@@ -346,4 +339,13 @@ main.page-main .heading em {
     padding: 16px 24px;
     margin: 16px 0;
   }
+}
+
+.site-footer {
+  margin-top: 1rem;
+  border-top: 1px dotted #cecece;
+}
+
+.site-footer p.text-center {
+  margin-top: 16px;
 }
