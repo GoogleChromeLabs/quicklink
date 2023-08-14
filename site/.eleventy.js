@@ -7,8 +7,12 @@
 const {EleventyHtmlBasePlugin: htmlBasePlugin} = require('@11ty/eleventy');
 const navigationPlugin = require('@11ty/eleventy-navigation');
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
+const autoprefixer = require('autoprefixer');
 const htmlminifier = require('html-minifier-terser');
 const markdownIt = require('markdown-it');
+const pluginRev = require('eleventy-plugin-rev');
+const postcss = require('postcss');
+const sass = require('eleventy-sass');
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
@@ -37,8 +41,28 @@ module.exports = eleventyConfig => {
   eleventyConfig.addPlugin(htmlBasePlugin, {baseHref: '/'});
   eleventyConfig.addPlugin(navigationPlugin);
   eleventyConfig.addPlugin(syntaxHighlight);
+  eleventyConfig.addPlugin(pluginRev);
+  eleventyConfig.addPlugin(sass, [
+    {
+      postcss: postcss([autoprefixer]),
+      sass: {
+        style: 'expanded',
+        sourceMap: true,
+      },
+      rev: false,
+    },
+    {
+      sass: {
+        style: 'compressed',
+        sourceMap: false,
+      },
+      rev: true,
+      when: [{NODE_ENV: 'production'}],
+    },
+  ]);
 
-  eleventyConfig.addPassthroughCopy('src/assets');
+  eleventyConfig.addPassthroughCopy('src/assets/images');
+  eleventyConfig.addPassthroughCopy('src/assets/js');
   eleventyConfig.addPassthroughCopy('src/site.webmanifest');
 
   eleventyConfig.addNunjucksFilter('markdown', string => {

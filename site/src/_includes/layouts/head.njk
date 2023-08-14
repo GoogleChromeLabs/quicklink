@@ -7,18 +7,16 @@
   {% include "layouts/favicons.njk" -%}
   {% include "layouts/social.njk" -%}
 
-  <link rel="preload" href="{{ '/assets/styles/main.css' }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="{{ '/assets/styles/footer.css' }}" as="style"
-    onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="{{ '/assets/styles/github-markdown.min.css' }}" as="style"
-    onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="stylesheet" href="{{ '/assets/styles/main.css' }}">
-  <link rel="stylesheet" href="{{ '/assets/styles/footer.css' }}">
-  <link rel="stylesheet" href="{{ '/assets/styles/copy-snippet.css' }}">
-  <link rel="stylesheet" href="{{ '/assets/styles/github-markdown.css' }}">
+  <link rel="preload" href="{{ '/assets/styles/main.css' | rev }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="{{ '/assets/styles/footer.css' | rev }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="{{ '/assets/styles/vendor/github-markdown.min.css' | rev }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="stylesheet" href="{{ '/assets/styles/main.css' | rev }}">
+  <link rel="stylesheet" href="{{ '/assets/styles/footer.css' | rev }}">
+  <link rel="stylesheet" href="{{ '/assets/styles/copy-snippet.css' | rev }}">
+  <link rel="stylesheet" href="{{ '/assets/styles/github-markdown.css' | rev }}">
   {# TODO: opt for theme and tweak the background color by avoiding github markdown #}
   <noscript>
-    <link rel="stylesheet" href="{{ '/assets/styles/github-markdown.min.css' }}">
+    <link rel="stylesheet" href="{{ '/assets/styles/vendor/github-markdown.min.css' | rev }}">
   </noscript>
 
   {% set cssrelpreloadJs -%}

@@ -1,5 +1,5 @@
 **/*.min.css
+**/*.min.scss
 **/dist/
 **/vendor/
 /build/
-prism.css
