@@ -6,5 +6,5 @@ eleventyExcludeFromCollections: true
 # www.robotstxt.org
 
 User-agent: *
-Disallow:
+Disallow:{% if site.isNetlify %} /{% endif %}
 Sitemap: {{ site.url + "/sitemap.xml" }}
