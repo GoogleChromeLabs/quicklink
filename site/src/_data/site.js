@@ -11,7 +11,6 @@ module.exports = () => {
     title: 'Quicklink',
     subtitle: 'Instant next-page navigations',
     description: 'Faster subsequent page-loads by prefetching in-viewport links during idle time.',
-    logo: '/assets/images/logos/quicklink.svg',
     socialImage: '/assets/images/og-image.png',
     // If we are on Netlify, use the `DEPLOY_PRIME_URL` environment variable
     url: IS_NETLIFY ? process.env.DEPLOY_PRIME_URL : 'https://getquick.link',
