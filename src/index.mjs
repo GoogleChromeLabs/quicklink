@@ -101,7 +101,7 @@ export function listen(options = {}) {
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
   const delay = options.delay || 0;
-  const hrefsInViewport = [];
+  const hrefsInViewport = new Map();
   const specRulesInViewport = new Map();
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
@@ -121,16 +121,19 @@ export function listen(options = {}) {
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
+      const set = hrefsInViewport.get(entry.target.href) || new Set();
+      hrefsInViewport.set(entry.target.href, set);
+
       // On enter
       if (entry.isIntersecting) {
         entry = entry.target;
-        // Adding href to array of hrefsInViewport
-        hrefsInViewport.push(entry.href);
+        // Adding href to map of hrefsInViewport
+        set.add(entry);
 
         // Setting timeout
         setTimeoutIfDelay(() => {
           // Do not prefetch if not found in viewport
-          if (!hrefsInViewport.includes(entry.href)) return;
+          if (!set || !set.size) return;
 
           if (!shouldOnlyPrerender && !shouldPrerenderAndPrefetch) {
             observer.unobserve(entry);
@@ -174,10 +177,7 @@ export function listen(options = {}) {
         // On exit
       } else {
         entry = entry.target;
-        const index = hrefsInViewport.indexOf(entry.href);
-        if (index > -1) {
-          hrefsInViewport.splice(index);
-        }
+        set.delete(entry);
         if (specRulesInViewport.has(entry.href)) {
           specRulesInViewport = removeSpeculationRule(specRulesInViewport, entry.href);
         }
