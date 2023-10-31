@@ -238,6 +238,13 @@ By default, these errors are silently ignored.
 
 An optional function to generate the URL to prefetch. It receives an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) as the argument.
 
+#### options.minConnectionType
+
+* Type: `'slow-2g' | '2g' | '3g' | '4g' | 'none'`
+* Default: '2g'
+
+An optional string that limits the minimum connection to prefetch.
+
 ### quicklink.prefetch(urls, isPriority)
 
 Returns: `Promise`
