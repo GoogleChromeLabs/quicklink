@@ -31,6 +31,7 @@ function hasPrefetch(link) {
 /**
  * Fetches a given URL using `<link rel=prefetch>`
  * @param {string} url - the URL to fetch
+ * @param {string} crossorigin - the crossorigin attribute
  * @return {Object} a Promise
  */
 function viaDOM(url, crossorigin) {
@@ -38,7 +39,7 @@ function viaDOM(url, crossorigin) {
     link = document.createElement('link');
     link.rel = 'prefetch';
     link.href = url;
-    link.setAttribute("crossorigin", crossorigin);
+    link.setAttribute('crossorigin', crossorigin);
 
     link.onload = resolve;
     link.onerror = reject;
@@ -75,6 +76,7 @@ function viaXHR(url) {
  * Fetches a given URL using the Fetch API. Falls back
  * to XMLHttpRequest if the API is not supported.
  * @param {string} url - the URL to fetch
+ * @param {string} crossorigin - the crossorigin attribute
  * @return {Object} a Promise
  */
 export function priority(url, crossorigin) {

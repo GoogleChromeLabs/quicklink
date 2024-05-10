@@ -15,9 +15,9 @@
  **/
 
 import throttle from 'throttles';
-import { priority, supported } from './prefetch.mjs';
+import {priority, supported} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
-import { addSpeculationRules, hasSpecRulesSupport } from './prerender.mjs';
+import {addSpeculationRules, hasSpecRulesSupport} from './prerender.mjs';
 
 // Cache of URLs we've prefetched
 // Its `size` is compared against `opts.limit` value.
@@ -148,11 +148,11 @@ export function listen(options = {}) {
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
               prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority)
-                .then(isDone)
-                .catch(error => {
-                  isDone();
-                  if (options.onError) options.onError(error);
-                });
+                  .then(isDone)
+                  .catch(error => {
+                    isDone();
+                    if (options.onError) options.onError(error);
+                  });
             });
           }
         }, delay);
@@ -202,9 +202,10 @@ export function listen(options = {}) {
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
+* @param {Boolean} [onlySameOrigin] - if only same origin resources are allowed
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, isCrossorigin) {
+export function prefetch(url, isPriority, onlySameOrigin) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prefetch, ${chkConn.message}`));
@@ -214,21 +215,21 @@ export function prefetch(url, isPriority, isCrossorigin) {
     console.warn('[Warning] You are using both prefetching and prerendering on the same document');
   }
 
-  const crossorigin = isCrossorigin ? "anonymous" : "use-credentials";
+  const crossorigin = onlySameOrigin ? 'use-credentials' : 'anonymous';
 
   // Dev must supply own catch()
   return Promise.all(
-    [].concat(url).map(str => {
-      if (toPrefetch.has(str)) return [];
+      [].concat(url).map(str => {
+        if (toPrefetch.has(str)) return [];
 
-      // Add it now, regardless of its success
-      // ~> so that we don't repeat broken links
-      toPrefetch.add(str);
+        // Add it now, regardless of its success
+        // ~> so that we don't repeat broken links
+        toPrefetch.add(str);
 
-      return (isPriority ? priority : supported)(
-        new URL(str, location.href).toString(), crossorigin
-      );
-    }),
+        return (isPriority ? priority : supported)(
+            new URL(str, location.href).toString(), crossorigin,
+        );
+      }),
   );
 }
 
