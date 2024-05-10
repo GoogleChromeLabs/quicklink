@@ -156,7 +156,7 @@ export function listen(options = {}) {
             });
           }
         }, delay);
-        // On exit
+      // On exit
       } else {
         entry = entry.target;
         const index = hrefsInViewport.indexOf(entry.href);
