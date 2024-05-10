@@ -147,7 +147,7 @@ export function listen(options = {}) {
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
-              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority)
+              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority, true)
                   .then(isDone)
                   .catch(error => {
                     isDone();
@@ -156,7 +156,7 @@ export function listen(options = {}) {
             });
           }
         }, delay);
-      // On exit
+        // On exit
       } else {
         entry = entry.target;
         const index = hrefsInViewport.indexOf(entry.href);
@@ -215,8 +215,6 @@ export function prefetch(url, isPriority, onlySameOrigin) {
     console.warn('[Warning] You are using both prefetching and prerendering on the same document');
   }
 
-  const crossorigin = onlySameOrigin ? 'use-credentials' : 'anonymous';
-
   // Dev must supply own catch()
   return Promise.all(
       [].concat(url).map(str => {
@@ -226,9 +224,7 @@ export function prefetch(url, isPriority, onlySameOrigin) {
         // ~> so that we don't repeat broken links
         toPrefetch.add(str);
 
-        return (isPriority ? priority : supported)(
-            new URL(str, location.href).toString(), crossorigin,
-        );
+        return (isPriority ? priority : supported)(new URL(str, location.href).toString(), onlySameOrigin);
       }),
   );
 }
