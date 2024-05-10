@@ -147,7 +147,7 @@ export function listen(options = {}) {
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
-              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority, true)
+              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority)
                   .then(isDone)
                   .catch(error => {
                     isDone();
@@ -202,10 +202,10 @@ export function listen(options = {}) {
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
-* @param {Boolean} [onlySameOrigin] - if only same origin resources are allowed
+* @param {Boolean} [addCrossorigin] - if is should add crossorigin attribute to link
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, onlySameOrigin) {
+export function prefetch(url, isPriority, addCrossorigin) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prefetch, ${chkConn.message}`));
@@ -224,7 +224,9 @@ export function prefetch(url, isPriority, onlySameOrigin) {
         // ~> so that we don't repeat broken links
         toPrefetch.add(str);
 
-        return (isPriority ? priority : supported)(new URL(str, location.href).toString(), onlySameOrigin);
+        return (isPriority ? priority : supported)(
+            new URL(str, location.href).toString(), addCrossorigin,
+        );
       }),
   );
 }

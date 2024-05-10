@@ -31,15 +31,15 @@ function hasPrefetch(link) {
 /**
  * Fetches a given URL using `<link rel=prefetch>`
  * @param {string} url - the URL to fetch
- * @param {Boolean} [onlySameOrigin] - if only same origin resources are allowed
+ * @param {Boolean} [addCrossorigin] - if is should add crossorigin attribute to link
  * @return {Object} a Promise
  */
-function viaDOM(url, onlySameOrigin) {
+function viaDOM(url, addCrossorigin) {
   return new Promise((resolve, reject, link) => {
     link = document.createElement('link');
     link.rel = 'prefetch';
     link.href = url;
-    if (!onlySameOrigin) link.setAttribute('crossorigin', 'anonymous');
+    if (addCrossorigin) link.setAttribute('crossorigin', 'anonymous');
 
     link.onload = resolve;
     link.onerror = reject;
@@ -76,10 +76,9 @@ function viaXHR(url) {
  * Fetches a given URL using the Fetch API. Falls back
  * to XMLHttpRequest if the API is not supported.
  * @param {string} url - the URL to fetch
- * @param {Boolean} [onlySameOrigin] - if only same origin resources are allowed
  * @return {Object} a Promise
  */
-export function priority(url, onlySameOrigin) {
+export function priority(url) {
   // TODO: Investigate using preload for high-priority
   // fetches. May have to sniff file-extension to provide
   // valid 'as' values. In the future, we may be able to
@@ -87,9 +86,7 @@ export function priority(url, onlySameOrigin) {
   //
   // As of 2018, fetch() is high-priority in Chrome
   // and medium-priority in Safari.
-  const options = {};
-  if (onlySameOrigin) options.credentials = 'include';
-  return window.fetch ? fetch(url, options) : viaXHR(url);
+  return window.fetch ? fetch(url, {credentials: 'include'}) : viaXHR(url);
 }
 
 export const supported = hasPrefetch() ? viaDOM : viaXHR;
