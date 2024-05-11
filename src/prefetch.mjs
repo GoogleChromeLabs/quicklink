@@ -86,7 +86,7 @@ export function priority(url) {
   //
   // As of 2018, fetch() is high-priority in Chrome
   // and medium-priority in Safari.
-  return window.fetch ? fetch(url, { credentials: 'include' }) : viaXHR(url);
+  return window.fetch ? fetch(url, {credentials: 'include'}) : viaXHR(url);
 }
 
 export const supported = hasPrefetch() ? viaDOM : viaXHR;
