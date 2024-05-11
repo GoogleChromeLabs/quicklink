@@ -31,15 +31,15 @@ function hasPrefetch(link) {
 /**
  * Fetches a given URL using `<link rel=prefetch>`
  * @param {string} url - the URL to fetch
- * @param {Boolean} [addCrossorigin] - if is should add crossorigin attribute to link
+ * @param {string} crossorigin - the value of the crossorigin attribute to be added to the prefetch link
  * @return {Object} a Promise
  */
-function viaDOM(url, addCrossorigin) {
+function viaDOM(url, crossorigin) {
   return new Promise((resolve, reject, link) => {
     link = document.createElement('link');
     link.rel = 'prefetch';
     link.href = url;
-    if (addCrossorigin) link.setAttribute('crossorigin', 'anonymous');
+    if (crossorigin) link.setAttribute('crossorigin', crossorigin);
 
     link.onload = resolve;
     link.onerror = reject;

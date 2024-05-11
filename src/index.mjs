@@ -202,10 +202,10 @@ export function listen(options = {}) {
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
-* @param {Boolean} [addCrossorigin] - if is should add crossorigin attribute to link
+* @param {string} crossorigin - the value of the crossorigin attribute to be added to the prefetch link
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, addCrossorigin) {
+export function prefetch(url, isPriority, crossorigin) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prefetch, ${chkConn.message}`));
@@ -225,7 +225,7 @@ export function prefetch(url, isPriority, addCrossorigin) {
         toPrefetch.add(str);
 
         return (isPriority ? priority : supported)(
-            new URL(str, location.href).toString(), addCrossorigin,
+            new URL(str, location.href).toString(), crossorigin,
         );
       }),
   );
