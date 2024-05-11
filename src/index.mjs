@@ -156,7 +156,7 @@ export function listen(options = {}) {
             });
           }
         }, delay);
-        // On exit
+      // On exit
       } else {
         entry = entry.target;
         const index = hrefsInViewport.indexOf(entry.href);
@@ -172,9 +172,9 @@ export function listen(options = {}) {
   timeoutFn(() => {
     // Find all links & Connect them to IO if allowed
     const elementsToListen = options.el &&
-      options.el.length &&
-      options.el.length > 0 &&
-      options.el[0].nodeName === 'A' ?
+    options.el.length &&
+    options.el.length > 0 &&
+    options.el[0].nodeName === 'A' ?
       options.el :
       (options.el || document).querySelectorAll('a');
 
