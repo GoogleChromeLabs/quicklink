@@ -31,7 +31,7 @@ function hasPrefetch(link) {
 /**
  * Fetches a given URL using `<link rel=prefetch>`
  * @param {string} url - the URL to fetch
- * @param {string} crossorigin - the value of the crossorigin attribute to be added to the prefetch link
+ * @param {String} [crossorigin] - the value of the crossorigin attribute to be added to the prefetch link
  * @return {Object} a Promise
  */
 function viaDOM(url, crossorigin) {
@@ -86,7 +86,7 @@ export function priority(url) {
   //
   // As of 2018, fetch() is high-priority in Chrome
   // and medium-priority in Safari.
-  return window.fetch ? fetch(url, {credentials: 'include'}) : viaXHR(url);
+  return window.fetch ? fetch(url, { credentials: 'include' }) : viaXHR(url);
 }
 
 export const supported = hasPrefetch() ? viaDOM : viaXHR;
