@@ -20,7 +20,7 @@
 /**
  * Checks if a feature on `link` is natively supported.
  * Examples of features include `prefetch` and `preload`.
- * @param {Object} link Link object.
+ * @param {Object} link - Link object.
  * @return {Boolean} whether the feature is supported
  */
 function hasPrefetch(link) {
@@ -40,7 +40,7 @@ function viaDOM(url, hasCrossorigin) {
     link.rel = 'prefetch';
     link.href = url;
     if (hasCrossorigin)
-      link.setAttribute("crossorigin", "anonymous");
+      link.setAttribute('crossorigin', 'anonymous');
 
     link.onload = resolve;
     link.onerror = reject;
@@ -50,37 +50,14 @@ function viaDOM(url, hasCrossorigin) {
 }
 
 /**
- * Fetches a given URL using XMLHttpRequest
- * @param {string} url - the URL to fetch
- * @return {Object} a Promise
- */
-function viaXHR(url) {
-  return new Promise((resolve, reject, request) => {
-    request = new XMLHttpRequest();
-
-    request.open('GET', url, request.withCredentials = true);
-
-    request.onload = () => {
-      if (request.status === 200) {
-        resolve();
-      } else {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject();
-      }
-    };
-
-    request.send();
-  });
-}
-
-/**
  * Fetches a given URL using the Fetch API. Falls back
  * to XMLHttpRequest if the API is not supported.
  * @param {string} url - the URL to fetch
- * @param {Boolean} [hasModeCors] - true to set mode:'cors'
+ * @param {Boolean} hasModeCors - true to set mode:'cors'
+ * @param {Boolean} isPriority - true to set priority:'high'
  * @return {Object} a Promise
  */
-export function priority(url, hasModeCors) {
+export function viaFetch(url, hasModeCors, isPriority) {
   // TODO: Investigate using preload for high-priority
   // fetches. May have to sniff file-extension to provide
   // valid 'as' values. In the future, we may be able to
@@ -90,10 +67,9 @@ export function priority(url, hasModeCors) {
   // and medium-priority in Safari.
   options = {};
   // options.credentials = 'include';
-  if (!hasModeCors) {
-    options.mode = 'no-cors';
-  }
-  return window.fetch ? fetch(url, options) : viaXHR(url);
+  if (!hasModeCors) options.mode = 'no-cors';
+  isPriority ? options.priority = 'high' : options.priority = 'low';
+  return fetch(url, options);
 }
 
-export const supported = hasPrefetch() ? viaDOM : viaXHR;
+export const supported = hasPrefetch() ? viaDOM : viaFetch;

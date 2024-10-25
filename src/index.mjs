@@ -15,7 +15,7 @@
  **/
 
 import throttle from 'throttles';
-import { priority, supported } from './prefetch.mjs';
+import { supported, viaFetch } from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 import { addSpeculationRules, hasSpecRulesSupport } from './prerender.mjs';
 
@@ -72,6 +72,7 @@ function checkConnection(conn) {
  * @param {Object} options - Configuration options for quicklink
  * @param {Object|Array} [options.el] - DOM element(s) to prefetch in-viewport links of
  * @param {Boolean} [options.priority] - Attempt higher priority fetch (low or high)
+ * @param {Boolean} [options.checkAccessControlAllowOrigin] - Check if the Access-Control-Allow-Origin response header is correctly setted
  * @param {Array} [options.origins] - Allowed origins to prefetch (empty allows all)
  * @param {Array|RegExp|Function} [options.ignores] - Custom filter(s) that run after origin checks
  * @param {Number} [options.timeout] - Timeout after which prefetching will occur
@@ -147,7 +148,7 @@ export function listen(options = {}) {
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
-              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority)
+              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority, options.checkAccessControlAllowOrigin)
                 .then(isDone)
                 .catch(error => {
                   isDone();
@@ -225,8 +226,8 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin) {
       // ~> so that we don't repeat broken links
       toPrefetch.add(str);
 
-      return (isPriority ? priority : supported)(
-        new URL(str, location.href).toString(), checkAccessControlAllowOrigin
+      return (isPriority ? viaFetch : supported)(
+        new URL(str, location.href).toString(), checkAccessControlAllowOrigin, isPriority
       );
     }),
   );
