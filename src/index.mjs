@@ -202,10 +202,11 @@ export function listen(options = {}) {
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
-* @param {Boolean} [isCrossorigin] - true to set crossorigin="anonymous"
+* @param {Boolean} [checkAccessControlAllowOrigin] - true to set crossorigin="anonymous" for DOM prefetch 
+*                                                    and mode:'cors' for API fetch
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, isCrossorigin) {
+export function prefetch(url, isPriority, checkAccessControlAllowOrigin) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prefetch, ${chkConn.message}`));
@@ -214,8 +215,6 @@ export function prefetch(url, isPriority, isCrossorigin) {
   if (toPrerender.size > 0 && !shouldPrerenderAndPrefetch) {
     console.warn('[Warning] You are using both prefetching and prerendering on the same document');
   }
-
-  const crossorigin = isCrossorigin ? "anonymous" : "use-credentials";
 
   // Dev must supply own catch()
   return Promise.all(
@@ -227,7 +226,7 @@ export function prefetch(url, isPriority, isCrossorigin) {
       toPrefetch.add(str);
 
       return (isPriority ? priority : supported)(
-        new URL(str, location.href).toString(), crossorigin
+        new URL(str, location.href).toString(), checkAccessControlAllowOrigin
       );
     }),
   );
