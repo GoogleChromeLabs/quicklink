@@ -31,7 +31,7 @@ function hasPrefetch(link) {
 /**
  * Fetches a given URL using `<link rel=prefetch>`
  * @param {string} url - the URL to fetch
- * @param {Boolean} [hasCrossorigin] - true to set crossorigin="anonymous"
+ * @param {Boolean} hasCrossorigin - true to set crossorigin="anonymous"
  * @return {Object} a Promise
  */
 function viaDOM(url, hasCrossorigin) {

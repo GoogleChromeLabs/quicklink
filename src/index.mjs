@@ -202,8 +202,8 @@ export function listen(options = {}) {
 /**
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
-* @param {Boolean} [isPriority] - if is "high" priority
-* @param {Boolean} [checkAccessControlAllowOrigin] - true to set crossorigin="anonymous" for DOM prefetch 
+* @param {Boolean} isPriority - if is "high" priority
+* @param {Boolean} checkAccessControlAllowOrigin - true to set crossorigin="anonymous" for DOM prefetch 
 *                                                    and mode:'cors' for API fetch
 * @return {Object} a Promise
 */
