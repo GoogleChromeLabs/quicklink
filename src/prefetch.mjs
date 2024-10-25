@@ -50,14 +50,40 @@ function viaDOM(url, hasCrossorigin) {
 }
 
 /**
+ * Fetches a given URL using XMLHttpRequest
+ * @param {string} url - the URL to fetch
+ * @param {Boolean} hasCredentials - true to set withCredentials:true
+ * @return {Object} a Promise
+ */
+function viaXHR(url, hasCredentials) {
+  return new Promise((resolve, reject, request) => {
+    request = new XMLHttpRequest();
+
+    request.open('GET', url, request.withCredentials = hasCredentials);
+
+    request.onload = () => {
+      if (request.status === 200) {
+        resolve();
+      } else {
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject();
+      }
+    };
+
+    request.send();
+  });
+}
+
+/**
  * Fetches a given URL using the Fetch API. Falls back
  * to XMLHttpRequest if the API is not supported.
  * @param {string} url - the URL to fetch
  * @param {Boolean} hasModeCors - true to set mode:'cors'
+ * @param {Boolean} hasCredentials - true to set credentials:'include'
  * @param {Boolean} isPriority - true to set priority:'high'
  * @return {Object} a Promise
  */
-export function viaFetch(url, hasModeCors, isPriority) {
+export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
   // TODO: Investigate using preload for high-priority
   // fetches. May have to sniff file-extension to provide
   // valid 'as' values. In the future, we may be able to
@@ -66,10 +92,14 @@ export function viaFetch(url, hasModeCors, isPriority) {
   // As of 2018, fetch() is high-priority in Chrome
   // and medium-priority in Safari.
   options = {};
-  // options.credentials = 'include';
   if (!hasModeCors) options.mode = 'no-cors';
+  if (hasCredentials) options.credentials = 'include';
   isPriority ? options.priority = 'high' : options.priority = 'low';
-  return fetch(url, options);
+  try {
+    return fetch(url, options);
+  } catch (e) {
+    return viaXHR(url, hasCredentials);
+  }
 }
 
 export const supported = hasPrefetch() ? viaDOM : viaFetch;
