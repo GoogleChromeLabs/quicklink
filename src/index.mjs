@@ -202,6 +202,7 @@ export function listen(options = {}) {
 * Prefetch a given URL with an optional preferred fetch priority
 * @param {String} url - the URL to fetch
 * @param {Boolean} [isPriority] - if is "high" priority
+* @param {Boolean} [isCrossorigin] - true to set crossorigin="anonymous"
 * @return {Object} a Promise
 */
 export function prefetch(url, isPriority, isCrossorigin) {
