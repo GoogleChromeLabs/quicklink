@@ -15,7 +15,7 @@
  **/
 
 import throttle from 'throttles';
-import {priority, supported} from './prefetch.mjs';
+import { viaFetch, supported } from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 
 // Cache of URLs we've prefetched
@@ -67,15 +67,15 @@ export function listen(options = {}) {
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
 
-  const {prefetchChunks} = options;
+  const { prefetchChunks } = options;
 
   const prefetchHandler = urls => {
     prefetch(urls, options.priority)
-        .then(isDone)
-        .catch(error => {
-          isDone();
-          if (options.onError) options.onError(error);
-        });
+      .then(isDone)
+      .catch(error => {
+        isDone();
+        if (options.onError) options.onError(error);
+      });
   };
 
   const observer = new IntersectionObserver(entries => {
@@ -123,7 +123,7 @@ export function listen(options = {}) {
  * @return {Object} a Promise
  */
 export function prefetch(url, isPriority) {
-  const {connection} = navigator;
+  const { connection } = navigator;
 
   if (connection) {
     // Don't prefetch if using 2G or if Save-Data is enabled.
@@ -138,16 +138,16 @@ export function prefetch(url, isPriority) {
 
   // Dev must supply own catch()
   return Promise.all(
-      [].concat(url).map(str => {
-        if (toPrefetch.has(str)) return [];
+    [].concat(url).map(str => {
+      if (toPrefetch.has(str)) return [];
 
-        // Add it now, regardless of its success
-        // ~> so that we don't repeat broken links
-        toPrefetch.add(str);
+      // Add it now, regardless of its success
+      // ~> so that we don't repeat broken links
+      toPrefetch.add(str);
 
-        return (isPriority ? priority : supported)(
-            new URL(str, location.href).toString(),
-        );
-      }),
+      return (isPriority ? viaFetch : supported)(
+        new URL(str, location.href).toString(),
+      );
+    }),
   );
 }

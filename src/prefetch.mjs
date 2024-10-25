@@ -39,8 +39,9 @@ function viaDOM(url, hasCrossorigin) {
     link = document.createElement('link');
     link.rel = 'prefetch';
     link.href = url;
-    if (hasCrossorigin)
+    if (hasCrossorigin) {
       link.setAttribute('crossorigin', 'anonymous');
+    }
 
     link.onload = resolve;
     link.onerror = reject;

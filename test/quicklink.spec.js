@@ -1,7 +1,7 @@
 'use strict';
 
 const puppeteer = require('puppeteer');
-const {suite} = require('uvu');
+const { suite } = require('uvu');
 const assert = require('uvu/assert');
 
 const host = 'http://127.0.0.1:8080';
@@ -269,7 +269,7 @@ mainSuite('should respect the `throttle` concurrency', async context => {
     if (/test\/fixtures\/\d+\.html$/i.test(url)) {
       await sleep(100);
       URLs.push(url);
-      return req.respond({status: 200});
+      return req.respond({ status: 200 });
     }
 
     req.continue();
