@@ -96,11 +96,7 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
   if (!hasModeCors) options.mode = 'no-cors';
   if (hasCredentials) options.credentials = 'include';
   isPriority ? options.priority = 'high' : options.priority = 'low';
-  try {
-    return fetch(url, options);
-  } catch (e) {
-    return viaXHR(url, hasCredentials);
-  }
+  return window.fetch ? fetch(url, options) : viaXHR(url, hasCredentials);
 }
 
 export const supported = hasPrefetch() ? viaDOM : viaFetch;
