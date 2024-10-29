@@ -62,6 +62,8 @@ function viaXHR(url, hasCredentials) {
 
     request.open('GET', url, request.withCredentials = hasCredentials);
 
+    request.setRequestHeader('Accept', '*/*');
+
     request.onload = () => {
       if (request.status === 200) {
         resolve();
@@ -92,7 +94,7 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
   //
   // As of 2018, fetch() is high-priority in Chrome
   // and medium-priority in Safari.
-  options = {};
+  options = {headers: {accept: '*/*'}};
   if (!hasModeCors) options.mode = 'no-cors';
   if (hasCredentials) options.credentials = 'include';
   isPriority ? options.priority = 'high' : options.priority = 'low';
