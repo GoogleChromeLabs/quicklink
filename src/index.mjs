@@ -86,6 +86,7 @@ function checkConnection(conn) {
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
  *                                             If it's not a valid function, then it will use the entry href.
  * @param {Boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
+ * @param {String} [options.eagerness] - Prerender eagerness mode - default immediate
  * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
  * @return {Function}
  */
@@ -135,7 +136,7 @@ export function listen(options = {}) {
           // either it's the prerender + prefetch mode or it's prerender *only* mode
           // Prerendering limit is following options.limit. UA may impose arbitraty numeric limit
           if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit) {
-            prerender(hrefFn ? hrefFn(entry) : entry.href).catch(error => {
+            prerender(hrefFn ? hrefFn(entry) : entry.href, options.eagerness).catch(error => {
               if (options.onError) {
                 options.onError(error);
               } else {
@@ -239,9 +240,10 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAc
 /**
 * Prerender a given URL
 * @param {String} urls - the URL to fetch
+* @param {String} eagerness - prerender eagerness mode - default immediate
 * @return {Object} a Promise
 */
-export function prerender(urls) {
+export function prerender(urls, eagerness) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prerender, ${chkConn.message}`));
@@ -264,6 +266,6 @@ export function prerender(urls) {
     console.warn('[Warning] You are using both prefetching and prerendering on the same document');
   }
 
-  const addSpecRules = addSpeculationRules(toPrerender);
+  const addSpecRules = addSpeculationRules(toPrerender, eagerness);
   return addSpecRules === true ? Promise.resolve() : Promise.reject(addSpecRules);
 }
