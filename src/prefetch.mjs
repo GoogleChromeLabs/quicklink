@@ -94,7 +94,7 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
   //
   // As of 2018, fetch() is high-priority in Chrome
   // and medium-priority in Safari.
-  options = {headers: {accept: '*/*'}};
+  const options = {headers: {accept: '*/*'}};
   if (!hasModeCors) options.mode = 'no-cors';
   if (hasCredentials) options.credentials = 'include';
   isPriority ? options.priority = 'high' : options.priority = 'low';
