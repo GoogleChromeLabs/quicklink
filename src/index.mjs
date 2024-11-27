@@ -253,7 +253,27 @@ export function prerender(urls, eagerness) {
   // 1) whether UA supports spec rules.. If not, fallback to prefetch
   // Note: Prerendering supports same-site cross origin with opt-in header
   if (!hasSpecRulesSupport()) {
-    prefetch(urls);
+    if (eagerness === 'moderate' || eagerness === 'conservative') {
+      console.log('URLS', Array(urls));
+      const elements = document.querySelectorAll(Array(urls).map(url => `a[href="${decodeURIComponent(url)}"]`).join(','));
+      console.log('elements', elements);
+      for (const el of elements) {
+        console.log('el', el);
+        let timer = null;
+        el.addEventListener('mouseenter', e => {
+          timer = setTimeout(() => {
+            console.log('prefetch', e.target.href);
+            prefetch(e.target.href);
+          }, 200);
+        });
+        el.addEventListener('mouseleave', e => {
+          clearTimeout(timer);
+          timer = null;
+        });
+      }
+    } else {
+      prefetch(urls);
+    }
     return Promise.reject(new Error('This browser does not support the speculation rules API. Falling back to prefetch.'));
   }
 
