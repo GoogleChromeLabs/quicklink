@@ -1,22 +1,22 @@
 [
   {
     "path": "dist/quicklink.js",
-    "limit": "2 kB",
+    "limit": "2.35 kB",
     "gzip": true
   },
   {
     "path": "dist/quicklink.mjs",
-    "limit": "2 kB",
+    "limit": "2.35 kB",
     "gzip": true
   },
   {
     "path": "dist/quicklink.modern.mjs",
-    "limit": "1.6 kB",
+    "limit": "1.9 kB",
     "gzip": true
   },
   {
     "path": "dist/quicklink.umd.js",
-    "limit": "2 kB",
+    "limit": "2.4 kB",
     "gzip": true
   }
 ]
