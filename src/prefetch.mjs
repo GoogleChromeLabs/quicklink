@@ -111,7 +111,7 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
  */
 export function addMouseoverListener(callback, url, onlyOnMouseover) {
   if (onlyOnMouseover) {
-    const elements = document.querySelectorAll(`a[href="${url}"]`);
+    const elements = document.querySelectorAll(`a[href="${decodeURIComponent(url)}"]`);
 
     for (const el of elements) {
       const timerMap = new Map();
