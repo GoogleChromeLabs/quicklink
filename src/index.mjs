@@ -15,7 +15,7 @@
  **/
 
 import throttle from 'throttles';
-import {supported, viaFetch} from './prefetch.mjs';
+import {addMouseoverListener, supported, viaFetch} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 import {addSpeculationRules, hasSpecRulesSupport} from './prerender.mjs';
 
@@ -74,6 +74,7 @@ function checkConnection(conn) {
  * @param {Boolean} [options.priority] - Attempt higher priority fetch (low or high)
  * @param {Boolean} [options.checkAccessControlAllowOrigin] - Check Access-Control-Allow-Origin response header
  * @param {Boolean} [options.checkAccessControlAllowCredentials] - Check the Access-Control-Allow-Credentials response header
+ * @param {Boolean} [options.onlyOnMouseover] - Enable the prefetch only on mouseover event
  * @param {Array} [options.origins] - Allowed origins to prefetch (empty allows all)
  * @param {Array|RegExp|Function} [options.ignores] - Custom filter(s) that run after origin checks
  * @param {Number} [options.timeout] - Timeout after which prefetching will occur
@@ -151,7 +152,7 @@ export function listen(options = {}) {
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
               prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority,
-                  options.checkAccessControlAllowOrigin, options.checkAccessControlAllowCredentials)
+                  options.checkAccessControlAllowOrigin, options.checkAccessControlAllowCredentials, options.onlyOnMouseover)
                   .then(isDone)
                   .catch(error => {
                     isDone();
@@ -209,9 +210,10 @@ export function listen(options = {}) {
 * @param {Boolean} checkAccessControlAllowOrigin - true to set crossorigin="anonymous" for DOM prefetch
 *                                                    and mode:'cors' for API fetch
 * @param {Boolean} checkAccessControlAllowCredentials - true to set credentials:'include' for API fetch
+* @param {Boolean} onlyOnMouseover - true to enable prefetch only on mouseover event
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials) {
+export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, onlyOnMouseover) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prefetch, ${chkConn.message}`));
@@ -230,9 +232,10 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAc
         // ~> so that we don't repeat broken links
         toPrefetch.add(str);
 
-        return (isPriority ? viaFetch : supported)(
-            new URL(str, location.href).toString(), checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority,
-        );
+        const urlToPrefetch = new URL(str, location.href).toString();
+        return addMouseoverListener(() => (isPriority ? viaFetch : supported)(
+            urlToPrefetch, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority,
+        ), urlToPrefetch, onlyOnMouseover);
       }),
   );
 }
@@ -243,7 +246,7 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAc
 * @param {String} eagerness - prerender eagerness mode - default immediate
 * @return {Object} a Promise
 */
-export function prerender(urls, eagerness) {
+export function prerender(urls, eagerness = 'immediate') {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prerender, ${chkConn.message}`));
@@ -253,27 +256,7 @@ export function prerender(urls, eagerness) {
   // 1) whether UA supports spec rules.. If not, fallback to prefetch
   // Note: Prerendering supports same-site cross origin with opt-in header
   if (!hasSpecRulesSupport()) {
-    if (eagerness === 'moderate' || eagerness === 'conservative') {
-      console.log('URLS', Array(urls));
-      const elements = document.querySelectorAll(Array(urls).map(url => `a[href="${decodeURIComponent(url)}"]`).join(','));
-      console.log('elements', elements);
-      for (const el of elements) {
-        console.log('el', el);
-        let timer = null;
-        el.addEventListener('mouseenter', e => {
-          timer = setTimeout(() => {
-            console.log('prefetch', e.target.href);
-            prefetch(e.target.href);
-          }, 200);
-        });
-        el.addEventListener('mouseleave', e => {
-          clearTimeout(timer);
-          timer = null;
-        });
-      }
-    } else {
-      prefetch(urls);
-    }
+    prefetch(urls, true, false, false, eagerness === 'moderate' || eagerness === 'conservative');
     return Promise.reject(new Error('This browser does not support the speculation rules API. Falling back to prefetch.'));
   }
 

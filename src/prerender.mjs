@@ -20,10 +20,10 @@
 /**
  * Add a given set of urls to the speculation rules
  * @param {Set} urlsToPrerender - the URLs to add to speculation rules
- * @param {String} eagerness - prerender eagerness mode - default immediate
+ * @param {String} eagerness - prerender eagerness mode
  * @return {Boolean|Object}  boolean or Error Object
  */
-export function addSpeculationRules(urlsToPrerender, eagerness = 'immediate') {
+export function addSpeculationRules(urlsToPrerender, eagerness) {
   const specScript = document.createElement('script');
   specScript.type = 'speculationrules';
   specScript.text = `{"prerender":[{"source": "list",
