@@ -109,35 +109,32 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
  * @param {Boolean} onlyOnMouseover - true to add the mouseover listener
  * @return {Object} a Promise
  */
-export function addMouseoverListener(callback, url, onlyOnMouseover) {
-  if (onlyOnMouseover) {
-    const elements = document.querySelectorAll(`a[href="${decodeURIComponent(url)}"]`);
+export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
+  if (!onlyOnMouseover) return callback(url, ...args);
 
-    for (const el of elements) {
-      const timerMap = new Map();
+  const elements = document.querySelectorAll(`a[href="${decodeURIComponent(url)}"]`);
+  const timerMap = new Map();
 
-      const mouseenterListener = e => {
-        const timer = setTimeout(() => {
-          el.removeEventListener('mouseenter', mouseenterListener);
-          el.removeEventListener('mouseleave', mouseleaveListener);
-          return callback();
-        }, 200);
-        timerMap.set(el, timer);
-      };
+  for (const el of elements) {
+    const mouseenterListener = e => {
+      const timer = setTimeout(() => {
+        el.removeEventListener('mouseenter', mouseenterListener);
+        el.removeEventListener('mouseleave', mouseleaveListener);
+        return callback(url, ...args);
+      }, 200);
+      timerMap.set(el, timer);
+    };
 
-      const mouseleaveListener = e => {
-        const timer = timerMap.get(el);
-        if (timer) {
-          clearTimeout(timer);
-          timerMap.delete(el);
-        }
-      };
+    const mouseleaveListener = e => {
+      const timer = timerMap.get(el);
+      if (timer) {
+        clearTimeout(timer);
+        timerMap.delete(el);
+      }
+    };
 
-      el.addEventListener('mouseenter', mouseenterListener);
-      el.addEventListener('mouseleave', mouseleaveListener);
-    }
-  } else {
-    return callback();
+    el.addEventListener('mouseenter', mouseenterListener);
+    el.addEventListener('mouseleave', mouseleaveListener);
   }
 }
 

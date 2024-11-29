@@ -15,7 +15,7 @@
  **/
 
 import throttle from 'throttles';
-import {addMouseoverListener, supported, viaFetch} from './prefetch.mjs';
+import {prefetchOnHover, supported, viaFetch} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 import {addSpeculationRules, hasSpecRulesSupport} from './prerender.mjs';
 
@@ -232,10 +232,8 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAc
         // ~> so that we don't repeat broken links
         toPrefetch.add(str);
 
-        const urlToPrefetch = new URL(str, location.href).toString();
-        return addMouseoverListener(() => (isPriority ? viaFetch : supported)(
-            urlToPrefetch, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority,
-        ), urlToPrefetch, onlyOnMouseover);
+        return prefetchOnHover((isPriority ? viaFetch : supported), new URL(str, location.href).toString(), onlyOnMouseover,
+            checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority);
       }),
   );
 }
