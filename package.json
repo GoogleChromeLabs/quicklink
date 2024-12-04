@@ -1,6 +1,6 @@
 {
   "name": "quicklink",
-  "version": "2.4.0",
+  "version": "2.3.0",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time",
   "repository": {
     "type": "git",
