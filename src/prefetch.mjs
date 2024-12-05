@@ -101,41 +101,4 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
   return window.fetch ? fetch(url, options) : viaXHR(url, hasCredentials);
 }
 
-/**
- * Calls the prefetch function immediately
- * or only on the mouseover event.
- * @param {Function} callback  - original prefetch function
- * @param {String} url - url to prefetch
- * @param {Boolean} onlyOnMouseover - true to add the mouseover listener
- * @return {Object} a Promise
- */
-export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
-  if (!onlyOnMouseover) return callback(url, ...args);
-
-  const elements = document.querySelectorAll(`a[href="${decodeURIComponent(url)}"]`);
-  const timerMap = new Map();
-
-  for (const el of elements) {
-    const mouseenterListener = e => {
-      const timer = setTimeout(() => {
-        el.removeEventListener('mouseenter', mouseenterListener);
-        el.removeEventListener('mouseleave', mouseleaveListener);
-        return callback(url, ...args);
-      }, 200);
-      timerMap.set(el, timer);
-    };
-
-    const mouseleaveListener = e => {
-      const timer = timerMap.get(el);
-      if (timer) {
-        clearTimeout(timer);
-        timerMap.delete(el);
-      }
-    };
-
-    el.addEventListener('mouseenter', mouseenterListener);
-    el.addEventListener('mouseleave', mouseleaveListener);
-  }
-}
-
 export const supported = hasPrefetch() ? viaDOM : viaFetch;
