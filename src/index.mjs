@@ -15,9 +15,9 @@
  **/
 
 import throttle from 'throttles';
-import {supported, viaFetch} from './prefetch.mjs';
+import { supported, viaFetch } from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
-import {addSpeculationRules, hasSpecRulesSupport} from './prerender.mjs';
+import { addSpeculationRules, hasSpecRulesSupport } from './prerender.mjs';
 
 // Cache of URLs we've prefetched
 // Its `size` is compared against `opts.limit` value.
@@ -74,7 +74,6 @@ function checkConnection(conn) {
  * @param {Boolean} [options.priority] - Attempt higher priority fetch (low or high)
  * @param {Boolean} [options.checkAccessControlAllowOrigin] - Check Access-Control-Allow-Origin response header
  * @param {Boolean} [options.checkAccessControlAllowCredentials] - Check the Access-Control-Allow-Credentials response header
- * @param {Boolean} [options.onlyOnMouseover] - Enable the prefetch only on mouseover event
  * @param {Array} [options.origins] - Allowed origins to prefetch (empty allows all)
  * @param {Array|RegExp|Function} [options.ignores] - Custom filter(s) that run after origin checks
  * @param {Number} [options.timeout] - Timeout after which prefetching will occur
@@ -151,12 +150,12 @@ export function listen(options = {}) {
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
               prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority,
-                  options.checkAccessControlAllowOrigin, options.checkAccessControlAllowCredentials)
-                  .then(isDone)
-                  .catch(error => {
-                    isDone();
-                    if (options.onError) options.onError(error);
-                  });
+                options.checkAccessControlAllowOrigin, options.checkAccessControlAllowCredentials)
+                .then(isDone)
+                .catch(error => {
+                  isDone();
+                  if (options.onError) options.onError(error);
+                });
             });
           }
         }, delay);
@@ -223,16 +222,16 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAc
 
   // Dev must supply own catch()
   return Promise.all(
-      [].concat(url).map(str => {
-        if (toPrefetch.has(str)) return [];
+    [].concat(url).map(str => {
+      if (toPrefetch.has(str)) return [];
 
-        // Add it now, regardless of its success
-        // ~> so that we don't repeat broken links
-        toPrefetch.add(str);
+      // Add it now, regardless of its success
+      // ~> so that we don't repeat broken links
+      toPrefetch.add(str);
 
-        return (isPriority ? viaFetch : supported)(new URL(str, location.href).toString(),
-            checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority);
-      }),
+      return (isPriority ? viaFetch : supported)(new URL(str, location.href).toString(),
+        checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority);
+    }),
   );
 }
 
