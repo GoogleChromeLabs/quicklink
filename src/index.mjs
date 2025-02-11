@@ -232,7 +232,7 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAc
         // ~> so that we don't repeat broken links
         toPrefetch.add(str);
 
-        return prefetchOnHover((isPriority ? viaFetch : supported), new URL(str, location.href).toString(), onlyOnMouseover,
+        return prefetchOnHover((isPriority ? viaFetch : supported), str, onlyOnMouseover,
             checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority);
       }),
   );

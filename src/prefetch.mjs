@@ -112,11 +112,11 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
 export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
   if (!onlyOnMouseover) return callback(url, ...args);
 
-  const elements = document.querySelectorAll(`a[href="${decodeURIComponent(url)}"]`);
+  const elements = document.querySelectorAll(`a[href$="${decodeURIComponent(url)}"]`);
   const timerMap = new Map();
 
   for (const el of elements) {
-    const mouseenterListener = e => {
+    const mouseenterListener = _ => {
       const timer = setTimeout(() => {
         el.removeEventListener('mouseenter', mouseenterListener);
         el.removeEventListener('mouseleave', mouseleaveListener);
@@ -125,7 +125,7 @@ export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
       timerMap.set(el, timer);
     };
 
-    const mouseleaveListener = e => {
+    const mouseleaveListener = _ => {
       const timer = timerMap.get(el);
       if (timer) {
         clearTimeout(timer);
