@@ -226,7 +226,7 @@ export function prefetch(url, isPriority, onlyOnMouseover) {
         // ~> so that we don't repeat broken links
         toPrefetch.add(str);
 
-        return prefetchOnHover((isPriority ? viaFetch : supported), new URL(str, location.href).toString(), onlyOnMouseover);
+        return prefetchOnHover((isPriority ? viaFetch : supported), str, onlyOnMouseover);
       }),
   );
 }
