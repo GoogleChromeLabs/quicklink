@@ -123,13 +123,14 @@ export function listen(options = {}) {
       // On enter
       if (entry.isIntersecting) {
         entry = entry.target;
+        href = entry.getAttribute('href');
         // Adding href to array of hrefsInViewport
-        hrefsInViewport.push(entry.href);
+        hrefsInViewport.push(href);
 
         // Setting timeout
         setTimeoutIfDelay(() => {
           // Do not prefetch if not found in viewport
-          if (!hrefsInViewport.includes(entry.href)) return;
+          if (!hrefsInViewport.includes(href)) return;
 
           observer.unobserve(entry);
 
@@ -137,7 +138,7 @@ export function listen(options = {}) {
           // either it's the prerender + prefetch mode or it's prerender *only* mode
           // Prerendering limit is following options.limit. UA may impose arbitraty numeric limit
           if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit) {
-            prerender(hrefFn ? hrefFn(entry) : entry.href, options.eagerness).catch(error => {
+            prerender(hrefFn ? hrefFn(entry) : href, options.eagerness).catch(error => {
               if (options.onError) {
                 options.onError(error);
               } else {
@@ -151,7 +152,7 @@ export function listen(options = {}) {
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
-              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority,
+              prefetch(hrefFn ? hrefFn(entry) : href, options.priority,
                   options.checkAccessControlAllowOrigin, options.checkAccessControlAllowCredentials, options.onlyOnMouseover)
                   .then(isDone)
                   .catch(error => {
@@ -164,7 +165,7 @@ export function listen(options = {}) {
         // On exit
       } else {
         entry = entry.target;
-        const index = hrefsInViewport.indexOf(entry.href);
+        const index = hrefsInViewport.indexOf(entry.getAttribute('href'));
         if (index > -1) {
           hrefsInViewport.splice(index);
         }
