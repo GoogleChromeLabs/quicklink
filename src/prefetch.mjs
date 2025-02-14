@@ -20,7 +20,7 @@
 /**
  * Checks if a feature on `link` is natively supported.
  * Examples of features include `prefetch` and `preload`.
- * @param {Object} link Link object.
+ * @param {Object} link - Link object.
  * @return {Boolean} whether the feature is supported
  */
 function hasPrefetch(link) {
@@ -88,3 +88,40 @@ export function priority(url) {
 }
 
 export const supported = hasPrefetch() ? viaDOM : viaXHR;
+
+/**
+ * Calls the prefetch function immediately
+ * or only on the mouseover event.
+ * @param {Function} callback  - original prefetch function
+ * @param {String} url - url to prefetch
+ * @param {Boolean} onlyOnMouseover - true to add the mouseover listener
+ * @return {Object} a Promise
+ */
+export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
+  if (!onlyOnMouseover) return callback(url, ...args);
+
+  const elements = Array.from(document.querySelectorAll('a')).filter(el => el.href === url);
+  const timerMap = new Map();
+
+  for (const el of elements) {
+    const mouseenterListener = _ => {
+      const timer = setTimeout(() => {
+        el.removeEventListener('mouseenter', mouseenterListener);
+        el.removeEventListener('mouseleave', mouseleaveListener);
+        return callback(url, ...args);
+      }, 200);
+      timerMap.set(el, timer);
+    };
+
+    const mouseleaveListener = _ => {
+      const timer = timerMap.get(el);
+      if (timer) {
+        clearTimeout(timer);
+        timerMap.delete(el);
+      }
+    };
+
+    el.addEventListener('mouseenter', mouseenterListener);
+    el.addEventListener('mouseleave', mouseleaveListener);
+  }
+}
