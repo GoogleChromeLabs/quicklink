@@ -112,7 +112,7 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
 export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
   if (!onlyOnMouseover) return callback(url, ...args);
 
-  const elements = document.querySelectorAll(`a[href="${decodeURIComponent(url)}"]`);
+  const elements = Array.from(document.querySelectorAll('a')).filter(el => el.href === url);
   const timerMap = new Map();
 
   for (const el of elements) {
