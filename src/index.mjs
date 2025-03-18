@@ -15,7 +15,7 @@
  **/
 
 import throttle from 'throttles';
-import {prefetchOnHover, supported} from './prefetch.mjs';
+import {prefetchOnHover, supported, viaFetch} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 import {addSpeculationRules, hasSpecRulesSupport} from './prerender.mjs';
 

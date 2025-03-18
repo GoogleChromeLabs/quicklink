@@ -76,7 +76,7 @@ function viaXHR(url) {
  * @param {string} url - the URL to fetch
  * @return {Object} a Promise
  */
-export function priority(url) {
+export function viaFetch(url) {
   // TODO: Investigate using preload for high-priority
   // fetches. May have to sniff file-extension to provide
   // valid 'as' values. In the future, we may be able to
