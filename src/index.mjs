@@ -205,7 +205,7 @@ export function listen(options = {}) {
 
 /**
 * Prefetch a given URL with an optional preferred fetch priority
-* @param {String} url - the URL to fetch
+* @param {String | String[]} urls - the URLs to fetch
 * @param {Boolean} isPriority - if is "high" priority
 * @param {Boolean} checkAccessControlAllowOrigin - true to set crossorigin="anonymous" for DOM prefetch
 *                                                    and mode:'cors' for API fetch
@@ -213,7 +213,7 @@ export function listen(options = {}) {
 * @param {Boolean} onlyOnMouseover - true to enable prefetch only on mouseover event
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, onlyOnMouseover) {
+export function prefetch(urls, isPriority, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, onlyOnMouseover) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prefetch, ${chkConn.message}`));
@@ -225,7 +225,7 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAc
 
   // Dev must supply own catch()
   return Promise.all(
-      [].concat(url).map(str => {
+      [].concat(urls).map(str => {
         if (toPrefetch.has(str)) return [];
 
         // Add it now, regardless of its success
@@ -240,7 +240,7 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAc
 
 /**
 * Prerender a given URL
-* @param {String} urls - the URL to fetch
+* @param {String | String[]} urls - the URLs to fetch
 * @param {String} eagerness - prerender eagerness mode - default immediate
 * @return {Object} a Promise
 */
