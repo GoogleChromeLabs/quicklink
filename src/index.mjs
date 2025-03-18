@@ -15,9 +15,9 @@
  **/
 
 import throttle from 'throttles';
-import { supported, viaFetch } from './prefetch.mjs';
+import {supported, viaFetch} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
-import { addSpeculationRules, hasSpecRulesSupport } from './prerender.mjs';
+import {addSpeculationRules, hasSpecRulesSupport} from './prerender.mjs';
 
 // Cache of URLs we've prefetched
 // Its `size` is compared against `opts.limit` value.
@@ -150,12 +150,12 @@ export function listen(options = {}) {
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
               prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority,
-                options.checkAccessControlAllowOrigin, options.checkAccessControlAllowCredentials)
-                .then(isDone)
-                .catch(error => {
-                  isDone();
-                  if (options.onError) options.onError(error);
-                });
+                  options.checkAccessControlAllowOrigin, options.checkAccessControlAllowCredentials)
+                  .then(isDone)
+                  .catch(error => {
+                    isDone();
+                    if (options.onError) options.onError(error);
+                  });
             });
           }
         }, delay);
@@ -203,14 +203,14 @@ export function listen(options = {}) {
 
 /**
 * Prefetch a given URL with an optional preferred fetch priority
-* @param {String} url - the URL to fetch
+* @param {String | String[]} urls - the URLs to fetch
 * @param {Boolean} isPriority - if is "high" priority
 * @param {Boolean} checkAccessControlAllowOrigin - true to set crossorigin="anonymous" for DOM prefetch
 *                                                    and mode:'cors' for API fetch
 * @param {Boolean} checkAccessControlAllowCredentials - true to set credentials:'include' for API fetch
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials) {
+export function prefetch(urls, isPriority, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prefetch, ${chkConn.message}`));
@@ -222,22 +222,22 @@ export function prefetch(url, isPriority, checkAccessControlAllowOrigin, checkAc
 
   // Dev must supply own catch()
   return Promise.all(
-    [].concat(url).map(str => {
-      if (toPrefetch.has(str)) return [];
+      [].concat(urls).map(str => {
+        if (toPrefetch.has(str)) return [];
 
-      // Add it now, regardless of its success
-      // ~> so that we don't repeat broken links
-      toPrefetch.add(str);
+        // Add it now, regardless of its success
+        // ~> so that we don't repeat broken links
+        toPrefetch.add(str);
 
-      return (isPriority ? viaFetch : supported)(new URL(str, location.href).toString(),
-        checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority);
-    }),
+        return (isPriority ? viaFetch : supported)(new URL(str, location.href).toString(),
+            checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority);
+      }),
   );
 }
 
 /**
 * Prerender a given URL
-* @param {String} urls - the URL to fetch
+* @param {String | String[]} urls - the URLs to fetch
 * @return {Object} a Promise
 */
 export function prerender(urls) {
