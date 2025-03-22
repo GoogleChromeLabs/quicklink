@@ -23,10 +23,12 @@
  * @param {String} eagerness - prerender eagerness mode
  * @return {Boolean|Object}  boolean or Error Object
  */
-export function addSpeculationRules(urlsToPrerender) {
+export function addSpeculationRules(urlsToPrerender, eagerness) {
   const specScript = document.createElement('script');
   specScript.type = 'speculationrules';
-  specScript.text = `{"prerender":[{"source": "list","urls": ["${Array.from(urlsToPrerender).join('","')}"]}]}`;
+  specScript.text = `{"prerender":[{"source": "list",
+                      "urls": ["${Array.from(urlsToPrerender).join('","')}"],
+                      "eagerness": "${eagerness}"}]}`;
   try {
     document.head.appendChild(specScript);
   } catch (error) {
