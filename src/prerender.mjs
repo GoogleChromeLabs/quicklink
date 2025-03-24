@@ -26,9 +26,10 @@
 export function addSpeculationRules(urlsToPrerender, eagerness) {
   const specScript = document.createElement('script');
   specScript.type = 'speculationrules';
-  specScript.text = `{"prerender":[{"source": "list",
-                      "urls": ["${[...urlsToPrerender].join('","')}"],
-                      "eagerness": "${eagerness}"}]}`;
+  specScript.text = '{"prerender":[{"source": "list",' + 
+    '"urls": ["' + [...urlsToPrerender].join('","') + '"],' + 
+    '"eagerness": "' + eagerness + '"}]}';
+
   try {
     document.head.appendChild(specScript);
   } catch (error) {
