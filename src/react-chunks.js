@@ -25,6 +25,7 @@ const useIntersect = ({root = null, rootMargin, threshold = 0} = {}) => {
 
   useEffect(() => {
     if (observer.current) observer.current.disconnect();
+
     observer.current = new window.IntersectionObserver(
         ([entry]) => updateEntry(entry),
         {
@@ -43,14 +44,12 @@ const useIntersect = ({root = null, rootMargin, threshold = 0} = {}) => {
   return [setNode, entry];
 };
 
-const __defaultAccessor = mix => {
-  return (mix && mix.href) || mix || '';
-};
+const __defaultAccessor = mix => (mix && mix.href) || mix || '';
 
 const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) => {
   const {files} = rmanifest(window.__rmanifest, entry.pathname);
   const chunkURLs = files.map(accessor).filter(Boolean);
-  if (chunkURLs.length) {
+  if (chunkURLs.length > 0) {
     prefetchHandler(chunkURLs);
   } else {
     // also prefetch regular links in-viewport

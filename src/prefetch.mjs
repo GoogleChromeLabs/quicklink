@@ -46,7 +46,7 @@ function viaDOM(url, hasCrossorigin) {
     link.onload = resolve;
     link.onerror = reject;
 
-    document.head.appendChild(link);
+    document.head.append(link);
   });
 }
 
@@ -97,7 +97,7 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
   const options = {headers: {accept: '*/*'}};
   if (!hasModeCors) options.mode = 'no-cors';
   if (hasCredentials) options.credentials = 'include';
-  isPriority ? options.priority = 'high' : options.priority = 'low';
+  options.priority = isPriority ? 'high' : 'low';
   return window.fetch ? fetch(url, options) : viaXHR(url, hasCredentials);
 }
 
@@ -116,7 +116,7 @@ export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
   const timerMap = new Map();
 
   for (const el of elements) {
-    const mouseenterListener = _ => {
+    const mouseenterListener = () => {
       const timer = setTimeout(() => {
         el.removeEventListener('mouseenter', mouseenterListener);
         el.removeEventListener('mouseleave', mouseleaveListener);
@@ -125,7 +125,7 @@ export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
       timerMap.set(el, timer);
     };
 
-    const mouseleaveListener = _ => {
+    const mouseleaveListener = () => {
       const timer = timerMap.get(el);
       if (timer) {
         clearTimeout(timer);

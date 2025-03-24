@@ -38,7 +38,7 @@ export function addSpeculationRules(urlsToPrerender, eagerness) {
         }],
       });
 
-      document.head.appendChild(specScript);
+      document.head.append(specScript);
       specMap.set(url, specScript);
     }
   } catch (error) {
