@@ -119,7 +119,7 @@ export function listen(options = {}) {
   };
 
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
+    for (let entry of entries) {
       // On enter
       if (entry.isIntersecting) {
         entry = entry.target;
@@ -165,11 +165,11 @@ export function listen(options = {}) {
       } else {
         entry = entry.target;
         const index = hrefsInViewport.indexOf(entry.href);
-        if (index > -1) {
+        if (index !== -1) {
           hrefsInViewport.splice(index);
         }
       }
-    });
+    }
   }, {
     threshold,
   });
@@ -183,14 +183,14 @@ export function listen(options = {}) {
       options.el :
       (options.el || document).querySelectorAll('a');
 
-    elementsToListen.forEach(link => {
+    for (const link of elementsToListen) {
       // If the anchor matches a permitted origin
       // ~> A `[]` or `true` means everything is allowed
       if (!allowed.length || allowed.includes(link.hostname)) {
         // If there are any filters, the link must not match any of them
         if (!isIgnored(link, ignores)) observer.observe(link);
       }
-    });
+    }
   }, {
     timeout: options.timeout || 2000,
   });
@@ -225,7 +225,7 @@ export function prefetch(urls, isPriority, checkAccessControlAllowOrigin, checkA
 
   // Dev must supply own catch()
   return Promise.all(
-      [].concat(urls).map(str => {
+      [urls].flat().map(str => {
         if (toPrefetch.has(str)) return [];
 
         // Add it now, regardless of its success
@@ -258,7 +258,7 @@ export function prerender(urls, eagerness = 'immediate') {
     return Promise.reject(new Error('This browser does not support the speculation rules API. Falling back to prefetch.'));
   }
 
-  for (const url of [].concat(urls)) {
+  for (const url of [urls].flat()) {
     toPrerender.add(url);
   }
 

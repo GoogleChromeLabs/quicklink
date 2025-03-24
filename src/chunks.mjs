@@ -32,9 +32,11 @@ const toPrefetch = new Set();
  * @return {Boolean}          If true, then it should be ignored
  */
 function isIgnored(node, filter) {
-  return Array.isArray(filter) ?
-    filter.some(x => isIgnored(node, x)) :
-    (filter.test || filter).call(filter, node.href, node);
+  if (Array.isArray(filter)) {
+    return filter.some(x => isIgnored(node, x));
+  }
+
+  return (filter.test || filter).call(filter, node.href, node);
 }
 
 /**
@@ -59,8 +61,8 @@ function isIgnored(node, filter) {
 export function listen(options = {}) {
   if (!window.IntersectionObserver) return;
 
-  const [toAdd, isDone] = throttle(options.throttle || 1 / 0);
-  const limit = options.limit || 1 / 0;
+  const [toAdd, isDone] = throttle(options.throttle || Number.Infinity);
+  const limit = options.limit || Number.Infinity;
 
   const allowed = options.origins || [location.hostname];
   const ignores = options.ignores || [];
@@ -79,36 +81,36 @@ export function listen(options = {}) {
   };
 
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        observer.unobserve(entry = entry.target);
-        // Do not prefetch if will match/exceed limit
-        if (toPrefetch.size < limit) {
-          toAdd(() => {
-            prefetchChunks ?
-              prefetchChunks(entry, prefetchHandler) :
-              prefetchHandler(entry.href);
-          });
-        }
+    for (const {isIntersecting, target} of entries) {
+      if (!isIntersecting) continue;
+
+      observer.unobserve(target);
+      // Do not prefetch if will match/exceed limit
+      if (toPrefetch.size < limit) {
+        toAdd(() => {
+          prefetchChunks ?
+            prefetchChunks(target, prefetchHandler) :
+            prefetchHandler(target.href);
+        });
       }
-    });
+    }
   });
 
   timeoutFn(() => {
     // Find all links & Connect them to IO if allowed
-    (options.el || document).querySelectorAll('a').forEach(link => {
+    for (const link of (options.el || document).querySelectorAll('a')) {
       // If the anchor matches a permitted origin
       // ~> A `[]` or `true` means everything is allowed
       if (!allowed.length || allowed.includes(link.hostname)) {
         // If there are any filters, the link must not match any of them
         if (!isIgnored(link, ignores)) observer.observe(link);
       }
-    });
+    }
   }, {
     timeout: options.timeout || 2000,
   });
 
-  return function () {
+  return () => {
     // wipe url list
     toPrefetch.clear();
     // detach IO entries
@@ -138,7 +140,7 @@ export function prefetch(url, isPriority) {
 
   // Dev must supply own catch()
   return Promise.all(
-      [].concat(url).map(str => {
+      [url].flat().map(str => {
         if (toPrefetch.has(str)) return [];
 
         // Add it now, regardless of its success
