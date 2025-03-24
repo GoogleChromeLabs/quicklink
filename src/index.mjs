@@ -49,15 +49,17 @@ function isIgnored(node, filter) {
  * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
  */
 function checkConnection(conn) {
-  if (conn) {
-    // Don't pre* if using 2G or if Save-Data is enabled.
-    if (conn.saveData) {
-      return new Error('Save-Data is enabled');
-    }
+  // If no connection object, assume it's okay to prefetch
+  if (!conn) return true;
 
-    if (/2g/.test(conn.effectiveType)) {
-      return new Error('network conditions are poor');
-    }
+  // Don't prefetch if Save-Data is enabled.
+  if (conn.saveData) {
+    return new Error('Save-Data is enabled');
+  }
+
+  // Don't prefetch if using 2G connection.
+  if (/2g/.test(conn.effectiveType)) {
+    return new Error('network conditions are poor');
   }
 
   return true;
@@ -120,7 +122,7 @@ export function listen(options = {}) {
   };
 
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
+    for (let entry of entries) {
       // On enter
       if (entry.isIntersecting) {
         entry = entry.target;
@@ -140,7 +142,11 @@ export function listen(options = {}) {
           // either it's the prerender + prefetch mode or it's prerender *only* mode
           // Prerendering limit is following options.limit. UA may impose arbitraty numeric limit
           // The same URL is not already present as a speculation rule
-          if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit && !specRulesInViewport.has(entry.href)) {
+          if (
+            (shouldPrerenderAndPrefetch || shouldOnlyPrerender) &&
+            toPrerender.size < limit &&
+            !specRulesInViewport.has(entry.href)
+          ) {
             prerender(hrefFn ? hrefFn(entry) : entry.href, options.eagerness)
                 .then(specMap => {
                   for (const [key, value] of specMap) {
@@ -161,8 +167,13 @@ export function listen(options = {}) {
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
-              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority,
-                  options.checkAccessControlAllowOrigin, options.checkAccessControlAllowCredentials, options.onlyOnMouseover)
+              prefetch(
+                hrefFn ? hrefFn(entry) : entry.href,
+                options.priority,
+                options.checkAccessControlAllowOrigin,
+                options.checkAccessControlAllowCredentials,
+                options.onlyOnMouseover,
+              )
                   .then(isDone)
                   .catch(error => {
                     isDone();
@@ -175,40 +186,37 @@ export function listen(options = {}) {
       } else {
         entry = entry.target;
         const index = hrefsInViewport.indexOf(entry.href);
-        if (index > -1) {
+        if (index !== -1) {
           hrefsInViewport.splice(index);
         }
+
         if (specRulesInViewport.has(entry.href)) {
           specRulesInViewport = removeSpeculationRule(specRulesInViewport, entry.href);
         }
       }
-    });
+    }
   }, {
     threshold,
   });
 
   timeoutFn(() => {
     // Find all links & Connect them to IO if allowed
-    const elementsToListen = options.el &&
-      options.el.length &&
-      options.el.length > 0 &&
-      options.el[0].nodeName === 'A' ?
-      options.el :
-      (options.el || document).querySelectorAll('a');
+    const isAnchorElement = options.el && options.el.length > 0 && options.el[0].nodeName === 'A';
+    const elementsToListen = isAnchorElement ? options.el : (options.el || document).querySelectorAll('a');
 
-    elementsToListen.forEach(link => {
+    for (const link of elementsToListen) {
       // If the anchor matches a permitted origin
       // ~> A `[]` or `true` means everything is allowed
       if (!allowed.length || allowed.includes(link.hostname)) {
         // If there are any filters, the link must not match any of them
         if (!isIgnored(link, ignores)) observer.observe(link);
       }
-    });
+    }
   }, {
     timeout: options.timeout || 2000,
   });
 
-  return function () {
+  return () => {
     // wipe url list
     toPrefetch.clear();
     // detach IO entries
@@ -237,18 +245,22 @@ export function prefetch(urls, isPriority, checkAccessControlAllowOrigin, checkA
   }
 
   // Dev must supply own catch()
-  return Promise.all(
-      [].concat(urls).map(str => {
-        if (toPrefetch.has(str)) return [];
+  return Promise.all([urls].flat().map(str => {
+    if (toPrefetch.has(str)) return [];
 
-        // Add it now, regardless of its success
-        // ~> so that we don't repeat broken links
-        toPrefetch.add(str);
+    // Add it now, regardless of its success
+    // ~> so that we don't repeat broken links
+    toPrefetch.add(str);
 
-        return prefetchOnHover((isPriority ? viaFetch : supported), new URL(str, location.href).toString(), onlyOnMouseover,
-            checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority);
-      }),
-  );
+    return prefetchOnHover(
+      isPriority ? viaFetch : supported,
+      new URL(str, location.href).toString(),
+      onlyOnMouseover,
+      checkAccessControlAllowOrigin,
+      checkAccessControlAllowCredentials,
+      isPriority,
+    );
+  }));
 }
 
 /**
@@ -258,7 +270,7 @@ export function prefetch(urls, isPriority, checkAccessControlAllowOrigin, checkA
 * @return {Object} a Promise
 */
 export function prerender(urls, eagerness = 'immediate') {
-  urls = [].concat(urls);
+  urls = [urls].flat();
 
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
