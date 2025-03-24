@@ -13,17 +13,17 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
-    "@11ty/eleventy-navigation": "^0.3.5",
+    "@11ty/eleventy-navigation": "^1.0.1",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
     "eleventy-plugin-rev": "^2.0.0",
-    "eleventy-sass": "^2.2.4",
+    "eleventy-sass": "^2.2.6",
     "html-minifier-terser": "^7.2.0",
     "markdown-it": "^14.1.0",
-    "postcss": "^8.4.40",
+    "postcss": "^8.5.3",
     "rimraf": "^6.0.1",
-    "stylelint": "^16.7.0",
-    "stylelint-config-twbs-bootstrap": "^14.2.0"
+    "stylelint": "^16.16.0",
+    "stylelint-config-twbs-bootstrap": "^16.0.0"
   }
 }
