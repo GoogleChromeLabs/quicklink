@@ -99,13 +99,7 @@ quicklink();
 `quicklink`:
 
 - [requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback) 的一个非常小的回退。
-- 需要支持 `IntersectionObserver` （请参阅 [CanIUse](https://caniuse.com/#feat=intersectionobserver)）。我们推荐使用 Polyfill.io 等服务选择性地实现此功能：
-
-```html
-<script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
-```
-
-或者，请参见 [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer)。
+- Requires `IntersectionObserver` to be supported. This is [supported in all modern browsers](https://caniuse.com/intersectionobserver), however you can use the [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer) to support legacy browsers if needed.
 
 ## 方法
 

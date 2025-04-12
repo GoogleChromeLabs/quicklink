@@ -1,6 +1,6 @@
 // stylelint-disable declaration-no-important
 
-@import "vendor/github-markdown";
+@use "vendor/github-markdown";
 
 .markdown-body {
   box-sizing: border-box;
