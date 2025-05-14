@@ -51,35 +51,7 @@ function viaDOM(url, hasCrossorigin) {
 }
 
 /**
- * Fetches a given URL using XMLHttpRequest
- * @param {string} url - the URL to fetch
- * @param {Boolean} hasCredentials - true to set withCredentials:true
- * @return {Object} a Promise
- */
-function viaXHR(url, hasCredentials) {
-  return new Promise((resolve, reject, request) => {
-    request = new XMLHttpRequest();
-
-    request.open('GET', url, request.withCredentials = hasCredentials);
-
-    request.setRequestHeader('Accept', '*/*');
-
-    request.onload = () => {
-      if (request.status === 200) {
-        resolve();
-      } else {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject();
-      }
-    };
-
-    request.send();
-  });
-}
-
-/**
- * Fetches a given URL using the Fetch API. Falls back
- * to XMLHttpRequest if the API is not supported.
+ * Fetches a given URL using the Fetch API.
  * @param {string} url - the URL to fetch
  * @param {Boolean} hasModeCors - true to set mode:'cors'
  * @param {Boolean} hasCredentials - true to set credentials:'include'
@@ -98,7 +70,7 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
   if (!hasModeCors) options.mode = 'no-cors';
   if (hasCredentials) options.credentials = 'include';
   options.priority = isPriority ? 'high' : 'low';
-  return window.fetch ? fetch(url, options) : viaXHR(url, hasCredentials);
+  return fetch(url, options);
 }
 
 /**
