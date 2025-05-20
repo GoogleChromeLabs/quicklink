@@ -19,23 +19,69 @@
 
 /**
  * Add a given set of urls to the speculation rules
- * @param {Set} urlsToPrerender - the URLs to add to speculation rules
+ * @param {Array} urlsToPrerender - the URLs to add to speculation rules
  * @param {String} eagerness - prerender eagerness mode
- * @return {Boolean|Object}  boolean or Error Object
+ * @return {Map<HTMLScriptElement, string>|Object}  Map of script elements to their URLs or Error Object
  */
 export function addSpeculationRules(urlsToPrerender, eagerness) {
-  const specScript = document.createElement('script');
-  specScript.type = 'speculationrules';
-  specScript.text = `{"prerender":[{"source": "list",
-                      "urls": ["${Array.from(urlsToPrerender).join('","')}"],
-                      "eagerness": "${eagerness}"}]}`;
+  const specMap = new Map();
+
   try {
-    document.head.appendChild(specScript);
+    for (const url of urlsToPrerender) {
+      const specScript = document.createElement('script');
+      specScript.type = 'speculationrules';
+      specScript.text = JSON.stringify({
+        prerender: [{
+          source: 'list',
+          urls: [url],
+          eagerness: eagerness,
+        }],
+      });
+
+      document.head.appendChild(specScript);
+      specMap.set(url, specScript);
+    }
   } catch (error) {
     return error;
   }
 
-  return true;
+  return specMap;
+}
+
+/**
+ * Removes a speculation rule script associated with a given URL
+ * @param {Map<string, HTMLScriptElement>} specMap - Map of URLs to their script elements
+ * @param {string} url - The URL whose speculation rule should be removed
+ * @return {Map<string, HTMLScriptElement>} The updated map after removal
+ */
+export function removeSpeculationRule(specMap, url) {
+  const specScript = specMap.get(url);
+
+  if (
+    specScript instanceof HTMLScriptElement &&
+    specScript.type === 'speculationrules'
+  ) {
+    try {
+      const rules = JSON.parse(specScript.textContent);
+      const prerenderRules = rules.prerender;
+
+      const matches = Array.isArray(prerenderRules) &&
+        prerenderRules.some(rule =>
+          rule.source === 'list' &&
+          Array.isArray(rule.urls) &&
+          rule.urls.includes(url),
+        );
+
+      if (matches) {
+        specScript.remove();
+        specMap.delete(url);
+      }
+    } catch (e) {
+      // Ignore malformed JSON
+    }
+  }
+
+  return specMap;
 }
 
 /**
