@@ -135,6 +135,7 @@ export function listen(options = {}) {
           // prerender, if..
           // either it's the prerender + prefetch mode or it's prerender *only* mode
           // Prerendering limit is following options.limit. UA may impose arbitraty numeric limit
+          // The same URL is not already present as a speculation rule
           if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit && !specRulesInViewport.has(entry.href)) {
             prerender(hrefFn ? hrefFn(entry) : entry.href, options.eagerness)
                 .then(specMap => {
