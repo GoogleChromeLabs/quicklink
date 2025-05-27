@@ -19,7 +19,7 @@
 
 /**
  * Add a given set of urls to the speculation rules
- * @param {Array} urlsToPrerender - the URLs to add to speculation rules
+ * @param {String[]} urlsToPrerender - the URLs to add to speculation rules
  * @param {String} eagerness - prerender eagerness mode
  * @return {Map<HTMLScriptElement, string>|Object}  Map of script elements to their URLs or Error Object
  */
