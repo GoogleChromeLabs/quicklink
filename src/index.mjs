@@ -102,7 +102,7 @@ export function listen(options = {}) {
   const ignores = options.ignores || [];
   const delay = options.delay || 0;
   const hrefsInViewport = [];
-  specRulesInViewport = new Map();
+  const specRulesInViewport = new Map();
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
