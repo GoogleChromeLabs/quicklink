@@ -52,7 +52,7 @@ export function addSpeculationRules(urlsToPrerender, eagerness) {
  * Removes a speculation rule script associated with a given URL
  * @param {Map<string, HTMLScriptElement>} specMap - Map of URLs to their script elements
  * @param {string} url - The URL whose speculation rule should be removed
- * @return {Map<string, HTMLScriptElement>|Object} The updated map after removal or Error Object
+ * @return {Map<string, HTMLScriptElement>|Error} The updated map after removal or Error Object
  */
 export function removeSpeculationRule(specMap, url) {
   const specScript = specMap.get(url);
