@@ -2,10 +2,10 @@
 {% block section %}
 {% sectionTitle "Use with" %}
 <div class="center">
-  <div class="flex-grid overflow-x-auto">
+  <div class="flex-grid overflow-x-auto use-with">
     {%- for framework in site.useWithFrameworks %}
       <a class="flex-grid__item" href="{{ framework.url }}" target="_blank" rel="noopener noreferrer">
-        <img loading="lazy" src="/assets/images/logos/{{ framework.logoFileName }}" style="width: 112px; min-width: 92px" alt="{{ framework.title }}">
+        <img loading="lazy" src="/assets/images/logos/{{ framework.logoFileName }}" alt="{{ framework.title }}" width="112" height="112">
       </a>
     {%- endfor %}
   </div>
