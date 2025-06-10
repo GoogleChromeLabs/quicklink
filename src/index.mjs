@@ -17,7 +17,7 @@
 import throttle from 'throttles';
 import {prefetchOnHover, supported, viaFetch} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
-import {addSpeculationRules, hasSpecRulesSupport} from './prerender.mjs';
+import {addSpeculationRules, removeSpeculationRule, hasSpecRulesSupport} from './prerender.mjs';
 
 // Cache of URLs we've prefetched
 // Its `size` is compared against `opts.limit` value.
@@ -102,6 +102,7 @@ export function listen(options = {}) {
   const ignores = options.ignores || [];
   const delay = options.delay || 0;
   const hrefsInViewport = [];
+  const specRulesInViewport = new Map();
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
@@ -131,19 +132,28 @@ export function listen(options = {}) {
           // Do not prefetch if not found in viewport
           if (!hrefsInViewport.includes(entry.href)) return;
 
-          observer.unobserve(entry);
+          if (!shouldOnlyPrerender && !shouldPrerenderAndPrefetch) {
+            observer.unobserve(entry);
+          }
 
           // prerender, if..
           // either it's the prerender + prefetch mode or it's prerender *only* mode
           // Prerendering limit is following options.limit. UA may impose arbitraty numeric limit
-          if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit) {
-            prerender(hrefFn ? hrefFn(entry) : entry.href, options.eagerness).catch(error => {
-              if (options.onError) {
-                options.onError(error);
-              } else {
-                throw error;
-              }
-            });
+          // The same URL is not already present as a speculation rule
+          if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit && !specRulesInViewport.has(entry.href)) {
+            prerender(hrefFn ? hrefFn(entry) : entry.href, options.eagerness)
+                .then(specMap => {
+                  for (const [key, value] of specMap) {
+                    specRulesInViewport.set(key, value);
+                  }
+                })
+                .catch(error => {
+                  if (options.onError) {
+                    options.onError(error);
+                  } else {
+                    throw error;
+                  }
+                });
 
             return;
           }
@@ -167,6 +177,9 @@ export function listen(options = {}) {
         const index = hrefsInViewport.indexOf(entry.href);
         if (index > -1) {
           hrefsInViewport.splice(index);
+        }
+        if (specRulesInViewport.has(entry.href)) {
+          specRulesInViewport = removeSpeculationRule(specRulesInViewport, entry.href);
         }
       }
     });
@@ -245,6 +258,8 @@ export function prefetch(urls, isPriority, checkAccessControlAllowOrigin, checkA
 * @return {Object} a Promise
 */
 export function prerender(urls, eagerness = 'immediate') {
+  urls = [].concat(urls);
+
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prerender, ${chkConn.message}`));
@@ -258,7 +273,7 @@ export function prerender(urls, eagerness = 'immediate') {
     return Promise.reject(new Error('This browser does not support the speculation rules API. Falling back to prefetch.'));
   }
 
-  for (const url of [].concat(urls)) {
+  for (const url of urls) {
     toPrerender.add(url);
   }
 
@@ -267,6 +282,6 @@ export function prerender(urls, eagerness = 'immediate') {
     console.warn('[Warning] You are using both prefetching and prerendering on the same document');
   }
 
-  const addSpecRules = addSpeculationRules(toPrerender, eagerness);
-  return addSpecRules === true ? Promise.resolve() : Promise.reject(addSpecRules);
+  const specMap = addSpeculationRules(urls, eagerness);
+  return specMap.size > 0 ? Promise.resolve(specMap) : Promise.reject(specMap);
 }
