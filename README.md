@@ -133,7 +133,7 @@ Whether to switch from the default prefetching mode to the prerendering mode for
 - Type: `String`
 - Default: `immediate`
 
-Determines the mode to be used for prerendering specified within the speculationrules.
+Determines the mode to be used for prerendering specified within the speculation rules.
 
 #### options.prerenderAndPrefetch
 
