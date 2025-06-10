@@ -132,7 +132,9 @@ export function listen(options = {}) {
           // Do not prefetch if not found in viewport
           if (!hrefsInViewport.includes(entry.href)) return;
 
-          if (!shouldOnlyPrerender && !shouldPrerenderAndPrefetch) observer.unobserve(entry);
+          if (!shouldOnlyPrerender && !shouldPrerenderAndPrefetch) {
+            observer.unobserve(entry);
+          }
 
           // prerender, if..
           // either it's the prerender + prefetch mode or it's prerender *only* mode
