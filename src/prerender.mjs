@@ -34,7 +34,7 @@ export function addSpeculationRules(urlsToPrerender, eagerness) {
         prerender: [{
           source: 'list',
           urls: [url],
-          eagerness: eagerness,
+          eagerness,
         }],
       });
 
