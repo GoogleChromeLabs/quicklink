@@ -294,7 +294,7 @@ One or many URLs to be prerendered.
 - Type: `String`
 - Default: `immediate`
 
-Determines the mode to be used for prerendering specified within the speculationrules.
+Determines the mode to be used for prerendering specified within the speculation rules.
 
 ## Polyfills
 
