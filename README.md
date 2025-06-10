@@ -126,7 +126,7 @@ A "reset" function is returned, which will empty the active `IntersectionObserve
 Whether to switch from the default prefetching mode to the prerendering mode for the links inside the viewport.
 
 > **Note:** The prerendering mode (when this option is set to true) will fallback to the prefetching mode if the browser does not support prerender.
-> Once the element exits the viewport, the speculationrules element is removed from the DOM. This approach makes it possible to exceed the limit of 10 prerenders imposed for the eagerness: 'immediate' and eagerness: 'eager' settings.
+> Once the element exits the viewport, the `speculationrules` script is removed from the DOM. This approach makes it possible to exceed the limit of 10 prerenders imposed for the 'immediate' and 'eager' settings for eagerness.
 
 #### options.eagerness
 
