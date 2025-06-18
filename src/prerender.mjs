@@ -19,20 +19,52 @@
 
 /**
  * Add a given set of urls to the speculation rules
- * @param {Set} urlsToPrerender - the URLs to add to speculation rules
- * @return {Boolean|Object}  boolean or Error Object
+ * @param {String[]} urlsToPrerender - the URLs to add to speculation rules
+ * @param {String} eagerness - prerender eagerness mode
+ * @return {Map<HTMLScriptElement, string>|Error}  Map of script elements to their URLs or Error Object
  */
-export function addSpeculationRules(urlsToPrerender) {
-  const specScript = document.createElement('script');
-  specScript.type = 'speculationrules';
-  specScript.text = `{"prerender":[{"source": "list","urls": ["${Array.from(urlsToPrerender).join('","')}"]}]}`;
+export function addSpeculationRules(urlsToPrerender, eagerness) {
+  const specMap = new Map();
+
   try {
-    document.head.appendChild(specScript);
+    for (const url of urlsToPrerender) {
+      const specScript = document.createElement('script');
+      specScript.type = 'speculationrules';
+      specScript.text = JSON.stringify({
+        prerender: [{
+          source: 'list',
+          urls: [url],
+          eagerness,
+        }],
+      });
+
+      document.head.appendChild(specScript);
+      specMap.set(url, specScript);
+    }
   } catch (error) {
     return error;
   }
 
-  return true;
+  return specMap;
+}
+
+/**
+ * Removes a speculation rule script associated with a given URL
+ * @param {Map<string, HTMLScriptElement>} specMap - Map of URLs to their script elements
+ * @param {string} url - The URL whose speculation rule should be removed
+ * @return {Map<string, HTMLScriptElement>|Error} The updated map after removal or Error Object
+ */
+export function removeSpeculationRule(specMap, url) {
+  const specScript = specMap.get(url);
+
+  try {
+    specScript.remove();
+    specMap.delete(url);
+  } catch (error) {
+    return error;
+  }
+
+  return specMap;
 }
 
 /**

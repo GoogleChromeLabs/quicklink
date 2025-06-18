@@ -1,6 +1,6 @@
 {
   "name": "quicklink",
-  "version": "2.3.0",
+  "version": "3.0.1",
   "description": "Faster subsequent page-loads by prefetching in-viewport links during idle time",
   "repository": {
     "type": "git",
@@ -48,27 +48,35 @@
     "throttles": "^1.0.1"
   },
   "peerDependencies": {
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+    "react": "^16.8.0 || ^17 || ^18 || ^19",
+    "react-dom": "^16.8.0 || ^17 || ^18 || ^19"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "@babel/cli": "^7.24.5",
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
-    "@babel/preset-react": "^7.24.1",
-    "@size-limit/file": "^11.1.2",
-    "conventional-changelog-cli": "^4.1.0",
+    "@babel/cli": "^7.27.2",
+    "@babel/core": "^7.27.4",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-react": "^7.27.1",
+    "@size-limit/file": "^11.2.0",
+    "conventional-changelog-cli": "^5.0.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.34.1",
-    "microbundle": "0.15.1",
-    "npm-run-all2": "^6.1.2",
-    "puppeteer": "^22.7.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "sirv-cli": "^2.0.2",
-    "size-limit": "^11.1.2",
+    "eslint-plugin-react": "^7.37.5",
+    "microbundle": "^0.15.1",
+    "npm-run-all2": "^8.0.4",
+    "puppeteer": "^24.10.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "sirv-cli": "^3.0.1",
+    "size-limit": "^11.2.0",
     "uvu": "^0.5.6"
   }
 }

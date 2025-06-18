@@ -41,10 +41,6 @@ window.addEventListener('load', () => {
   });
 
   clipboard.on('success', event => {
-    console.info('[clipboard success] Action:', event.action);
-    console.info('[clipboard success] Text:', event.text);
-    console.info('[clipboard success] Trigger:', event.trigger);
-
     event.clearSelection();
     event.trigger.blur();
     const notifyCopiedSnippet = document.querySelector('.notify-copied-snippet');

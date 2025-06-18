@@ -5,7 +5,7 @@
     <img src="https://img.shields.io/npm/v/quicklink?style=flat&logo=npm&logoColor=fff" alt="npm">
   </a>
   <a href="https://unpkg.com/quicklink">
-    <img src="https://img.badgesize.io/https://unpkg.com/quicklink/dist/quicklink.js?compression=gzip" alt="gzip size">
+    <img src="https://img.shields.io/bundlephobia/minzip/quicklink" alt="gzip size">
   </a>
   <a href="https://github.com/GoogleChromeLabs/quicklink/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amain">
     <img src="https://img.shields.io/github/actions/workflow/status/GoogleChromeLabs/quicklink/ci.yml?branch=main&label=ci&logo=github" alt="ci">
@@ -126,6 +126,14 @@ A "reset" function is returned, which will empty the active `IntersectionObserve
 Whether to switch from the default prefetching mode to the prerendering mode for the links inside the viewport.
 
 > **Note:** The prerendering mode (when this option is set to true) will fallback to the prefetching mode if the browser does not support prerender.
+> Once the element exits the viewport, the `speculationrules` script is removed from the DOM. This approach makes it possible to exceed the limit of 10 prerenders imposed for the 'immediate' and 'eager' settings for eagerness.
+
+#### options.eagerness
+
+- Type: `String`
+- Default: `immediate`
+
+Determines the mode to be used for prerendering specified within the speculation rules.
 
 #### options.prerenderAndPrefetch
 
@@ -266,7 +274,7 @@ By default, calls to `prefetch()` are low priority.
 
 > **Note:** This behaves identically to `listen()`'s `priority` option.
 
-### quicklink.prerender(urls)
+### quicklink.prerender(urls, eagerness)
 
 Returns: `Promise`
 
@@ -281,18 +289,19 @@ One or many URLs to be prerendered.
 
 > **Note:** Speculative Rules API supports same-site cross origin Prerendering with [opt-in header](https://bit.ly/ss-cross-origin-pre).
 
+#### eagerness
+
+- Type: `String`
+- Default: `immediate`
+
+Determines the mode to be used for prerendering specified within the speculation rules.
+
 ## Polyfills
 
 `quicklink`:
 
 - Includes a very small fallback for [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback)
-- Requires `IntersectionObserver` to be supported (see [Can I Use](https://caniuse.com/intersectionobserver)). We recommend conditionally polyfilling this feature with a service like Polyfill.io:
-
-```html
-<script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
-```
-
-Alternatively, see the [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer).
+- Requires `IntersectionObserver` to be supported. This is [supported in all modern browsers](https://caniuse.com/intersectionobserver), however you can use the [Intersection Observer polyfill](https://github.com/GoogleChromeLabs/intersection-observer) to support legacy browsers if needed.
 
 ## Recipes
 

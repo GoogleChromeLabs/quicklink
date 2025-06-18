@@ -15,9 +15,9 @@
  **/
 
 import throttle from 'throttles';
-import {priority, supported} from './prefetch.mjs';
+import {prefetchOnHover, supported, viaFetch} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
-import {addSpeculationRules, hasSpecRulesSupport} from './prerender.mjs';
+import {addSpeculationRules, removeSpeculationRule, hasSpecRulesSupport} from './prerender.mjs';
 
 // Cache of URLs we've prefetched
 // Its `size` is compared against `opts.limit` value.
@@ -76,6 +76,9 @@ function checkConnection(conn) {
  * @param {Object} options - Configuration options for quicklink
  * @param {Object|Array} [options.el] - DOM element(s) to prefetch in-viewport links of
  * @param {Boolean} [options.priority] - Attempt higher priority fetch (low or high)
+ * @param {Boolean} [options.checkAccessControlAllowOrigin] - Check Access-Control-Allow-Origin response header
+ * @param {Boolean} [options.checkAccessControlAllowCredentials] - Check the Access-Control-Allow-Credentials response header
+ * @param {Boolean} [options.onlyOnMouseover] - Enable the prefetch only on mouseover event
  * @param {Array} [options.origins] - Allowed origins to prefetch (empty allows all)
  * @param {Array|RegExp|Function} [options.ignores] - Custom filter(s) that run after origin checks
  * @param {Number} [options.timeout] - Timeout after which prefetching will occur
@@ -88,6 +91,7 @@ function checkConnection(conn) {
  * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
  *                                             If it's not a valid function, then it will use the entry href.
  * @param {Boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
+ * @param {String} [options.eagerness] - Prerender eagerness mode - default immediate
  * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
  * @return {Function}
  */
@@ -102,6 +106,7 @@ export function listen(options = {}) {
   const ignores = options.ignores || [];
   const delay = options.delay || 0;
   const hrefsInViewport = [];
+  const specRulesInViewport = new Map();
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
@@ -131,19 +136,28 @@ export function listen(options = {}) {
           // Do not prefetch if not found in viewport
           if (!hrefsInViewport.includes(entry.href)) return;
 
-          observer.unobserve(entry);
+          if (!shouldOnlyPrerender && !shouldPrerenderAndPrefetch) {
+            observer.unobserve(entry);
+          }
 
           // prerender, if..
           // either it's the prerender + prefetch mode or it's prerender *only* mode
           // Prerendering limit is following options.limit. UA may impose arbitraty numeric limit
-          if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit) {
-            prerender(hrefFn ? hrefFn(entry) : entry.href).catch(error => {
-              if (options.onError) {
-                options.onError(error);
-              } else {
-                throw error;
-              }
-            });
+          // The same URL is not already present as a speculation rule
+          if ((shouldPrerenderAndPrefetch || shouldOnlyPrerender) && toPrerender.size < limit && !specRulesInViewport.has(entry.href)) {
+            prerender(hrefFn ? hrefFn(entry) : entry.href, options.eagerness)
+                .then(specMap => {
+                  for (const [key, value] of specMap) {
+                    specRulesInViewport.set(key, value);
+                  }
+                })
+                .catch(error => {
+                  if (options.onError) {
+                    options.onError(error);
+                  } else {
+                    throw error;
+                  }
+                });
 
             return;
           }
@@ -151,7 +165,8 @@ export function listen(options = {}) {
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
-              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority)
+              prefetch(hrefFn ? hrefFn(entry) : entry.href, options.priority,
+                  options.checkAccessControlAllowOrigin, options.checkAccessControlAllowCredentials, options.onlyOnMouseover)
                   .then(isDone)
                   .catch(error => {
                     isDone();
@@ -160,12 +175,15 @@ export function listen(options = {}) {
             });
           }
         }, delay);
-      // On exit
+        // On exit
       } else {
         entry = entry.target;
         const index = hrefsInViewport.indexOf(entry.href);
         if (index > -1) {
           hrefsInViewport.splice(index);
+        }
+        if (specRulesInViewport.has(entry.href)) {
+          specRulesInViewport = removeSpeculationRule(specRulesInViewport, entry.href);
         }
       }
     });
@@ -176,9 +194,9 @@ export function listen(options = {}) {
   timeoutFn(() => {
     // Find all links & Connect them to IO if allowed
     const elementsToListen = options.el &&
-    options.el.length &&
-    options.el.length > 0 &&
-    options.el[0].nodeName === 'A' ?
+      options.el.length &&
+      options.el.length > 0 &&
+      options.el[0].nodeName === 'A' ?
       options.el :
       (options.el || document).querySelectorAll('a');
 
@@ -204,11 +222,15 @@ export function listen(options = {}) {
 
 /**
 * Prefetch a given URL with an optional preferred fetch priority
-* @param {String} url - the URL to fetch
-* @param {Boolean} [isPriority] - if is "high" priority
+* @param {String | String[]} urls - the URLs to fetch
+* @param {Boolean} isPriority - if is "high" priority
+* @param {Boolean} checkAccessControlAllowOrigin - true to set crossorigin="anonymous" for DOM prefetch
+*                                                    and mode:'cors' for API fetch
+* @param {Boolean} checkAccessControlAllowCredentials - true to set credentials:'include' for API fetch
+* @param {Boolean} onlyOnMouseover - true to enable prefetch only on mouseover event
 * @return {Object} a Promise
 */
-export function prefetch(url, isPriority) {
+export function prefetch(urls, isPriority, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, onlyOnMouseover) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prefetch, ${chkConn.message}`));
@@ -220,26 +242,28 @@ export function prefetch(url, isPriority) {
 
   // Dev must supply own catch()
   return Promise.all(
-      [].concat(url).map(str => {
+      [].concat(urls).map(str => {
         if (toPrefetch.has(str)) return [];
 
         // Add it now, regardless of its success
         // ~> so that we don't repeat broken links
         toPrefetch.add(str);
 
-        return (isPriority ? priority : supported)(
-            new URL(str, location.href).toString(),
-        );
+        return prefetchOnHover((isPriority ? viaFetch : supported), new URL(str, location.href).toString(), onlyOnMouseover,
+            checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, isPriority);
       }),
   );
 }
 
 /**
 * Prerender a given URL
-* @param {String} urls - the URL to fetch
+* @param {String | String[]} urls - the URLs to fetch
+* @param {String} eagerness - prerender eagerness mode - default immediate
 * @return {Object} a Promise
 */
-export function prerender(urls) {
+export function prerender(urls, eagerness = 'immediate') {
+  urls = [].concat(urls);
+
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
     return Promise.reject(new Error(`Cannot prerender, ${chkConn.message}`));
@@ -249,11 +273,11 @@ export function prerender(urls) {
   // 1) whether UA supports spec rules.. If not, fallback to prefetch
   // Note: Prerendering supports same-site cross origin with opt-in header
   if (!hasSpecRulesSupport()) {
-    prefetch(urls);
+    prefetch(urls, true, false, false, eagerness === 'moderate' || eagerness === 'conservative');
     return Promise.reject(new Error('This browser does not support the speculation rules API. Falling back to prefetch.'));
   }
 
-  for (const url of [].concat(urls)) {
+  for (const url of urls) {
     toPrerender.add(url);
   }
 
@@ -262,6 +286,6 @@ export function prerender(urls) {
     console.warn('[Warning] You are using both prefetching and prerendering on the same document');
   }
 
-  const addSpecRules = addSpeculationRules(toPrerender);
-  return addSpecRules === true ? Promise.resolve() : Promise.reject(addSpecRules);
+  const specMap = addSpeculationRules(urls, eagerness);
+  return specMap.size > 0 ? Promise.resolve(specMap) : Promise.reject(specMap);
 }

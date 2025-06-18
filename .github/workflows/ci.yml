@@ -9,7 +9,7 @@ on:
 
 env:
   FORCE_COLOR: 2
-  NODE: 20
+  NODE: 22
 
 permissions:
   contents: read
@@ -29,6 +29,9 @@ jobs:
         with:
           node-version: ${{ env.NODE }}
           cache: npm
+
+      - name: Disable AppArmor
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
 
       - name: Install dependencies
         run: npm ci

@@ -20,7 +20,7 @@
 /**
  * Checks if a feature on `link` is natively supported.
  * Examples of features include `prefetch` and `preload`.
- * @param {Object} link Link object.
+ * @param {Object} link - Link object.
  * @return {Boolean} whether the feature is supported
  */
 function hasPrefetch(link) {
@@ -31,13 +31,17 @@ function hasPrefetch(link) {
 /**
  * Fetches a given URL using `<link rel=prefetch>`
  * @param {string} url - the URL to fetch
+ * @param {Boolean} hasCrossorigin - true to set crossorigin="anonymous"
  * @return {Object} a Promise
  */
-function viaDOM(url) {
+function viaDOM(url, hasCrossorigin) {
   return new Promise((resolve, reject, link) => {
     link = document.createElement('link');
     link.rel = 'prefetch';
     link.href = url;
+    if (hasCrossorigin) {
+      link.setAttribute('crossorigin', 'anonymous');
+    }
 
     link.onload = resolve;
     link.onerror = reject;
@@ -49,13 +53,16 @@ function viaDOM(url) {
 /**
  * Fetches a given URL using XMLHttpRequest
  * @param {string} url - the URL to fetch
+ * @param {Boolean} hasCredentials - true to set withCredentials:true
  * @return {Object} a Promise
  */
-function viaXHR(url) {
+function viaXHR(url, hasCredentials) {
   return new Promise((resolve, reject, request) => {
     request = new XMLHttpRequest();
 
-    request.open('GET', url, request.withCredentials = true);
+    request.open('GET', url, request.withCredentials = hasCredentials);
+
+    request.setRequestHeader('Accept', '*/*');
 
     request.onload = () => {
       if (request.status === 200) {
@@ -74,9 +81,12 @@ function viaXHR(url) {
  * Fetches a given URL using the Fetch API. Falls back
  * to XMLHttpRequest if the API is not supported.
  * @param {string} url - the URL to fetch
+ * @param {Boolean} hasModeCors - true to set mode:'cors'
+ * @param {Boolean} hasCredentials - true to set credentials:'include'
+ * @param {Boolean} isPriority - true to set priority:'high'
  * @return {Object} a Promise
  */
-export function priority(url) {
+export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
   // TODO: Investigate using preload for high-priority
   // fetches. May have to sniff file-extension to provide
   // valid 'as' values. In the future, we may be able to
@@ -84,7 +94,48 @@ export function priority(url) {
   //
   // As of 2018, fetch() is high-priority in Chrome
   // and medium-priority in Safari.
-  return window.fetch ? fetch(url, {credentials: 'include'}) : viaXHR(url);
+  const options = {headers: {accept: '*/*'}};
+  if (!hasModeCors) options.mode = 'no-cors';
+  if (hasCredentials) options.credentials = 'include';
+  isPriority ? options.priority = 'high' : options.priority = 'low';
+  return window.fetch ? fetch(url, options) : viaXHR(url, hasCredentials);
 }
 
-export const supported = hasPrefetch() ? viaDOM : viaXHR;
+/**
+ * Calls the prefetch function immediately
+ * or only on the mouseover event.
+ * @param {Function} callback  - original prefetch function
+ * @param {String} url - url to prefetch
+ * @param {Boolean} onlyOnMouseover - true to add the mouseover listener
+ * @return {Object} a Promise
+ */
+export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
+  if (!onlyOnMouseover) return callback(url, ...args);
+
+  const elements = document.querySelectorAll(`a[href="${url}"]`);
+  const timerMap = new Map();
+
+  for (const el of elements) {
+    const mouseenterListener = _ => {
+      const timer = setTimeout(() => {
+        el.removeEventListener('mouseenter', mouseenterListener);
+        el.removeEventListener('mouseleave', mouseleaveListener);
+        return callback(url, ...args);
+      }, 200);
+      timerMap.set(el, timer);
+    };
+
+    const mouseleaveListener = _ => {
+      const timer = timerMap.get(el);
+      if (timer) {
+        clearTimeout(timer);
+        timerMap.delete(el);
+      }
+    };
+
+    el.addEventListener('mouseenter', mouseenterListener);
+    el.addEventListener('mouseleave', mouseleaveListener);
+  }
+}
+
+export const supported = hasPrefetch() ? viaDOM : viaFetch;
