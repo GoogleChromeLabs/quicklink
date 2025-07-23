@@ -175,11 +175,13 @@ export function listen(options = {}) {
       } else {
         entry = entry.target;
         const index = hrefsInViewport.indexOf(entry.href);
+
         if (index > -1) {
           hrefsInViewport.splice(index);
         }
+
         if (specRulesInViewport.has(entry.href)) {
-          specRulesInViewport = removeSpeculationRule(specRulesInViewport, entry.href);
+          specRulesInViewport.set(removeSpeculationRule(specRulesInViewport, entry.href));
         }
       }
     });
