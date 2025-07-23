@@ -39,6 +39,7 @@ module.exports = {
       },
     ],
     'no-negated-condition': 'warn',
+    'no-const-assign': 'error',
     'prefer-destructuring': [
       'off',
       {
