@@ -35,7 +35,7 @@ mainSuite('should prefetch in-viewport links correctly (UMD)', async context => 
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-basic-usage.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/3.html`);
   assert.instance(responseURLs, Array);
   assert.ok(responseURLs.includes(`${server}/1.html`));
   assert.ok(responseURLs.includes(`${server}/2.html`));
@@ -70,7 +70,7 @@ mainSuite('should prefetch in-viewport links that scroll into view correctly (UM
   await context.page.evaluate(_ => {
     window.scrollBy(0, window.innerHeight);
   });
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/4.html`);
   assert.instance(responseURLs, Array);
   assert.ok(responseURLs.includes(`${server}/1.html`));
   assert.ok(responseURLs.includes(`${server}/2.html`));
@@ -84,7 +84,7 @@ mainSuite('should prefetch in-viewport links from a custom DOM source', async co
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-custom-dom-source.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/main.css`);
   assert.instance(responseURLs, Array);
   assert.ok(responseURLs.includes(`${server}/main.css`));
 });
@@ -95,7 +95,8 @@ mainSuite('should prefetch in-viewport links from NodeList', async context => {
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-node-list.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/2.html`);
+  await context.page.waitForResponse(resp => resp.url() === `${server}/3.html`);
   assert.instance(responseURLs, Array);
   assert.ok(responseURLs.includes(`${server}/2.html`));
   assert.ok(responseURLs.includes(`${server}/3.html`));
@@ -106,14 +107,25 @@ mainSuite('should only prefetch links if allowed in origins list', async context
   context.page.on('response', resp => {
     responseURLs.push(resp.url());
   });
+  await context.page.setRequestInterception(true);
+  const requestHandler = req => {
+    if (req.url().startsWith('https://example.com/') || req.url().startsWith('https://github.githubassets.com/')) {
+      req.respond({status: 200, body: 'mocked'});
+    } else {
+      req.continue();
+    }
+  };
+  context.page.on('request', requestHandler);
   await context.page.goto(`${server}/test-allow-origin.html`);
-  await sleep(1000);
+  await sleep(200);
   assert.instance(responseURLs, Array);
 
-  // => origins: ['github.githubassets.com']
+  // => origins: ['github.githubassets.com', 'example.com']
   assert.not.ok(responseURLs.includes(`${server}/2.html`));
   assert.ok(responseURLs.includes('https://example.com/1.html'));
   assert.ok(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'));
+  context.page.off('request', requestHandler);
+  await context.page.setRequestInterception(false);
 });
 
 mainSuite('should prefetch all links when allowing all origins', async context => {
@@ -121,8 +133,17 @@ mainSuite('should prefetch all links when allowing all origins', async context =
   context.page.on('response', resp => {
     responseURLs.push(resp.url());
   });
+  await context.page.setRequestInterception(true);
+  const requestHandler = req => {
+    if (req.url().startsWith('https://')) {
+      req.respond({status: 200, body: 'mocked'});
+    } else {
+      req.continue();
+    }
+  };
+  context.page.on('request', requestHandler);
   await context.page.goto(`${server}/test-allow-origin-all.html`);
-  await sleep();
+  await sleep(200);
   assert.instance(responseURLs, Array);
 
   // => origins: true
@@ -131,6 +152,8 @@ mainSuite('should prefetch all links when allowing all origins', async context =
   assert.ok(responseURLs.includes('https://example.com/1.html'));
   assert.ok(responseURLs.includes(`${server}/2.html`));
   assert.ok(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'));
+  context.page.off('request', requestHandler);
+  await context.page.setRequestInterception(false);
 });
 
 mainSuite('should only prefetch links of same origin (default)', async context => {
@@ -139,7 +162,7 @@ mainSuite('should only prefetch links of same origin (default)', async context =
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-same-origin.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/2.html`);
   assert.instance(responseURLs, Array);
 
   // => origins: [location.hostname] (default)
@@ -173,7 +196,7 @@ mainSuite('should only prefetch links after ignore patterns allowed it (multiple
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-ignore-multiple.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/2.html`);
   assert.instance(responseURLs, Array);
 
   // => origins: true (all)
@@ -193,7 +216,7 @@ mainSuite('should accept a single URL to prefetch()', async context => {
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-prefetch-single.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/2.html`);
   assert.instance(responseURLs, Array);
   assert.ok(responseURLs.includes(`${server}/2.html`));
 });
@@ -204,7 +227,7 @@ mainSuite('should accept multiple URLs to prefetch()', async context => {
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-prefetch-multiple.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/4.html`);
 
   // don't care about first 3 URLs (markup)
   const ours = responseURLs.slice(3);
@@ -221,7 +244,7 @@ mainSuite('should not prefetch() the same URL repeatedly', async context => {
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-prefetch-duplicate.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/2.html`);
 
   // don't care about first 3 URLs (markup)
   const ours = responseURLs.slice(3);
@@ -237,7 +260,7 @@ mainSuite.skip('should not call the same URL repeatedly (shared)', async context
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-prefetch-duplicate-shared.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/2.html`);
 
   // count occurrences of our link
   const target = responseURLs.filter(x => x === `${server}/2.html`);
@@ -250,7 +273,7 @@ mainSuite('should not exceed the `limit` total', async context => {
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-limit.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/1.html`);
 
   // don't care about first 3 URLs (markup)
   const ours = responseURLs.slice(3);
@@ -266,7 +289,7 @@ mainSuite('should respect the `throttle` concurrency', async context => {
   // ~> so that we can ensure throttling occurs
   await context.page.setRequestInterception(true);
 
-  context.page.on('request', async req => {
+  const throttleHandler = async req => {
     const url = req.url();
     if (/test\/fixtures\/\d+\.html$/i.test(url)) {
       await sleep(100);
@@ -275,7 +298,8 @@ mainSuite('should respect the `throttle` concurrency', async context => {
     }
 
     req.continue();
-  });
+  };
+  context.page.on('request', throttleHandler);
 
   await context.page.goto(`${server}/test-throttle.html`);
 
@@ -288,6 +312,8 @@ mainSuite('should respect the `throttle` concurrency', async context => {
   // Note: Parallel requests, w/ 50ms buffer
   await sleep(250);
   assert.is(URLs.length, 4);
+  context.page.off('request', throttleHandler);
+  await context.page.setRequestInterception(false);
 });
 
 mainSuite('should prefetch using a custom function to build the URL', async context => {
@@ -296,8 +322,18 @@ mainSuite('should prefetch using a custom function to build the URL', async cont
     responseURLs.push(resp.url());
   });
 
+  await context.page.setRequestInterception(true);
+  const hrefMockHandler = req => {
+    const url = req.url();
+    if (url.startsWith('https://example.com/?url=')) {
+      return req.respond({status: 200, body: 'mocked'});
+    }
+    req.continue();
+  };
+  context.page.on('request', hrefMockHandler);
+
   await context.page.goto(`${server}/test-custom-href-function.html`);
-  await sleep();
+  await sleep(200);
 
   // don't care about first 3 URLs (markup)
   const ours = responseURLs.slice(3);
@@ -305,6 +341,9 @@ mainSuite('should prefetch using a custom function to build the URL', async cont
   assert.ok(ours.includes(`https://example.com/?url=${server}/2.html`));
   assert.ok(ours.includes(`https://example.com/?url=${server}/3.html`));
   assert.ok(ours.includes(`https://example.com/?url=${server}/4.html`));
+
+  context.page.off('request', hrefMockHandler);
+  await context.page.setRequestInterception(false);
 });
 
 mainSuite('should delay prefetch for in-viewport links correctly (UMD)', async context => {
@@ -313,7 +352,7 @@ mainSuite('should delay prefetch for in-viewport links correctly (UMD)', async c
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-delay.html`);
-  await sleep();
+  await context.page.waitForResponse(resp => resp.url() === `${server}/3.html`);
   assert.instance(responseURLs, Array);
   assert.ok(responseURLs.includes(`${server}/1.html`));
   assert.ok(responseURLs.includes(`${server}/2.html`));
@@ -322,7 +361,6 @@ mainSuite('should delay prefetch for in-viewport links correctly (UMD)', async c
   await context.page.evaluate(_ => {
     window.scrollBy(0, window.innerHeight);
   });
-  await sleep(100);
   await context.page.evaluate(_ => {
     window.scrollBy(0, -window.innerHeight);
   });
@@ -331,7 +369,7 @@ mainSuite('should delay prefetch for in-viewport links correctly (UMD)', async c
   await context.page.evaluate(_ => {
     window.scrollBy(0, window.innerHeight);
   });
-  await sleep(200);
+  await sleep(400);
   assert.ok(responseURLs.includes(`${server}/4.html`));
 });
 
@@ -345,7 +383,7 @@ mainSuite('should consider threshold option before prefetching (UMD)', async con
     width: 1000,
     height: 800,
   });
-  await sleep();
+  await sleep(200);
   assert.instance(responseURLs, Array);
   assert.ok(responseURLs.includes(`${server}/1.html`));
   assert.ok(responseURLs.includes(`${server}/2.html`));
