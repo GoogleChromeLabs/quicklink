@@ -70,6 +70,18 @@ module.exports = {
     },
     {
       files: [
+        'rollup.config.mjs',
+      ],
+      env: {
+        node: true,
+        browser: false,
+      },
+      parserOptions: {
+        sourceType: 'module',
+      },
+    },
+    {
+      files: [
         'site/**',
       ],
       env: {
