@@ -4,6 +4,8 @@
 
 'use strict';
 
+const {existsSync} = require('node:fs');
+const path = require('node:path');
 const {EleventyHtmlBasePlugin: htmlBasePlugin} = require('@11ty/eleventy');
 const navigationPlugin = require('@11ty/eleventy-navigation');
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
@@ -13,8 +15,11 @@ const markdownIt = require('markdown-it');
 const pluginRev = require('eleventy-plugin-rev');
 const postcss = require('postcss');
 const sass = require('eleventy-sass');
+const {version: quicklinkVersion} = require(path.join(__dirname, '../package.json'));
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const QUICKLINK_UMD_SRC = path.join(__dirname, '../dist/quicklink.umd.js');
+const QUICKLINK_UMD_DEST = path.posix.join(`assets/vendor/quicklink-${quicklinkVersion}.umd.js`);
 
 const htmlminifierConfig = {
   collapseBooleanAttributes: true,
@@ -61,9 +66,15 @@ module.exports = eleventyConfig => {
     },
   ]);
 
+  if (!existsSync(QUICKLINK_UMD_SRC)) {
+    throw new Error(`Missing local Quicklink bundle at ${QUICKLINK_UMD_SRC}. Run "npm run build-all" from the repo root first.`);
+  }
+
   eleventyConfig.addPassthroughCopy('src/assets/images');
   eleventyConfig.addPassthroughCopy('src/assets/js');
   eleventyConfig.addPassthroughCopy('src/site.webmanifest');
+  // Serve the locally built Quicklink bundle
+  eleventyConfig.addPassthroughCopy({[QUICKLINK_UMD_SRC]: QUICKLINK_UMD_DEST});
 
   eleventyConfig.addNunjucksFilter('markdown', string => {
     const md = new markdownIt();
