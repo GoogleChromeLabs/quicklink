@@ -15,13 +15,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- **/
+ */
 
 /**
  * Checks if a feature on `link` is natively supported.
  * Examples of features include `prefetch` and `preload`.
- * @param {Object} link - Link object.
- * @return {Boolean} whether the feature is supported
+ * @param {object} link - Link object.
+ * @returns {boolean} whether the feature is supported
  */
 function hasPrefetch(link) {
   link = document.createElement('link');
@@ -31,8 +31,8 @@ function hasPrefetch(link) {
 /**
  * Fetches a given URL using `<link rel=prefetch>`
  * @param {string} url - the URL to fetch
- * @param {Boolean} hasCrossorigin - true to set crossorigin="anonymous"
- * @return {Object} a Promise
+ * @param {boolean} hasCrossorigin - true to set crossorigin="anonymous"
+ * @returns {object} a Promise
  */
 function viaDOM(url, hasCrossorigin) {
   return new Promise((resolve, reject, link) => {
@@ -53,8 +53,8 @@ function viaDOM(url, hasCrossorigin) {
 /**
  * Fetches a given URL using XMLHttpRequest
  * @param {string} url - the URL to fetch
- * @param {Boolean} hasCredentials - true to set withCredentials:true
- * @return {Object} a Promise
+ * @param {boolean} hasCredentials - true to set withCredentials:true
+ * @returns {object} a Promise
  */
 function viaXHR(url, hasCredentials) {
   return new Promise((resolve, reject, request) => {
@@ -81,10 +81,10 @@ function viaXHR(url, hasCredentials) {
  * Fetches a given URL using the Fetch API. Falls back
  * to XMLHttpRequest if the API is not supported.
  * @param {string} url - the URL to fetch
- * @param {Boolean} hasModeCors - true to set mode:'cors'
- * @param {Boolean} hasCredentials - true to set credentials:'include'
- * @param {Boolean} isPriority - true to set priority:'high'
- * @return {Object} a Promise
+ * @param {boolean} hasModeCors - true to set mode:'cors'
+ * @param {boolean} hasCredentials - true to set credentials:'include'
+ * @param {boolean} isPriority - true to set priority:'high'
+ * @returns {object} a Promise
  */
 export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
   // TODO: Investigate using preload for high-priority
@@ -104,10 +104,11 @@ export function viaFetch(url, hasModeCors, hasCredentials, isPriority) {
 /**
  * Calls the prefetch function immediately
  * or only on the mouseover event.
- * @param {Function} callback  - original prefetch function
- * @param {String} url - url to prefetch
- * @param {Boolean} onlyOnMouseover - true to add the mouseover listener
- * @return {Object} a Promise
+ * @param {(url: string, ...args: unknown[]) => Promise<unknown>} callback  - original prefetch function
+ * @param {string} url - url to prefetch
+ * @param {boolean} onlyOnMouseover - true to add the mouseover listener
+ * @param {...unknown} args - additional arguments passed to the callback
+ * @returns {Promise<unknown>|void} a Promise when executed immediately, otherwise undefined
  */
 export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
   if (!onlyOnMouseover) return callback(url, ...args);
@@ -136,6 +137,8 @@ export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
     el.addEventListener('mouseenter', mouseenterListener);
     el.addEventListener('mouseleave', mouseleaveListener);
   }
+
+  return undefined;
 }
 
 export const supported = hasPrefetch() ? viaDOM : viaFetch;

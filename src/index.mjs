@@ -12,12 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- **/
+ */
 
 import throttle from 'throttles';
 import {prefetchOnHover, supported, viaFetch} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
 import {addSpeculationRules, removeSpeculationRule, hasSpecRulesSupport} from './prerender.mjs';
+
+/**
+ * @typedef {(RegExp|((href: string, node: Element) => boolean))} FilterMatcher
+ */
 
 // Cache of URLs we've prefetched
 // Its `size` is compared against `opts.limit` value.
@@ -34,8 +38,8 @@ let shouldPrerenderAndPrefetch = false;
  *   - Function receives `node.href, node` arguments
  *   - RegExp receives `node.href` only (the full URL)
  * @param  {Element}  node    The anchor (<a>) tag.
- * @param  {Mixed}    filter  The custom filter(s)
- * @return {Boolean}          If true, then it should be ignored
+ * @param  {FilterMatcher|Array<FilterMatcher>} filter  The custom filter(s)
+ * @returns {boolean}         If true, then it should be ignored
  */
 function isIgnored(node, filter) {
   return Array.isArray(filter) ?
@@ -45,8 +49,8 @@ function isIgnored(node, filter) {
 
 /**
  * Checks network conditions
- * @param  {NetworkInformation}  conn    The connection information to be checked
- * @return {Boolean|Object}  Error Object if the constrainsts are met or boolean otherwise
+ * @param  {NetworkInformation}  conn   The connection information to be checked
+ * @returns {boolean | object}   Error  Object if the constrainsts are met or boolean otherwise
  */
 function checkConnection(conn) {
   // If no connection object, assume it's okay to prefetch
@@ -71,30 +75,32 @@ function checkConnection(conn) {
  * it would be useful. By default, looks at in-viewport
  * links for `document`. Can also work off a supplied
  * DOM element or static array of URLs.
- * @param {Object} options - Configuration options for quicklink
- * @param {Object|Array} [options.el] - DOM element(s) to prefetch in-viewport links of
- * @param {Boolean} [options.priority] - Attempt higher priority fetch (low or high)
- * @param {Boolean} [options.checkAccessControlAllowOrigin] - Check Access-Control-Allow-Origin response header
- * @param {Boolean} [options.checkAccessControlAllowCredentials] - Check the Access-Control-Allow-Credentials response header
- * @param {Boolean} [options.onlyOnMouseover] - Enable the prefetch only on mouseover event
+ * @param {object} options - Configuration options for quicklink
+ * @param {object | Array} [options.el] - DOM element(s) to prefetch in-viewport links of
+ * @param {boolean} [options.priority] - Attempt higher priority fetch (low or high)
+ * @param {boolean} [options.checkAccessControlAllowOrigin] - Check Access-Control-Allow-Origin response header
+ * @param {boolean} [options.checkAccessControlAllowCredentials] - Check the Access-Control-Allow-Credentials response header
+ * @param {boolean} [options.onlyOnMouseover] - Enable the prefetch only on mouseover event
  * @param {Array} [options.origins] - Allowed origins to prefetch (empty allows all)
- * @param {Array|RegExp|Function} [options.ignores] - Custom filter(s) that run after origin checks
- * @param {Number} [options.timeout] - Timeout after which prefetching will occur
- * @param {Number} [options.throttle] - The concurrency limit for prefetching
- * @param {Number} [options.threshold] - The area percentage of each link that must have entered the viewport to be fetched
- * @param {Number} [options.limit] - The total number of prefetches to allow
- * @param {Number} [options.delay] - Time each link needs to stay inside viewport before prefetching (milliseconds)
- * @param {Function} [options.timeoutFn] - Custom timeout function
- * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
- * @param {Function} [options.hrefFn] - Function to use to build the URL to prefetch.
+ * @param {Array<FilterMatcher>|FilterMatcher} [options.ignores] - Custom filter(s) that run after origin checks
+ * @param {number} [options.timeout] - Timeout after which prefetching will occur
+ * @param {number} [options.throttle] - The concurrency limit for prefetching
+ * @param {number} [options.threshold] - The area percentage of each link that must have entered the viewport to be fetched
+ * @param {number} [options.limit] - The total number of prefetches to allow
+ * @param {number} [options.delay] - Time each link needs to stay inside viewport before prefetching (milliseconds)
+ * @param {(cb: () => void, opts?: object) => number} [options.timeoutFn] - Custom timeout function
+ * @param {(error: Error) => void} [options.onError] - Error handler for failed `prefetch` requests
+ * @param {(entry: HTMLAnchorElement) => string} [options.hrefFn] - Function to use to build the URL to prefetch.
  *                                             If it's not a valid function, then it will use the entry href.
- * @param {Boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
- * @param {String} [options.eagerness] - Prerender eagerness mode - default immediate
- * @param {Boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
- * @return {Function}
+ * @param {boolean} [options.prerender] - Option to switch from prefetching and use prerendering only
+ * @param {string} [options.eagerness] - Prerender eagerness mode - default immediate
+ * @param {boolean} [options.prerenderAndPrefetch] - Option to use both prerendering and prefetching
+ * @returns {() => void} Cleanup function to detach observers and clear state
  */
 export function listen(options = {}) {
-  if (!window.IntersectionObserver || !('isIntersecting' in IntersectionObserverEntry.prototype)) return;
+  if (!window.IntersectionObserver || !('isIntersecting' in IntersectionObserverEntry.prototype)) {
+    return () => {};
+  }
 
   const [toAdd, isDone] = throttle(options.throttle || 1 / 0);
   const limit = options.limit || 1 / 0;
@@ -225,15 +231,15 @@ export function listen(options = {}) {
 }
 
 /**
-* Prefetch a given URL with an optional preferred fetch priority
-* @param {String | String[]} urls - the URLs to fetch
-* @param {Boolean} isPriority - if is "high" priority
-* @param {Boolean} checkAccessControlAllowOrigin - true to set crossorigin="anonymous" for DOM prefetch
-*                                                    and mode:'cors' for API fetch
-* @param {Boolean} checkAccessControlAllowCredentials - true to set credentials:'include' for API fetch
-* @param {Boolean} onlyOnMouseover - true to enable prefetch only on mouseover event
-* @return {Object} a Promise
-*/
+ * Prefetch a given URL with an optional preferred fetch priority
+ * @param {string | string[]} urls - the URLs to fetch
+ * @param {boolean} isPriority - if is "high" priority
+ * @param {boolean} checkAccessControlAllowOrigin - true to set crossorigin="anonymous" for DOM prefetch
+ *                                                    and mode:'cors' for API fetch
+ * @param {boolean} checkAccessControlAllowCredentials - true to set credentials:'include' for API fetch
+ * @param {boolean} onlyOnMouseover - true to enable prefetch only on mouseover event
+ * @returns {object} a Promise
+ */
 export function prefetch(urls, isPriority, checkAccessControlAllowOrigin, checkAccessControlAllowCredentials, onlyOnMouseover) {
   const chkConn = checkConnection(navigator.connection);
   if (chkConn instanceof Error) {
@@ -264,11 +270,11 @@ export function prefetch(urls, isPriority, checkAccessControlAllowOrigin, checkA
 }
 
 /**
-* Prerender a given URL
-* @param {String | String[]} urls - the URLs to fetch
-* @param {String} eagerness - prerender eagerness mode - default immediate
-* @return {Object} a Promise
-*/
+ * Prerender a given URL
+ * @param {string | string[]} urls - the URLs to fetch
+ * @param {string} eagerness - prerender eagerness mode - default immediate
+ * @returns {object} a Promise
+ */
 export function prerender(urls, eagerness = 'immediate') {
   urls = [urls].flat();
 
