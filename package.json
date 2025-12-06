@@ -73,8 +73,8 @@
     "microbundle": "^0.15.1",
     "npm-run-all2": "^8.0.4",
     "puppeteer": "^24.27.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "sirv-cli": "^3.0.1",
     "size-limit": "^11.2.0",
     "uvu": "^0.5.6"
