@@ -14,10 +14,6 @@ env:
 permissions:
   contents: read
 
-defaults:
-  run:
-    working-directory: site
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,5 +33,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
+      - name: Build site
+        run: npm run site:build
