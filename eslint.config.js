@@ -128,6 +128,14 @@ module.exports = [
   },
   {
     files: [
+      'rollup.config.mjs',
+    ],
+    languageOptions: {
+      sourceType: 'module',
+    },
+  },
+  {
+    files: [
       'site/src/assets/js/**',
     ],
     languageOptions: {
