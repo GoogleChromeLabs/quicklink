@@ -2,9 +2,11 @@
 
 'use strict';
 
+const path = require('node:path');
 const process = require('node:process');
 
 const IS_NETLIFY = process.env.NETLIFY === 'true';
+const {version: quicklinkVersion} = require(path.join(__dirname, '../../../package.json'));
 
 module.exports = () => {
   return {
@@ -16,7 +18,7 @@ module.exports = () => {
     url: IS_NETLIFY ? process.env.DEPLOY_PRIME_URL : 'https://getquick.link',
     isNetlify: IS_NETLIFY,
     quicklinkGithubURL: 'https://github.com/GoogleChromeLabs/quicklink',
-    quicklinkVersion: '3.0.1',
+    quicklinkVersion,
     quicklinkSizeLimit: '1KB',
     bottomResource: {
       caption: 'View source on GitHub',
