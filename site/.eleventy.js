@@ -52,6 +52,7 @@ module.exports = eleventyConfig => {
       rev: false,
     },
     {
+      postcss: postcss([autoprefixer]),
       sass: {
         style: 'compressed',
         sourceMap: false,
