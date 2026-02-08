@@ -12,11 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- **/
+ */
 
 import throttle from 'throttles';
 import {viaFetch, supported} from './prefetch.mjs';
 import requestIdleCallback from './request-idle-callback.mjs';
+
+/**
+ * @typedef {(RegExp|((href: string, node: Element) => boolean))} FilterMatcher
+ */
+/**
+ * @typedef {(target: Element|string,
+ *    prefetchHandler: (urls: string|Array<string>) => Promise<unknown>) => void} PrefetchChunksHandler
+ */
 
 // Cache of URLs we've prefetched
 // Its `size` is compared against `opts.limit` value.
@@ -28,8 +36,8 @@ const toPrefetch = new Set();
  *   - Function receives `node.href, node` arguments
  *   - RegExp receives `node.href` only (the full URL)
  * @param  {Element}  node    The anchor (<a>) tag.
- * @param  {Mixed}    filter  The custom filter(s)
- * @return {Boolean}          If true, then it should be ignored
+ * @param  {FilterMatcher|Array<FilterMatcher>} filter  The custom filter(s)
+ * @returns {boolean}         If true, then it should be ignored
  */
 function isIgnored(node, filter) {
   if (Array.isArray(filter)) {
@@ -45,18 +53,19 @@ function isIgnored(node, filter) {
  * it would be useful. By default, looks at in-viewport
  * links for `document`. Can also work off a supplied
  * DOM element or static array of URLs.
- * @param {Object} options - Configuration options for quicklink
- * @param {Object} [options.el] - DOM element to prefetch in-viewport links of
- * @param {Boolean} [options.priority] - Attempt higher priority fetch (low or high)
+ * @param {object} options - Configuration options for quicklink
+ * @param {object} [options.el] - DOM element to prefetch in-viewport links of
+ * @param {boolean} [options.priority] - Attempt higher priority fetch (low or high)
  * @param {Array} [options.origins] - Allowed origins to prefetch (empty allows all)
- * @param {Array|RegExp|Function} [options.ignores] - Custom filter(s) that run after origin checks
- * @param {Number} [options.timeout] - Timeout after which prefetching will occur
- * @param {Number} [options.throttle] - The concurrency limit for prefetching
- * @param {Number} [options.limit] - The total number of prefetches to allow
- * @param {Function} [options.timeoutFn] - Custom timeout function
- * @param {Function} [options.onError] - Error handler for failed `prefetch` requests
- * @param {Function} [options.prefetchChunks] - Function to prefetch chunks for route URLs (with route manifest for URL mapping)
- * @return {undefined}
+ * @param {Array<FilterMatcher>|FilterMatcher} [options.ignores] - Custom filter(s) that run after origin checks
+ * @param {number} [options.timeout] - Timeout after which prefetching will occur
+ * @param {number} [options.throttle] - The concurrency limit for prefetching
+ * @param {number} [options.limit] - The total number of prefetches to allow
+ * @param {(cb: () => void, opts?: object) => number} [options.timeoutFn] - Custom timeout function
+ * @param {(error: Error) => void} [options.onError] - Error handler for failed `prefetch` requests
+ * @param {PrefetchChunksHandler} [options.prefetchChunks]
+ *    Function to prefetch chunks for route URLs (with route manifest for URL mapping)
+ * @returns {undefined}
  */
 export function listen(options = {}) {
   if (!window.IntersectionObserver) return;
@@ -121,9 +130,9 @@ export function listen(options = {}) {
 
 /**
  * Prefetch a given URL with an optional preferred fetch priority
- * @param {String} url - the URL to fetch
- * @param {Boolean} [isPriority] - if is "high" priority
- * @return {Object} a Promise
+ * @param {string} url - the URL to fetch
+ * @param {boolean} [isPriority] - if is "high" priority
+ * @returns {object} a Promise
  */
 export function prefetch(url, isPriority) {
   const {connection} = navigator;

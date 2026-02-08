@@ -15,13 +15,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- **/
+ */
 
 /**
  * Add a given set of urls to the speculation rules
- * @param {String[]} urlsToPrerender - the URLs to add to speculation rules
- * @param {String} eagerness - prerender eagerness mode
- * @return {Map<HTMLScriptElement, string>|Error}  Map of script elements to their URLs or Error Object
+ * @param {string[]} urlsToPrerender - the URLs to add to speculation rules
+ * @param {string} eagerness - prerender eagerness mode
+ * @returns {Map<HTMLScriptElement, string>|Error}  Map of script elements to their URLs or Error Object
  */
 export function addSpeculationRules(urlsToPrerender, eagerness) {
   const specMap = new Map();
@@ -52,7 +52,7 @@ export function addSpeculationRules(urlsToPrerender, eagerness) {
  * Removes a speculation rule script associated with a given URL
  * @param {Map<string, HTMLScriptElement>} specMap - Map of URLs to their script elements
  * @param {string} url - The URL whose speculation rule should be removed
- * @return {Map<string, HTMLScriptElement>|Error} The updated map after removal or Error Object
+ * @returns {Map<string, HTMLScriptElement>|Error} The updated map after removal or Error Object
  */
 export function removeSpeculationRule(specMap, url) {
   const specScript = specMap.get(url);
@@ -69,7 +69,7 @@ export function removeSpeculationRule(specMap, url) {
 
 /**
  * Check whether UA supports Speculation Rules API
- * @return {Boolean} whether UA has support for Speculation Rules API
+ * @returns {boolean} whether UA has support for Speculation Rules API
  */
 export function hasSpecRulesSupport() {
   return HTMLScriptElement.supports('speculationrules');
