@@ -10,6 +10,9 @@
   "bugs": {
     "url": "https://github.com/GoogleChromeLabs/quicklink/issues"
   },
+  "workspaces": [
+    "site"
+  ],
   "author": "addyosmani <addyosmani@gmail.com>",
   "license": "Apache-2.0",
   "main": "dist/quicklink.js",
@@ -32,6 +35,10 @@
     "build-all": "npm-run-all --parallel build build-plugin build-react-chunks",
     "prepublishonly": "npm run build-all",
     "size": "size-limit",
+    "site:build": "npm --prefix site run build",
+    "site:start": "npm --prefix site run start",
+    "site:lint": "npm --prefix site run lint",
+    "site:test": "npm --prefix site run test",
     "changelog": "npm run conventional-changelog -i CHANGELOG.md -s -r 0",
     "release": "cross-env-shell \"npm run build-all && git commit -am $npm_package_version && git tag $npm_package_version && git push --follow-tags\""
   },
