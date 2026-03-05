@@ -1,5 +1,3 @@
-/* eslint-env serviceworker */
-
 'use strict';
 
 importScripts('https://unpkg.com/network-idle-callback@1.0.1/lib/request-monitor.js');
