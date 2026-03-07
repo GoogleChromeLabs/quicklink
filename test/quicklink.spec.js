@@ -8,6 +8,19 @@ const host = 'http://127.0.0.1:8080';
 const server = `${host}/test/fixtures`;
 const mainSuite = suite('quicklink tests');
 
+const isExternalURL = url => {
+  try {
+    const parsed = new URL(url);
+
+    // "null" origins cover about:blank, data:, etc.
+    if (parsed.origin === 'null') return false;
+
+    return parsed.origin !== host;
+  } catch (_) {
+    return false;
+  }
+};
+
 // Default 1000 ms
 const sleep = (ms = 1000) => new Promise(resolve => {
   setTimeout(resolve, ms);
@@ -22,6 +35,28 @@ const puppeteerOptions = {
 mainSuite.before(async context => {
   context.browser = await puppeteer.launch(puppeteerOptions);
   context.page = await context.browser.newPage();
+
+  // Mock external network calls so that tests do not reach the internet
+  context.handleRequest = null;
+
+  await context.page.setRequestInterception(true);
+  context.page.on('request', req => {
+    const url = req.url();
+
+    if (isExternalURL(url)) {
+      return req.respond({
+        status: 200,
+        contentType: 'text/plain',
+        body: 'mocked external response',
+      });
+    }
+
+    if (typeof context.handleRequest === 'function') {
+      return context.handleRequest(req);
+    }
+
+    return req.continue();
+  });
 });
 
 mainSuite.after(async context => {
@@ -107,10 +142,10 @@ mainSuite('should only prefetch links if allowed in origins list', async context
     responseURLs.push(resp.url());
   });
   await context.page.goto(`${server}/test-allow-origin.html`);
-  await sleep(1000);
+  await sleep();
   assert.instance(responseURLs, Array);
 
-  // => origins: ['github.githubassets.com']
+  // => origins: ['github.githubassets.com', 'example.com']
   assert.not.ok(responseURLs.includes(`${server}/2.html`));
   assert.ok(responseURLs.includes('https://example.com/1.html'));
   assert.ok(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'));
@@ -262,11 +297,8 @@ mainSuite('should not exceed the `limit` total', async context => {
 mainSuite('should respect the `throttle` concurrency', async context => {
   const URLs = []; // Note: Page makes 4 requests
 
-  // Make HTML requests take a long time
-  // ~> so that we can ensure throttling occurs
-  await context.page.setRequestInterception(true);
-
-  context.page.on('request', async req => {
+  // Make HTML requests take a long time so that we can ensure throttling occurs
+  context.handleRequest = async req => {
     const url = req.url();
     if (/test\/fixtures\/\d+\.html$/i.test(url)) {
       await sleep(100);
@@ -274,8 +306,8 @@ mainSuite('should respect the `throttle` concurrency', async context => {
       return req.respond({status: 200});
     }
 
-    req.continue();
-  });
+    return req.continue();
+  };
 
   await context.page.goto(`${server}/test-throttle.html`);
 
@@ -288,6 +320,8 @@ mainSuite('should respect the `throttle` concurrency', async context => {
   // Note: Parallel requests, w/ 50ms buffer
   await sleep(250);
   assert.is(URLs.length, 4);
+
+  context.handleRequest = null;
 });
 
 mainSuite('should prefetch using a custom function to build the URL', async context => {
