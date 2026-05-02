@@ -1,18 +1,15 @@
-# Demo: Quicklink integration for create-react-app
+# Demo: Quicklink with a single-page app
 
-A demo showing how to use Quicklink with in a create-react-app site.
-To integrate your React SPA with Quicklink, follow the steps [here](https://github.com/GoogleChromeLabs/quicklink#single-page-apps-react).
+The original create-react-app Glitch project for this demo is no longer
+available. A self-hosted, framework-free SPA replacement lives on the Quicklink
+site:
 
-## Glitch Source
+- **Live:** https://getquick.link/demos/spa/
+- **Source:** [`site/src/demos/spa`](../../site/src/demos/spa)
 
-- [Link to Glitch App](https://create-react-app-quicklink.glitch.me/)
-- [Link to Project on Glitch](https://glitch.com/~create-react-app-quicklink)
-
-## Installation
-
-```sh
-git clone https://api.glitch.com/git/create-react-app-quicklink
-npm install
-npm start
-npm run build
-```
+The replacement uses a small hand-rolled hash router with one ES-module chunk
+per route. Quicklink is configured with an `hrefFn` that maps each link to its
+chunk URL, so prefetching grabs the route's JavaScript instead of an HTML
+document. The same pattern works in any SPA — see the
+[Single-page apps section](https://github.com/GoogleChromeLabs/quicklink#single-page-apps-react)
+of the main README for the React variant.
