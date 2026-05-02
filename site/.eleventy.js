@@ -64,6 +64,7 @@ module.exports = eleventyConfig => {
   eleventyConfig.addPassthroughCopy('src/assets/images');
   eleventyConfig.addPassthroughCopy('src/assets/js');
   eleventyConfig.addPassthroughCopy('src/site.webmanifest');
+  eleventyConfig.addPassthroughCopy('src/demos');
 
   eleventyConfig.addNunjucksFilter('markdown', string => {
     const md = new markdownIt();
