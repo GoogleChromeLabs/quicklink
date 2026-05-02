@@ -1,17 +1,14 @@
-# Demo: Quicklink basic usage
+# Demo: Quicklink basic usage (multi-page site)
 
-A demo showing how to use Quicklink on a simple multi-page website.
+A demo showing how to use Quicklink on a multi-page website.
 
-## Glitch Source
+The original Glitch project for this demo is no longer available. A self-hosted
+replacement lives on the Quicklink site:
 
-- [Link to Glitch App](https://anton-karlovskiy-quicklink-news.glitch.me)
-- [Link to Project on Glitch](https://glitch.com/~anton-karlovskiy-quicklink-news)
+- **Live:** https://getquick.link/demos/mini-ecomm-quicklink/
+- **Source:** [`site/src/demos/mini-ecomm-quicklink`](../../site/src/demos/mini-ecomm-quicklink)
 
-## Installation
-
-```sh
-git clone https://api.glitch.com/git/anton-karlovskiy-quicklink-news
-npm install
-npm start
-npm run build
-```
+The unoptimized counterpart (no Quicklink) is at
+https://getquick.link/demos/mini-ecomm/, with source at
+[`site/src/demos/mini-ecomm`](../../site/src/demos/mini-ecomm). Use them
+side-by-side to compare navigation behavior.

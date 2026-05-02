@@ -486,12 +486,17 @@ After installing `quicklink` as a dependency, you can use it as follows:
 
 ## Demo
 
-### Glitch demos
+### Live demos
 
-- [Using Quicklink in a multi-page site](https://github.com/GoogleChromeLabs/quicklink/tree/main/demos/news)
-- [Using Quicklink with Service Workers (via Workbox)](https://github.com/GoogleChromeLabs/quicklink/tree/main/demos/news-workbox)
+- [Mini-ecomm — without Quicklink](https://getquick.link/demos/mini-ecomm/) — vanilla multi-page store, no prefetching.
+- [Mini-ecomm — with Quicklink](https://getquick.link/demos/mini-ecomm-quicklink/) — same store, but Quicklink prefetches in-viewport product links.
+- [Single-page app](https://getquick.link/demos/spa/) — a small SPA that uses Quicklink to prefetch route-level JavaScript chunks.
+
+The source for these demos lives under [`site/src/demos/`](https://github.com/GoogleChromeLabs/quicklink/tree/main/site/src/demos).
+
+### Repo examples
+
 - [Using Quicklink to prefetch API calls instead of `href` attribute](https://github.com/GoogleChromeLabs/quicklink/tree/main/demos/hrefFn)
-- [Using Quicklink to prerender a specific page](https://uskay-prerender2.glitch.me/next.html)
 
 ### Research
 
