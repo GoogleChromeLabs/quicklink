@@ -83,5 +83,18 @@ module.exports = {
         'strict': 'error',
       },
     },
+    {
+      files: [
+        'site/src/demos/**',
+      ],
+      parserOptions: {
+        sourceType: 'module',
+        ecmaVersion: 2020,
+      },
+      rules: {
+        'strict': ['error', 'never'],
+        'max-len': 'off',
+      },
+    },
   ],
 };
