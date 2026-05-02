@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPA — Quicklink demo</title>
+<meta name="description" content="A tiny single-page app demonstrating how Quicklink can prefetch route-level JavaScript chunks for in-viewport links during idle time.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <span class="brand">Quicklink SPA demo</span>
+  <nav id="nav">
+    <a href="#/" data-route="home" data-chunk="routes/home.js">Home</a>
+    <a href="#/blog" data-route="blog" data-chunk="routes/blog.js">Blog</a>
+    <a href="#/about" data-route="about" data-chunk="routes/about.js">About</a>
+    <a href="#/contact" data-route="contact" data-chunk="routes/contact.js">Contact</a>
+  </nav>
+</header>
+<main id="view"></main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
