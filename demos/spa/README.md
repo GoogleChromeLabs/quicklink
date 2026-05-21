@@ -10,6 +10,6 @@ site:
 The replacement uses a small hand-rolled hash router with one ES-module chunk
 per route. Quicklink is configured with an `hrefFn` that maps each link to its
 chunk URL, so prefetching grabs the route's JavaScript instead of an HTML
-document. The same pattern works in any SPA — see the
+document. The same pattern works in any SPA - see the
 [Single-page apps section](https://github.com/GoogleChromeLabs/quicklink#single-page-apps-react)
 of the main README for the React variant.

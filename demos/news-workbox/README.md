@@ -12,5 +12,5 @@ mini-ecomm and SPA demos:
 For Workbox itself, the up-to-date guides live at
 https://developer.chrome.com/docs/workbox. To layer Workbox runtime caching on
 top of Quicklink, register a service worker that caches navigations or static
-assets — Quicklink only triggers `<link rel="prefetch">`, so any caching
+assets - Quicklink only triggers `<link rel="prefetch">`, so any caching
 strategy your service worker applies will continue to work as expected.
