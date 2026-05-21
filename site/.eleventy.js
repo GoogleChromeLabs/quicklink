@@ -74,6 +74,7 @@ module.exports = eleventyConfig => {
   eleventyConfig.addPassthroughCopy('src/demos');
   // Serve the locally built Quicklink bundle
   eleventyConfig.addPassthroughCopy({[QUICKLINK_UMD_SRC]: QUICKLINK_UMD_DEST});
+  eleventyConfig.addWatchTarget(QUICKLINK_UMD_SRC);
 
   eleventyConfig.addNunjucksFilter('markdown', string => {
     const md = new markdownIt();
