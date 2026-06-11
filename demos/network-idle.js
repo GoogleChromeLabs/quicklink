@@ -21,8 +21,8 @@ navigator.serviceWorker.getRegistration()
  * networkIdleCallback works similar to requestIdleCallback,
  * detecting and notifying you when network activity goes idle
  * in your current tab.
- * @param {(state: {didTimeout: boolean}) => void} fn - Callback invoked when the network is idle
- * @param {{timeout?: number}} options - Configuration options
+ * @param {*} fn - A valid function
+ * @param {*} options - An options object
  */
 function networkIdleCallback(fn, options = {timeout: 0}) {
   // Call the function immediately if required features are absent
