@@ -90,7 +90,7 @@ if ('serviceWorker' in navigator) {
 
 /**
  * Handle message passing
- * @param {MessageEvent} event - Message event from the service worker
+ * @param {*} event - A valid event
  */
 function handleMessage(event) {
   if (!event.data) {
