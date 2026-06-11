@@ -3,13 +3,8 @@
   "description": "",
   "version": "1.0.0",
   "private": true,
-  "dependencies": {
-    "quicklink": "file:.."
-  },
   "scripts": {
-    "prebuild": "npm --prefix .. run build-all",
     "build": "rimraf build && cross-env NODE_ENV=production eleventy",
-    "prestart": "npm --prefix .. run build-all",
     "dev": "rimraf build && cross-env NODE_ENV=development eleventy --serve",
     "start": "rimraf build && cross-env NODE_ENV=development eleventy --serve",
     "deploy": "firebase deploy --project=quicklink-6a87b",

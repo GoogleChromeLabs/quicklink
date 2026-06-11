@@ -21,7 +21,8 @@ Run these from the **repo root** to also watch and rebuild the library source:
 | `npm run site:lint`  | Lint the site code                                            |
 | `npm run site:test`  | Build and test the site                                       |
 
-Run these from the **`site/` directory** for site-only tasks (does not watch `../src/`):
+Run these from the **`site/` directory** for site-only tasks (does not watch `../src/`).
+They use the prebuilt library in `../dist`, so run `npm run build-all` from the repo root first if you haven't:
 
 | Command          | Description                                                   |
 | ---------------- | ------------------------------------------------------------- |
