@@ -242,7 +242,7 @@ By default, these errors are silently ignored.
 #### options.hrefFn
 
 - Type: `Function`
-- Default: None
+- Default: `None`
 
 An optional function to generate the URL to prefetch. It receives an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) as the argument.
 
@@ -500,7 +500,7 @@ The source for these demos lives under [`site/src/demos/`](https://github.com/Go
 
 ### Research
 
-Here's a [WebPageTest run](https://www.webpagetest.org/video/view.php?id=181212_4c294265117680f2636676721cc886613fe2eede&data=1) for our [demo](https://keyword-2-ecd7b.firebaseapp.com/) improving page-load performance by up to 4 seconds via quicklink's prefetching. A [video](https://youtu.be/rQ75YEbJicw) comparison of the before/after prefetching is on YouTube.
+Here's a [WebPageTest run](https://www.webpagetest.org/video/view.php?id=181212_4c294265117680f2636676721cc886613fe2eede&data=1) for our [demo](https://getquick.link/) improving page-load performance by up to 4 seconds via quicklink's prefetching. A [video](https://youtu.be/rQ75YEbJicw) comparison of the before/after prefetching is on YouTube.
 
 For demo purposes, we deployed a version of the [Google Blog](https://blog.google) on
 Firebase hosting. We then deployed another version of it, adding quicklink to the homepage and benchmarked navigating from the homepage to an article that was
@@ -524,7 +524,7 @@ Ads appear on sites mostly in two ways:
 
 - **Inside iframes:** By default, most ad-servers render ads within iframes. In these cases, those ad-links won't be prefetched by Quicklink, unless a developer explicitly passes in the URL of an ads iframe. The reason is that the library look-up for in-viewport elements is restricted to those of the top-level origin.
 
-- **Outside iframes:**: In cases when the site shows same-origin ads, displayed in the top-level document (e.g. by hosting the ads themselves and by displaying the ads in the page directly), the developer needs to explicitly tell Quicklink to avoid prefetching these links. This can be achieved by passing the URL or subpath of the ad-link, or the element containing it to the [custom ignore patterns list](#custom-ignore-patterns).
+- **Outside iframes.**: In cases when the site shows same-origin ads, displayed in the top-level document (e.g. by hosting the ads themselves and by displaying the ads in the page directly), the developer needs to explicitly tell Quicklink to avoid prefetching these links. This can be achieved by passing the URL or subpath of the ad-link, or the element containing it to the [custom ignore patterns list](#custom-ignore-patterns).
 
 ## Related projects
 
