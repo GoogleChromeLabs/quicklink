@@ -66,7 +66,7 @@ const coreModernConfig = {
     {
       file: 'dist/quicklink.modern.mjs',
       format: 'esm',
-      sourcemap: true,
+      sourcemap: false,
     },
   ],
 };
@@ -80,19 +80,19 @@ const coreLegacyConfig = {
       file: 'dist/quicklink.js',
       format: 'cjs',
       exports: 'named',
-      sourcemap: true,
+      sourcemap: false,
     },
     {
       file: 'dist/quicklink.mjs',
       format: 'esm',
-      sourcemap: true,
+      sourcemap: false,
     },
     {
       name: 'quicklink',
       file: 'dist/quicklink.umd.js',
       format: 'umd',
       exports: 'named',
-      sourcemap: true,
+      sourcemap: false,
     },
   ],
 };
@@ -106,19 +106,19 @@ const reactLegacyConfig = {
       file: 'dist/react/quicklink.js',
       format: 'cjs',
       exports: 'named',
-      sourcemap: true,
+      sourcemap: false,
     },
     {
       file: 'dist/react/quicklink.mjs',
       format: 'esm',
-      sourcemap: true,
+      sourcemap: false,
     },
     {
       name: 'quicklink',
       file: 'dist/react/quicklink.umd.js',
       format: 'umd',
       exports: 'named',
-      sourcemap: true,
+      sourcemap: false,
     },
   ],
 };
@@ -131,7 +131,7 @@ const reactModernConfig = {
     {
       file: 'dist/react/quicklink.modern.mjs',
       format: 'esm',
-      sourcemap: true,
+      sourcemap: false,
     },
   ],
 };
@@ -146,7 +146,7 @@ const reactHocConfig = {
       file: 'dist/react/hoc.js',
       format: 'cjs',
       exports: 'named',
-      sourcemap: true,
+      sourcemap: false,
     },
   ],
 };
