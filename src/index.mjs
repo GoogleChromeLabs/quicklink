@@ -206,11 +206,15 @@ export function listen(options = {}) {
   });
 
   timeoutFn(() => {
-    // Find all links & Connect them to IO if allowed
+    // Find all links & Connect them to IO if allowed.
+    // Skip anchors with the `download` attribute — those often point at large
+    // binary payloads that are wasteful to prefetch.
     const isAnchorElement = options.el && options.el.length > 0 && options.el[0].nodeName === 'A';
-    const elementsToListen = isAnchorElement ? options.el : (options.el || document).querySelectorAll('a');
+    const elementsToListen = isAnchorElement ? options.el : (options.el || document).querySelectorAll('a:not([download])');
 
     for (const link of elementsToListen) {
+      // NodeList of anchors may still include download links
+      if (link.hasAttribute('download')) continue;
       // If the anchor matches a permitted origin
       // ~> A `[]` or `true` means everything is allowed
       if (!allowed.length || allowed.includes(link.hostname)) {

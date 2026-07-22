@@ -106,8 +106,9 @@ export function listen(options = {}) {
   });
 
   timeoutFn(() => {
-    // Find all links & Connect them to IO if allowed
-    const links = (options.el || document).querySelectorAll('a[href]');
+    // Find all links & Connect them to IO if allowed.
+    // Skip anchors with the `download` attribute (large payloads).
+    const links = (options.el || document).querySelectorAll('a[href]:not([download])');
     for (const link of links) {
       // If the anchor matches a permitted origin
       // ~> A `[]` or `true` means everything is allowed
