@@ -106,7 +106,7 @@ export function listen(options = {}) {
   });
 
   timeoutFn(() => {
-    // Find all links & Connect them to IO if allowed.
+    // Find all links & connect them to IO if allowed.
     // Skip anchors with the `download` attribute (large payloads).
     const links = (options.el || document).querySelectorAll('a[href]:not([download])');
     for (const link of links) {
