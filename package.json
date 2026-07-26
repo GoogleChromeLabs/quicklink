@@ -66,20 +66,23 @@
     "@babel/preset-react": "^7.29.7",
     "@eslint/compat": "^2.1.0",
     "@size-limit/file": "^12.1.0",
-    "conventional-changelog": "^7.2.0",
+    "conventional-changelog": "^7.2.1",
     "cross-env": "^10.1.0",
-    "eslint": "^9.39.4",
+    "eslint": "^9.39.5",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^61.7.1",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.5.0",
     "microbundle": "^0.15.1",
-    "npm-run-all2": "^9.0.1",
-    "puppeteer": "^25.1.0",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "npm-run-all2": "^9.0.2",
+    "puppeteer": "^25.3.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "sirv-cli": "^3.0.1",
     "size-limit": "^12.1.0",
     "uvu": "^0.5.6"
+  },
+  "allowScripts": {
+    "puppeteer@25.3.0": true
   }
 }
