@@ -29,6 +29,12 @@ import {listen} from 'quicklink/dist/quicklink.mjs';
 listen();
 {% endhighlight %}
 
+{{ "Modern ES Module (`quicklink.modern.mjs`) — a smaller build for browsers with native ES module support (no legacy transforms). Prefer this when you only need to support modern browsers:" | markdown | safe }}
+{% highlight "js" %}
+import {listen} from 'quicklink/dist/quicklink.modern.mjs';
+listen();
+{% endhighlight %}
+
 {{ "The above options are best for multi-page sites. Single-page apps have a few options available for using quicklink with a router:" | markdown | safe }}
 {{ "* Call `quicklink.listen()` once a navigation to a new route has completed" | markdown | safe }}
 {{ "* Call `quicklink.listen()` against a specific DOM element / component" | markdown | safe }}
