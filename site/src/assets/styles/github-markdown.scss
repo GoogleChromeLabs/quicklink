@@ -14,6 +14,11 @@
   color: hsl(226deg, 52%, 27%) !important;
 }
 
+.markdown-body p a,
+.markdown-body li a {
+  text-decoration: underline;
+}
+
 .markdown-body h1,
 h2,
 h3,
