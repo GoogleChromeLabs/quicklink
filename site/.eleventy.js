@@ -2,17 +2,37 @@
 
 'use strict';
 
+const fs = require('node:fs/promises');
 const {EleventyHtmlBasePlugin: htmlBasePlugin} = require('@11ty/eleventy');
 const navigationPlugin = require('@11ty/eleventy-navigation');
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const autoprefixer = require('autoprefixer');
 const htmlminifier = require('html-minifier-terser');
 const markdownIt = require('markdown-it');
-const pluginRev = require('eleventy-plugin-rev');
 const postcss = require('postcss');
-const sass = require('eleventy-sass');
+const sass = require('sass');
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+
+const STYLES_DIR = 'src/assets/styles';
+const SCRIPTS_DIR = 'src/assets/js';
+
+const compileStyles = async entry => {
+  const from = `${STYLES_DIR}/${entry}.scss`;
+  const result = sass.compile(from, {
+    style: IS_PRODUCTION ? 'compressed' : 'expanded',
+    sourceMap: !IS_PRODUCTION,
+    sourceMapIncludeSources: !IS_PRODUCTION,
+  });
+
+  // inline the map: bundled output has no stable path to point a .map file at
+  const processed = await postcss([autoprefixer]).process(result.css, {
+    from,
+    map: IS_PRODUCTION ? false : {inline: true, prev: result.sourceMap},
+  });
+
+  return processed.css;
+};
 
 const htmlminifierConfig = {
   collapseBooleanAttributes: true,
@@ -39,28 +59,30 @@ module.exports = eleventyConfig => {
   eleventyConfig.addPlugin(htmlBasePlugin, {baseHref: '/'});
   eleventyConfig.addPlugin(navigationPlugin);
   eleventyConfig.addPlugin(syntaxHighlight);
-  eleventyConfig.addPlugin(pluginRev);
-  eleventyConfig.addPlugin(sass, [
-    {
-      postcss: postcss([autoprefixer]),
-      sass: {
-        style: 'expanded',
-        sourceMap: true,
-      },
-      rev: false,
-    },
-    {
-      sass: {
-        style: 'compressed',
-        sourceMap: false,
-      },
-      rev: true,
-      when: [{NODE_ENV: 'production'}],
-    },
-  ]);
+
+  // output filenames are content-hashed
+  eleventyConfig.addBundle('css', {
+    toFileDirectory: 'assets/styles',
+    outputFileExtension: 'css',
+  });
+  eleventyConfig.addBundle('js', {
+    toFileDirectory: 'assets/js',
+    outputFileExtension: 'js',
+  });
+
+  eleventyConfig.addGlobalData('styles', async () => ({
+    main: await compileStyles('main'),
+    markdown: await compileStyles('github-markdown'),
+  }));
+
+  eleventyConfig.addGlobalData('scripts', async () => ({
+    main: await fs.readFile(`${SCRIPTS_DIR}/script.js`, 'utf8'),
+  }));
+
+  eleventyConfig.addWatchTarget(STYLES_DIR);
+  eleventyConfig.addWatchTarget(SCRIPTS_DIR);
 
   eleventyConfig.addPassthroughCopy('src/assets/images');
-  eleventyConfig.addPassthroughCopy('src/assets/js');
   eleventyConfig.addPassthroughCopy('src/site.webmanifest');
   eleventyConfig.addPassthroughCopy('src/demos');
 
