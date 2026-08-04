@@ -23,7 +23,7 @@ Quicklink 通过以下方式加快后续页面的加载速度：
 - **检测视区中的链接**（使用 [Intersection Observer](https://developer.mozilla.org/zh-CN/docs/Web/API/Intersection_Observer_API)）。
 - **等待浏览器空闲**（使用 [requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)）。
 - **确认用户并未处于慢速连接**（使用 `navigator.connection.effectiveType`）或启用省流模式（使用 `navigator.connection.saveData`）。
-- **预获取视区内的 URL**（使用 [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) 或 XHR）。可根据请求优先级进行控制（若支持 fetch() 可进行切换）。
+- **预获取视区内的 URL**（使用 [`<link rel=prefetch>`](https://html.spec.whatwg.org/multipage/links.html#link-type-prefetch) 或 XHR）。可根据请求优先级进行控制（若支持 fetch() 可进行切换）。
 
 ## 开发原因
 
@@ -166,7 +166,7 @@ quicklink({
 
 允许所有跨域请求。
 
-> **注意**：可能会导致 [CORB](https://chromium.googlesource.com/chromium/src/+/main/services/network/cross_origin_read_blocking_explainer.md) 以及 [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) 问题！
+> **注意**：可能会导致 [CORB](https://chromium.googlesource.com/chromium/src/+/main/services/network/cross_origin_read_blocking_explainer.md) 以及 [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) 问题！
 
 ```js
 quicklink({

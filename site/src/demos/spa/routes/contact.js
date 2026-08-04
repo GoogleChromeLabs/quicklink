@@ -9,7 +9,7 @@ export default function render(view) {
     </article>
     <article>
       <h2>Documentation</h2>
-      <p>The <a href="/api">API reference</a>, <a href="/approach">approach</a>, and <a href="/measure">measurement</a> guides cover everything from installation to RUM measurement.</p>
+      <p>The <a href="/api/">API reference</a>, <a href="/approach/">approach</a>, and <a href="/measure/">measurement</a> guides cover everything from installation to RUM measurement.</p>
     </article>
     <p class="callout">This contact route is a separate JS chunk - note in the Network panel that it was prefetched by <code>quicklink</code> while you were on the home or blog route.</p>
   `;

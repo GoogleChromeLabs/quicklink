@@ -23,7 +23,7 @@ Quicklink attempts to make navigations to subsequent pages load faster. It:
 - **Detects links within the viewport** (using [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API))
 - **Waits until the browser is idle** (using [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback))
 - **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)
-- **Prefetches** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR) or **prerenders** (using [Speculation Rules API](https://github.com/WICG/nav-speculation/blob/main/triggers.md)) URLs to the links. Provides some control over the request priority (can switch to `fetch()` if supported).
+- **Prefetches** (using [`<link rel=prefetch>`](https://html.spec.whatwg.org/multipage/links.html#link-type-prefetch) or XHR) or **prerenders** (using [Speculation Rules API](https://github.com/WICG/nav-speculation/blob/main/triggers.md)) URLs to the links. Provides some control over the request priority (can switch to `fetch()` if supported).
 
 ## Why
 
@@ -293,7 +293,7 @@ Returns: `Promise`
 
 One or many URLs to be prerendered.
 
-> **Note:** Speculative Rules API supports same-site cross origin Prerendering with [opt-in header](https://bit.ly/ss-cross-origin-pre).
+> **Note:** Speculative Rules API supports same-site cross origin Prerendering with [opt-in header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Supports-Loading-Mode).
 
 #### eagerness
 
@@ -403,7 +403,7 @@ quicklink.listen({
 
 Enables all cross-origin requests to be made.
 
-> **Note:** You may run into [CORB](https://chromium.googlesource.com/chromium/src/+/main/services/network/cross_origin_read_blocking_explainer.md) and [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issues!
+> **Note:** You may run into [CORB](https://chromium.googlesource.com/chromium/src/+/main/services/network/cross_origin_read_blocking_explainer.md) and [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) issues!
 
 ```js
 quicklink.listen({
@@ -538,7 +538,7 @@ Ads appear on sites mostly in two ways:
 - Want a more data-driven approach? See [Guess.js](https://guess-js.github.io). It uses analytics and machine-learning to prefetch resources based on how users navigate your site. It also has plugins for [Webpack](https://www.npmjs.com/package/guess-webpack) and [Gatsby](https://www.gatsbyjs.org/docs/optimizing-site-performance-with-guessjs/).
 - WordPress users can now get quicklink as a [WordPress Plugin from the plugin repository](https://wordpress.org/plugins/quicklink/).
 - Drupal users can install the [Quicklink Drupal module](https://www.drupal.org/project/quicklink).
-- Magento 2 users can install the [rafaelcg-magento2-quicklink](https://marketplace.magento.com/rafaelcg-magento2-quicklink.html) or [rangerz/magento2-module-quicklink](https://github.com/rangerz/magento2-module-quicklink).
+- Magento 2 users can install the [rangerz/magento2-module-quicklink](https://github.com/rangerz/magento2-module-quicklink) module.
 - Want less aggressive prefetching? [instant.page](https://instant.page/) prefetches on mouseover and touchstart, right before a click.
 
 ## License
