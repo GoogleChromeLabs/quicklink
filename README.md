@@ -72,6 +72,12 @@ ES Module import:
 import {listen, prefetch} from 'quicklink';
 ```
 
+Modern ES Module (`quicklink.modern.mjs`) — a smaller build for browsers with native ES module support (no legacy transforms). Prefer this when you only need to support modern browsers:
+
+```js
+import {listen, prefetch} from 'quicklink/dist/quicklink.modern.mjs';
+```
+
 ## Single page apps (React)
 
 ### Installation
