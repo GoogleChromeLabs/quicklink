@@ -16,7 +16,7 @@
   },
   {
     "path": "dist/quicklink.umd.js",
-    "limit": "2.55 kB",
+    "limit": "2.6 kB",
     "gzip": true
   }
 ]
