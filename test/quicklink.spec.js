@@ -207,6 +207,24 @@ mainSuite('should only prefetch links after ignore patterns allowed it', async c
   assert.not.ok(responseURLs.includes('https://github.githubassets.com/images/spinners/octocat-spinner-32.gif'));
 });
 
+mainSuite('should not prefetch links with the download attribute', async context => {
+  const responseURLs = [];
+  context.page.on('response', resp => {
+    responseURLs.push(resp.url());
+  });
+  await context.page.goto(`${server}/test-ignore-download.html`);
+  await sleep();
+  assert.instance(responseURLs, Array);
+
+  assert.ok(responseURLs.includes(`${server}/1.html`));
+  // boolean download attribute
+  assert.not.ok(responseURLs.includes(`${server}/2.html`));
+  // download="filename" attribute
+  assert.not.ok(responseURLs.includes(`${server}/3.html`));
+  // out of viewport
+  assert.not.ok(responseURLs.includes(`${server}/4.html`));
+});
+
 mainSuite('should only prefetch links after ignore patterns allowed it (multiple)', async context => {
   const responseURLs = [];
   context.page.on('response', resp => {

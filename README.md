@@ -415,6 +415,8 @@ quicklink.listen({
 
 ### Custom Ignore Patterns
 
+By default, quicklink skips anchors that have a [`download`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download) attribute, since those often point at large binary payloads.
+
 These filters run _after_ the `origins` matching has run. Ignores can be useful for avoiding large file downloads or for responding to DOM attributes dynamically.
 
 ```js
