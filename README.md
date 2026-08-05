@@ -88,7 +88,7 @@ First, install the packages with [Node.js](https://nodejs.org/) and [npm](https:
 npm install quicklink webpack-route-manifest --save-dev
 ```
 
-Then, configure Webpack route manifest into your project, as explained [here](https://github.com/lukeed/webpack-route-manifest).
+Then, configure Webpack route manifest into your project, as explained in the [webpack-route-manifest docs](https://github.com/lukeed/webpack-route-manifest).
 This will generate a map of routes and chunks called `rmanifest.json`. It can be obtained at:
 
 - URL: `site_url/rmanifest.json`
