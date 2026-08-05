@@ -13,7 +13,7 @@ eleventyNavigation:
 ## Measuring impact of Quicklink in sites
 
 Implementing Quicklink in sites can speed up navigations, by automatically prefetching in-viewport links during idle time.
-Different metrics can be improved as a result of this, the most common ones being [Start Render](https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/quick-start-quide#TOC-Start-Render:) and [First Contentful Paint](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint).
+Different metrics can be improved as a result of this, the most common ones being [Start Render](https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/quick-start-quide#TOC-Start-Render:) and [First Contentful Paint](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint).
 
 In this section, we explore different ways of measuring the impact of Quicklink in sites. To showcase that, we’ll use the following sites:
 - An [unoptimized e-commerce demo](/demos/mini-ecomm/), consisting of a listing and product pages. The site uses Quicklink-free vanilla HTML, so each navigation hits the network. The source lives in [`site/src/demos/mini-ecomm`](https://github.com/GoogleChromeLabs/quicklink/tree/main/site/src/demos/mini-ecomm).
@@ -32,7 +32,7 @@ If you take a look at the code of the listing page, in the optimized version of 
 {% markdownConvert %}
 ## Using Chrome DevTools
 
-The first tool you’ll use is [Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools), which is useful both for local development, and also for production URLs.
+The first tool you’ll use is [Chrome DevTools](https://developer.chrome.com/docs/devtools/), which is useful both for local development, and also for production URLs.
 
 First, measure performance before implementing Quicklink:
 
@@ -153,23 +153,23 @@ A video can be generated from the [comparison page](https://www.webpagetest.org/
 
 ### Using RUM (Real user monitoring) tools
 
-RUM tools, let you visualize how different metrics evolve in time for real users. If prefetching affects a large amount of pages, you might be able to see more page loads being loaded faster after implementing it, which can be reflected in metrics [First Contentful Paint](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint).
+RUM tools, let you visualize how different metrics evolve in time for real users. If prefetching affects a large amount of pages, you might be able to see more page loads being loaded faster after implementing it, which can be reflected in metrics [First Contentful Paint](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint).
 
-For example, the [Chrome User Experience Report](https://developers.google.com/web/tools/chrome-user-experience-report/) provides performance metrics for how real-world Chrome users experience popular destinations on the web.
-CrUX data is available in [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/) and also in [BigQuery](https://bigquery.cloud.google.com/dataset/chrome-ux-report:all?pli=1), but you can obtain a quick visualization of the evolution of your metrics using the [CrUX dashboard](https://g.co/chromeuxdash) (refer to [this guide](https://web.dev/chrome-ux-report-data-studio-dashboard/) for more details).
+For example, the [Chrome User Experience Report](https://developer.chrome.com/docs/crux/) provides performance metrics for how real-world Chrome users experience popular destinations on the web.
+CrUX data is available in [PageSpeed Insights](https://pagespeed.web.dev/) and also in [BigQuery](https://developer.chrome.com/docs/crux/bigquery/), but you can obtain a quick visualization of the evolution of your metrics using the [CrUX dashboard](https://g.co/chromeuxdash) (refer to [this guide](https://developer.chrome.com/docs/crux/guides/looker-studio-dashboard) for more details).
 The report contains a section for First Contentful Paint. If a large number of page views are prefetched as a result of implementing Quicklink, this graph could show a positive evolution in time.
 
 **Note:** Even when checking the performance for real users is a general performance best practice, it’s usually hard to correlate the overall performance improvement of a site with a single optimization like this one. With that said, the best way to make sure you’re measuring exactly this change is to perform a before / after test with laboratory tools as explained in previous sections.
 
 ### Using Quicklink Chrome extension
 
-[Quicklink Chrome Extension](https://chrome.google.com/webstore/detail/quicklink-chrome-extensio/epmplkdcjhgigmnjmjibilpmekhgkbeg) injects Quicklink in every site a user visits. You can use it to measure the potential impact of implementing the library on a site, before doing it.
+[Quicklink Chrome Extension](https://chromewebstore.google.com/detail/quicklink-chrome-extensio/epmplkdcjhgigmnjmjibilpmekhgkbeg) injects Quicklink in every site a user visits. You can use it to measure the potential impact of implementing the library on a site, before doing it.
 Since the extension will simulate how the library would work when implemented, you can install the extension and then run the tests with DevTools, as described in the previous section.
 
 ### Conclusion
 
 Quicklink can highly improve navigations by automatically prefetching in-viewport links, . We’ve explored different tools to measure the impact of implementing it in your site.
-Metrics like [Start Render](https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/quick-start-quide#TOC-Start-Render:) and [First Contentful Paint](https://developers.google.com/web/tools/lighthouse/audits/first-contentful-paint) can be directly impacted by this change, but other metrics can be also improved as a result of this, as seen in the tests performed in this guide.
+Metrics like [Start Render](https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/quick-start-quide#TOC-Start-Render:) and [First Contentful Paint](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint) can be directly impacted by this change, but other metrics can be also improved as a result of this, as seen in the tests performed in this guide.
 Laboratory testing tools, like Chrome DevTools and Webpagetest can help you have an accurate idea of the impact of this change, by running a before / after comparison. Also, If the number of pages affected by this change is large enough, you might be able to visualize the impact of the implementation on real user monitoring (RUM) tools as well.
 
 {% endmarkdownConvert %}

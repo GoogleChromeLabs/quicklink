@@ -35,12 +35,12 @@ module.exports = () => {
       {
         title: 'magento',
         logoFileName: 'magento.svg',
-        url: 'https://marketplace.magento.com/rafaelcg-magento2-quicklink.html',
+        url: 'https://github.com/rangerz/magento2-module-quicklink',
       },
       {
         title: 'react',
         logoFileName: 'react.svg',
-        url: 'https://github.com/HOUCe/react-quicklink-component/',
+        url: 'https://web.dev/articles/quicklink',
       },
       {
         title: 'angular',
@@ -50,7 +50,7 @@ module.exports = () => {
       {
         title: 'vue',
         logoFileName: 'vue.svg',
-        url: 'https://nuxtjs.org/api/components-nuxt-link/',
+        url: 'https://nuxt.com/docs/api/components/nuxt-link',
       },
     ],
     trustedByLogos: [
@@ -100,12 +100,12 @@ module.exports = () => {
         companyName: 'MATSUDA',
       },
       {
-        websiteUrl: 'https://paulrand.design/',
+        websiteUrl: 'https://www.paulrand.design/',
         logoFileName: 'paulrand.design.png',
         companyName: 'Paul Rand',
       },
       {
-        websiteUrl: 'http://www.week.co.jp/',
+        websiteUrl: 'https://www.week.co.jp/',
         logoFileName: 'week.co.jp.png',
         companyName: 'Komachi',
       },

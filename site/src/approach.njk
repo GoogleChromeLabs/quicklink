@@ -26,7 +26,7 @@ Quicklink attempts to make navigations to subsequent pages load faster. It:
 * **Detects links within the viewport** (using [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API))
 * **Waits until the browser is idle** (using [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback))
 * **Checks if the user isn't on a slow connection** (using `navigator.connection.effectiveType`) or has data-saver enabled (using `navigator.connection.saveData`)
-* **Prefetches URLs to the links** (using [`<link rel=prefetch>`](https://www.w3.org/TR/resource-hints/#prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
+* **Prefetches URLs to the links** (using [`<link rel=prefetch>`](https://html.spec.whatwg.org/multipage/links.html#link-type-prefetch) or XHR). Provides some control over the request priority (can switch to `fetch()` if supported).
 
 {% endmarkdownConvert %}
 <img loading="lazy" class="article-image" src="/assets/images/graphs/prefetch-quicklink-svgomg.svg" width="932" height="397" alt="Image shows page load times comparison with and without Quicklink prefetching, showing faster performance when prefetch is enabled">
