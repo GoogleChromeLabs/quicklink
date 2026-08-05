@@ -14,10 +14,6 @@ env:
 permissions:
   contents: read
 
-defaults:
-  run:
-    working-directory: site
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -43,4 +39,4 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test
+        run: npm run site:test

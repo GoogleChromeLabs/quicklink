@@ -10,6 +10,9 @@
   "bugs": {
     "url": "https://github.com/GoogleChromeLabs/quicklink/issues"
   },
+  "workspaces": [
+    "site"
+  ],
   "author": "addyosmani <addyosmani@gmail.com>",
   "license": "Apache-2.0",
   "main": "dist/quicklink.js",
@@ -30,8 +33,15 @@
     "build-plugin": "rollup -c --environment BUNDLE:react",
     "build-react-chunks": "rollup -c --environment BUNDLE:react-hoc",
     "build-all": "npm-run-all --parallel build build-plugin build-react-chunks",
+    "watch-all": "chokidar \"src/**/*.{js,mjs}\" -c \"npm run build-all\" --debounce 300",
+    "dev": "npm-run-all build-all --parallel watch-all site:dev",
     "prepublishonly": "npm run build-all",
     "size": "size-limit",
+    "site:build": "npm run build-all && npm --prefix site run build",
+    "site:dev": "npm --prefix site run dev",
+    "site:start": "npm run build-all && npm --prefix site run start",
+    "site:lint": "npm --prefix site run lint",
+    "site:test": "npm run build-all && npm --prefix site run test",
     "changelog": "npm run conventional-changelog -i CHANGELOG.md -s -r 0",
     "release": "cross-env-shell \"npm run build-all && git commit -am $npm_package_version && git tag $npm_package_version && git push --follow-tags\""
   },
@@ -69,6 +79,7 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@size-limit/file": "^13.0.3",
+    "chokidar-cli": "^3.0.0",
     "conventional-changelog": "^8.1.0",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.5",
@@ -86,6 +97,7 @@
     "uvu": "^0.5.6"
   },
   "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
     "puppeteer@25.4.0": true
   }
 }
