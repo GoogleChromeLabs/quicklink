@@ -8,7 +8,8 @@
     "start": "rimraf build && cross-env NODE_ENV=development eleventy --serve",
     "deploy": "firebase deploy --project=quicklink-6a87b",
     "lint": "stylelint src/assets/styles",
-    "test": "npm run lint && npm run build"
+    "test:descriptions": "node scripts/check-descriptions.js",
+    "test": "npm run lint && npm run build && npm run test:descriptions"
   },
   "license": "Apache-2.0",
   "devDependencies": {
