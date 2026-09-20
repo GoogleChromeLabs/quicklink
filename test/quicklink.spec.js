@@ -317,6 +317,19 @@ mainSuite('should not exceed the `limit` total', async context => {
   assert.ok(ours.includes(`${server}/1.html`));
 });
 
+mainSuite('should respect the `limit` total when throttling', async context => {
+  const responseURLs = [];
+  context.page.on('response', resp => {
+    responseURLs.push(resp.url());
+  });
+  await context.page.goto(`${server}/test-limit-throttle.html`);
+  await sleep();
+
+  // Don't care about the page's HTML, CSS, or script requests.
+  const prefetched = responseURLs.filter(url => /\/\d+\.html$/.test(url));
+  assert.is(prefetched.length, 4);
+});
+
 mainSuite('should respect the `throttle` concurrency', async context => {
   const URLs = []; // Note: Page makes 4 requests
 

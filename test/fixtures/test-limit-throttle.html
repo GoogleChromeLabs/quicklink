@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Prefetch: Limit with throttle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+  <a href="1.html">Link 1</a>
+  <a href="2.html">Link 2</a>
+  <a href="3.html">Link 3</a>
+  <a href="4.html">Link 4</a>
+  <a href="5.html">Link 5</a>
+  <a href="6.html">Link 6</a>
+  <a href="7.html">Link 7</a>
+  <a href="8.html">Link 8</a>
+  <script src="../../dist/quicklink.umd.js"></script>
+  <script>
+    quicklink.listen({
+      limit: 4,
+      throttle: 3
+    });
+  </script>
+</body>
+
+</html>

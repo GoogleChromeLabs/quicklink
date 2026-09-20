@@ -97,6 +97,12 @@ export function listen(options = {}) {
       // Do not prefetch if will match/exceed limit
       if (toPrefetch.size < limit) {
         toAdd(() => {
+          // The throttle queue may contain more callbacks than the limit
+          // allows. Recheck when a queued callback is actually run.
+          if (toPrefetch.size >= limit) {
+            return;
+          }
+
           prefetchChunks ?
             prefetchChunks(target, prefetchHandler) :
             prefetchHandler(target.href);

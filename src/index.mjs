@@ -176,6 +176,12 @@ export function listen(options = {}) {
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
           if (toPrefetch.size < limit && !shouldOnlyPrerender) {
             toAdd(() => {
+              // The throttle queue may contain more callbacks than the limit
+              // allows. Recheck when a queued callback is actually run.
+              if (toPrefetch.size >= limit) {
+                return;
+              }
+
               prefetch(
                 hrefFn ? hrefFn(entry) : entry.href,
                 options.priority,
