@@ -317,6 +317,24 @@ mainSuite('should not exceed the `limit` total', async context => {
   assert.ok(ours.includes(`${server}/1.html`));
 });
 
+mainSuite('should not exceed the `limit` when `throttle` is also set', async context => {
+  const URLs = [];
+
+  context.handleRequest = async req => {
+    const url = req.url();
+    if (/test\/fixtures\/\d+\.html$/i.test(url)) {
+      URLs.push(url);
+      return req.respond({status: 200});
+    }
+
+    return req.continue();
+  };
+
+  await context.page.goto(`${server}/test-limit-throttle.html`);
+  await sleep();
+  assert.is(URLs.length, 2);
+});
+
 mainSuite('should respect the `throttle` concurrency', async context => {
   const URLs = []; // Note: Page makes 4 requests
 

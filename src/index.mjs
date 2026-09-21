@@ -111,6 +111,9 @@ export function listen(options = {}) {
   const delay = options.delay || 0;
   const hrefsInViewport = new Map();
   const specRulesInViewport = new Map();
+  // Prefetches handed to the throttler that haven't started yet. `toPrefetch`
+  // only grows once a task runs, so queued work has to be reserved separately.
+  let scheduled = 0;
 
   const timeoutFn = options.timeoutFn || requestIdleCallback;
   const hrefFn = typeof options.hrefFn === 'function' && options.hrefFn;
@@ -174,8 +177,10 @@ export function listen(options = {}) {
           }
 
           // Do not prefetch if will match/exceed limit and user has not switched to shouldOnlyPrerender mode
-          if (toPrefetch.size < limit && !shouldOnlyPrerender) {
+          if (toPrefetch.size + scheduled < limit && !shouldOnlyPrerender) {
+            scheduled++;
             toAdd(() => {
+              scheduled--;
               prefetch(
                 hrefFn ? hrefFn(entry) : entry.href,
                 options.priority,
