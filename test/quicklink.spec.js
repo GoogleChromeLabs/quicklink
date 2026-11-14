@@ -412,4 +412,51 @@ mainSuite('should consider threshold option before prefetching (UMD)', async con
   assert.ok(responseURLs.includes(`${server}/4.html`));
 });
 
+for (const method of ['prefetch', 'prerender']) {
+  for (const hasConnection of [true, false]) {
+    mainSuite(`should reject ${method} offline with connection=${hasConnection}`, async context => {
+      await context.page.goto(`${server}/test-offline.html`);
+      await context.page.setOfflineMode(true);
+      try {
+        const result = await context.page.evaluate(async ({method, hasConnection}) => {
+          if (!hasConnection) {
+            Object.defineProperty(navigator, 'connection', {value: undefined});
+          }
+          let error;
+          try {
+            await quicklink[method]('/offline-target.html');
+          } catch (err) {
+            error = err.message;
+          }
+          return {
+            online: navigator.onLine,
+            error,
+            prefetches: document.querySelectorAll('link[rel="prefetch"]').length,
+            rules: document.querySelectorAll('script[type="speculationrules"]').length,
+          };
+        }, {method, hasConnection});
+        assert.is(result.online, false);
+        assert.is(result.error, `Cannot ${ method }, offline`);
+        assert.is(result.prefetches, 0);
+        assert.is(result.rules, 0);
+      } finally {
+        await context.page.setOfflineMode(false);
+      }
+    });
+  }
+}
+
+mainSuite('should allow prefetching the same URL after coming back online', async context => {
+  await context.page.goto(`${server}/test-offline.html`);
+  await context.page.setOfflineMode(true);
+  try {
+    await context.page.evaluate(() => quicklink.prefetch('1.html', true).catch(() => {}));
+  } finally {
+    await context.page.setOfflineMode(false);
+  }
+  const response = context.page.waitForResponse(`${server}/1.html`);
+  await context.page.evaluate(() => quicklink.prefetch('1.html', true));
+  assert.is((await response).status(), 200);
+});
+
 mainSuite.run();

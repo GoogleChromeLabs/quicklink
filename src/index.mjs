@@ -53,6 +53,11 @@ function isIgnored(node, filter) {
  * @returns {boolean | object}   Error  Object if the constrainsts are met or boolean otherwise
  */
 function checkConnection(conn) {
+  // Check this before connection information, which is not available everywhere.
+  if (navigator.onLine === false) {
+    return new Error('offline');
+  }
+
   // If no connection object, assume it's okay to prefetch
   if (!conn) return true;
 
