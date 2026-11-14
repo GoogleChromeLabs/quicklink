@@ -311,4 +311,4 @@ export function prerender(urls, eagerness = 'immediate') {
 
   const specMap = addSpeculationRules(urls, eagerness);
   return specMap.size > 0 ? Promise.resolve(specMap) : Promise.reject(specMap);
-      }
+}
