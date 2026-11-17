@@ -60,7 +60,7 @@ const prefetchChunks = (entry, prefetchHandler, accessor = __defaultAccessor) =>
 const withQuicklink = (Component, options = {}) => {
   // eslint-disable-next-line react/display-name
   return props => {
-    const [ref, entry] = useIntersect({root: document.body.parentElement});
+    const [ref, entry] = useIntersect({root: typeof document === 'undefined' ? null : document.body.parentElement});
     const {intersectionRatio} = entry;
 
     useEffect(() => {
