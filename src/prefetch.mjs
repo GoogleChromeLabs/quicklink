@@ -141,4 +141,4 @@ export function prefetchOnHover(callback, url, onlyOnMouseover, ...args) {
   return undefined;
 }
 
-export const supported = hasPrefetch() ? viaDOM : viaFetch;
+export const supported = typeof document !== 'undefined' && hasPrefetch() ? viaDOM : viaFetch;
